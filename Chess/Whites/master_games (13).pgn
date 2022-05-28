@@ -1,0 +1,681 @@
+[Event "79th Tata Steel GpA"]
+[Site "Wijk aan Zee NED"]
+[Date "2017.01.29"]
+[Round "13.1"]
+[White "Carlsen, M."]
+[Black "Karjakin, Sergey"]
+[Result "1/2-1/2"]
+[ECO "C53"]
+[WhiteElo "2840"]
+[BlackElo "2785"]
+[PlyCount "105"]
+[EventDate "2017.01.14"]
+[EventType "tourn"]
+[EventRounds "13"]
+[EventCountry "NED"]
+[EventCategory "21"]
+[SourceDate "2017.01.30"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. c3 Nf6 5. d3 O-O 6. Bg5 d6 7. Nbd2 h6 8. Bh4
+g5 9. Nxg5 hxg5 10. Bxg5 Kg7 11. Qf3 Be6 12. b4 Bb6 13. Bd5 a5 14. b5 Nb8 15.
+Bxb7 Ra7 16. Bd5 Nbd7 17. Nc4 Bxd5 18. exd5 Qe8 19. Ne3 Rg8 20. O-O Nh7 21.
+Nf5+ Kh8 22. Bh4 Ra8 23. Rae1 f6 24. Re4 Nc5 25. Re3 Nd7 26. d4 Qg6 27. Ne7 Qg4
+28. Nxg8 Rxg8 29. Qxg4 Rxg4 30. g3 exd4 31. cxd4 Bxd4 32. Re8+ Rg8 33. Re7 Rg7
+34. Re4 Ne5 35. Kg2 Bb6 36. f4 Ng6 37. Kh3 Kg8 38. Rfe1 Kf7 39. Re6 Rg8 40.
+R1e4 f5 41. Re2 Rh8 42. a4 Kg7 43. Rxg6+ Kxg6 44. Re6+ Kf7 45. Re7+ Kg8 46. Kg2
+Nf8 47. Bg5 Rh7 48. Re8 Kf7 49. Rd8 Kg8 50. Re8 Rf7 51. Bh6 Rf6 52. Bg5 Rf7 53.
+Bh6 1/2-1/2
+
+
+[Event "PRO League Group Stage"]
+[Site "chess.com INT"]
+[Date "2017.02.15"]
+[Round "6"]
+[White "Carlsen, M."]
+[Black "Gupta, Ab"]
+[Result "1-0"]
+[ECO "A01"]
+[WhiteElo "2840"]
+[BlackElo "2645"]
+[PlyCount "123"]
+[EventDate "2017.01.11"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "USA"]
+[SourceDate "2017.02.20"]
+[WhiteTeam "Norway Gnomes"]
+[BlackTeam "Delhi Dynamite"]
+
+1. b3 Nf6 2. Bb2 g6 3. g3 Bg7 4. Bg2 O-O 5. Nf3 d5 6. c4 c6 7. O-O Nbd7 8. d4
+Ne4 9. e3 a5 10. Ne1 a4 11. Nd3 axb3 12. axb3 Rxa1 13. Bxa1 Qa5 14. Bb2 Ndf6
+15. c5 Ng4 16. Qe2 Bh6 17. Bc1 Qa1 18. Qb2 Qa6 19. Rd1 Bf5 20. Bf1 Ng5 21. Ne1
+Qa5 22. b4 Qa8 23. f3 Nf6 24. h4 Ne6 25. Nc3 g5 26. g4 Nxg4 27. fxg4 Bxg4 28.
+Be2 f5 29. Bxg4 fxg4 30. Qg2 Kh8 31. Qxg4 Rf6 32. h5 Qa1 33. Bd2 Qb2 34. Nd3
+Qc2 35. Ne5 Bg7 36. Qe2 g4 37. Qd3 Qb2 38. Rb1 Qa3 39. Nxg4 Rf3 40. Kg2 Ng5 41.
+h6 Bf6 42. Rf1 Rxf1 43. Kxf1 Ne4 44. Ke2 Ng3+ 45. Kd1 Qb3+ 46. Qc2 Qc4 47. Nxf6
+exf6 48. Qa2 Qf1+ 49. Kc2 Qf5+ 50. Kb3 Qc8 51. Qb1 Nf5 52. Qf1 Kg8 53. Qf4 Kf7
+54. b5 Ne7 55. b6 Qa8 56. e4 Qa6 57. e5 Qc4+ 58. Kc2 f5 59. Qg5 Ke8 60. Qf6 Ng8
+61. Qg7 Ne7 62. e6 1-0
+
+
+[Event "PRO League Group Stage"]
+[Site "chess.com INT"]
+[Date "2017.02.22"]
+[Round "7"]
+[White "Carlsen, M."]
+[Black "Sebenik, M."]
+[Result "1-0"]
+[ECO "B30"]
+[WhiteElo "2840"]
+[BlackElo "2534"]
+[PlyCount "120"]
+[EventDate "2017.01.11"]
+[EventType "team"]
+[EventRounds "7"]
+[EventCountry "USA"]
+[SourceDate "2017.02.27"]
+[WhiteTeam "Norway Gnomes"]
+[BlackTeam "Ljubljana Direwolves"]
+
+1. e4 c5 2. Nf3 Nc6 3. Nc3 g6 4. g3 Bg7 5. Bg2 d6 6. O-O e5 7. d3 Nge7 8. Nd2
+O-O 9. Nc4 Be6 10. a4 h6 11. Ne3 Qd7 12. Ncd5 Bh3 13. Bxh3 Qxh3 14. c3 Nxd5 15.
+Nxd5 Kh7 16. Qf3 f5 17. Qg2 Qxg2+ 18. Kxg2 Rf7 19. exf5 gxf5 20. f4 Re8 21. Bd2
+Ne7 22. Nc7 Rg8 23. Rae1 Ng6 24. Nd5 h5 25. Kh3 Bh6 26. Re2 Ne7 27. Nxe7 Rxe7
+28. fxe5 Bxd2 29. Rxd2 Rxe5 30. d4 cxd4 31. Rxd4 d5 32. Rfd1 Rg4 33. Rxd5 Rxd5
+34. Rxd5 Rxa4 35. Rxf5 Kg6 36. Rf4 Ra5 37. Rb4 b6 38. Kh4 Re5 39. h3 b5 40. Rd4
+a5 41. Rd6+ Kg7 42. Rc6 a4 43. Rd6 Kh7 44. Rd4 Rc5 45. Rd3 Kg6 46. Rd6+ Kg7 47.
+Ra6 Kh7 48. Ra5 Kg6 49. g4 hxg4 50. hxg4 Kf6 51. Ra6+ Kg7 52. g5 b4 53. cxb4
+Rc4+ 54. Kh5 Rxb4 55. Ra7+ Kg8 56. Kh6 Rxb2 57. Ra8+ Kf7 58. g6+ Kf6 59. Ra6+
+Ke7 60. Rxa4 Rb8 1-0
+
+
+[Event "PRO League KO Stage 2017"]
+[Site "chess.com INT"]
+[Date "2017.03.25"]
+[Round "4.4"]
+[White "Carlsen, M."]
+[Black "Jobava, Ba"]
+[Result "0-1"]
+[ECO "A05"]
+[WhiteElo "2838"]
+[BlackElo "2701"]
+[PlyCount "132"]
+[EventDate "2017.03.01"]
+[EventType "team (rapid)"]
+[EventRounds "5"]
+[EventCountry "USA"]
+[SourceDate "2017.03.27"]
+[WhiteTeam "Norway Gnomes"]
+[BlackTeam "Miami Champions"]
+
+1. Nf3 Nf6 2. g3 g6 3. b3 Bg7 4. Bb2 O-O 5. Bg2 a5 6. O-O a4 7. c4 d6 8. d4
+Nbd7 9. Nc3 Nb6 10. Qc2 d5 11. c5 a3 12. Bxa3 Rxa3 13. cxb6 cxb6 14. Rfc1 Bf5
+15. Qb2 Ra8 16. Ne5 e6 17. Nb5 Nd7 18. Nf3 Rc8 19. Rxc8 Qxc8 20. Rc1 Qb8 21.
+Rc7 Nc5 22. Ne5 Na6 23. Re7 Bxe5 24. dxe5 Re8 25. Rxe8+ Qxe8 26. Nd6 Qc6 27.
+Qd2 Nc5 28. Qg5 Qd7 29. g4 Be4 30. f3 Bb1 31. h4 Bxa2 32. h5 Bxb3 33. h6 f5 34.
+gxf5 exf5 35. Bh3 Ne6 36. Bxf5 Nxg5 37. Bxd7 d4 38. Kf2 Kf8 39. Bc8 Nf7 40. Nb5
+Nxe5 41. Nxd4 Bd5 42. e4 Bc6 43. Be6 Nf7 44. Bxf7 Kxf7 45. Ke3 g5 46. f4 gxf4+
+47. Kxf4 b5 48. e5 Kg6 49. Nc2 Bd7 50. Nd4 Bc6 51. Nc2 Kxh6 52. e6 Kg7 53. Ke5
+h5 54. Nd4 Be8 55. Nf5+ Kg6 56. Nd6 Bc6 57. e7 h4 58. Kf4 b4 59. Nxb7 Kf6 60.
+Na5 Bd7 61. e8=Q Bxe8 62. Kg4 Ke5 63. Kxh4 Kd4 64. Kg4 Kc5 65. Kf4 Bf7 66. Ke4
+Kb6 0-1
+
+
+[Event "4th GRENKE Chess Classic"]
+[Site "Karlsruhe GER"]
+[Date "2017.04.16"]
+[Round "2.2"]
+[White "Carlsen, M."]
+[Black "Aronian, L."]
+[Result "1/2-1/2"]
+[ECO "C88"]
+[WhiteElo "2838"]
+[BlackElo "2774"]
+[PlyCount "140"]
+[EventDate "2017.04.15"]
+[EventType "tourn"]
+[EventRounds "7"]
+[EventCountry "GER"]
+[EventCategory "20"]
+[SourceDate "2017.04.17"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 O-O 8. a4
+b4 9. d3 Bc5 10. c3 bxc3 11. bxc3 Rb8 12. Bg5 h6 13. Bh4 g5 14. Bg3 Nh5 15.
+Nbd2 Nxg3 16. hxg3 Qf6 17. Nc4 d6 18. Ne3 Be6 19. Bxe6 fxe6 20. Qc2 h5 21. Rab1
+Rxb1 22. Rxb1 h4 23. gxh4 gxh4 24. Rb7 h3 25. Rxc7 hxg2 26. Qe2 Ne7 27. Ne1 Rb8
+28. Qg4+ Ng6 29. Nf3 Rb2 30. d4 exd4 31. e5 dxe5 32. Nc4 Rb1+ 33. Kxg2 e4 34.
+Qxe4 Nf4+ 35. Kg3 Ne2+ 36. Kg4 Qf5+ 37. Qxf5 exf5+ 38. Kxf5 dxc3 39. Rxc5 c2
+40. Rc8+ Kg7 41. Rc7+ Kg8 42. Kf6 Rg1 43. Nxg1 c1=Q 44. Nxe2 Qh6+ 45. Ke7 Qh7+
+46. Kd6 Qd3+ 47. Kc5 Qxe2 48. Kb6 Qxf2+ 49. Kxa6 Kf8 50. a5 Ke8 51. Nb6 Qf5 52.
+Rd7 Qc5 53. Rh7 Qe5 54. Rd7 Qc5 55. Rd5 Qc6 56. Rh5 Qc3 57. Kb7 Qg7+ 58. Ka6
+Kd8 59. Rd5+ Kc7 60. Rd7+ Kb8 61. Rd8+ Kc7 62. Rc8+ Kd6 63. Nc4+ Kd7 64. Rc5
+Qg1 65. Kb6 Qb1+ 66. Ka7 Qb4 67. Nb6+ Kd6 68. Rh5 Kc6 69. Rh6+ Kb5 70. Rh5+ Kc6
+1/2-1/2
+
+
+[Event "5th Norway Blitz 2017"]
+[Site "Stavanger NOR"]
+[Date "2017.06.05"]
+[Round "3.1"]
+[White "Carlsen, M."]
+[Black "Giri, A."]
+[Result "1-0"]
+[ECO "A00"]
+[WhiteElo "2832"]
+[BlackElo "2771"]
+[PlyCount "57"]
+[EventDate "2017.06.05"]
+[EventType "tourn (blitz)"]
+[EventRounds "9"]
+[EventCountry "NOR"]
+[EventCategory "22"]
+
+1. Nc3 c5 2. Nf3 Nc6 3. e4 g6 4. Bb5 Bg7 5. O-O d6 6. Re1 Bd7 7. a4 Rc8 8. d3
+Nf6 9. Nd5 O-O 10. Bg5 a6 11. Bxf6 exf6 12. Bc4 f5 13. c3 fxe4 14. dxe4 Na5 15.
+Qd3 Re8 16. Ne3 Bc6 17. Bd5 Qb6 18. Qc2 Re7 19. Rad1 Rce8 20. Bxc6 bxc6 21.
+Rxd6 Rxe4 22. Red1 Bh6 23. Nd5 Qb3 24. Nf6+ Kg7 25. Nxe8+ Rxe8 26. Qxb3 Nxb3
+27. Rxc6 Re2 28. g3 Rxb2 29. Rd7 1-0
+
+
+[Event "5th Norway Chess 2017"]
+[Site "Stavanger NOR"]
+[Date "2017.06.12"]
+[Round "6.1"]
+[White "Carlsen, M."]
+[Black "Vachier Lagrave, M."]
+[Result "1/2-1/2"]
+[ECO "A48"]
+[WhiteElo "2832"]
+[BlackElo "2796"]
+[PlyCount "87"]
+[EventDate "2017.06.06"]
+[EventType "tourn"]
+[EventRounds "9"]
+[EventCountry "NOR"]
+[EventCategory "22"]
+
+1. d4 Nf6 2. Bf4 g6 3. Nf3 Bg7 4. e3 O-O 5. Be2 d6 6. h3 c5 7. O-O Qb6 8. Nbd2
+cxd4 9. Nc4 Qc7 10. exd4 Nd5 11. Bg3 b5 12. Ncd2 a6 13. c3 Nc6 14. a4 Rb8 15.
+axb5 axb5 16. Re1 Na5 17. Qb1 Nc4 18. Qa2 Ndb6 19. b3 Nxd2 20. Qxd2 Be6 21.
+Bxb5 Bxb3 22. Qe2 Bd5 23. Ra3 Bf6 24. Nd2 Rfc8 25. Rea1 Ra8 26. Ba6 Nc4 27.
+Bxc4 Rxa3 28. Rxa3 Bxc4 29. Qxc4 Qxc4 30. Nxc4 Rxc4 31. Kf1 e5 32. Ra6 exd4 33.
+cxd4 Rxd4 34. Rxd6 Rxd6 35. Bxd6 h5 36. g4 hxg4 37. hxg4 Bd8 38. Ke2 f5 39. Kf3
+fxg4+ 40. Kxg4 Kf7 41. f4 Be7 42. Bxe7 Kxe7 43. f5 gxf5+ 44. Kxf5 1/2-1/2
+
+
+[Event "GCT Blitz Paris 2017"]
+[Site "Paris FRA"]
+[Date "2017.06.24"]
+[Round "5.1"]
+[White "Carlsen, M."]
+[Black "Grischuk, A."]
+[Result "0-1"]
+[ECO "A05"]
+[WhiteElo "2832"]
+[BlackElo "2761"]
+[PlyCount "171"]
+[EventDate "2017.06.24"]
+[EventType "tourn (blitz)"]
+[EventRounds "18"]
+[EventCountry "FRA"]
+[EventCategory "22"]
+
+1. Nf3 Nf6 2. g3 d5 3. Bg2 c6 4. O-O Bf5 5. c4 e6 6. d3 dxc4 7. dxc4 Qxd1 8.
+Rxd1 Bc2 9. Rf1 Nbd7 10. Nc3 Bb4 11. Bd2 a5 12. a3 Bxc3 13. Bxc3 a4 14. Rac1
+Be4 15. Rfd1 Ke7 16. Bf1 c5 17. Ne1 Bc6 18. f3 Rhd8 19. Nd3 b6 20. Kf2 Ne8 21.
+e4 Bb7 22. Ke3 Ba6 23. h4 Rac8 24. Nf4 f6 25. Rd2 Nd6 26. Nh5 Ne8 27. Rcd1 Ne5
+28. Rxd8 Rxd8 29. Rxd8 Kxd8 30. Bxe5 fxe5 31. g4 Ke7 32. Kd2 g6 33. Ng3 Nd6 34.
+Kc3 Nb7 35. Bd3 Na5 36. Nf1 Bc8 37. Nd2 Bd7 38. Bc2 h6 39. g5 hxg5 40. hxg5 Nb7
+41. Nf1 Nd6 42. Ne3 Nf7 43. Ng4 Bc6 44. Kd2 Kd6 45. Ke3 Nxg5 46. Nf2 Nh7 47.
+Nd1 Nf6 48. Nc3 Nh5 49. Bxa4 Bb7 50. Bd1 Nf4 51. Be2 Ng2+ 52. Kf2 Nf4 53. Bf1
+Bc6 54. b4 cxb4 55. axb4 Be8 56. Ke3 g5 57. b5 Kc7 58. Na4 Bh5 59. Be2 Ng2+ 60.
+Kf2 Nf4 61. Bf1 g4 62. fxg4 Bxg4 63. Ke3 Bd1 64. Nb2 Bc2 65. Bd3 Bb3 66. Kd2
+Kd6 67. Kc3 Ba2 68. Nd1 Kc5 69. Nf2 Kd6 70. Kb4 Kc7 71. Bf1 Kd6 72. Nd1 Bb1 73.
+Nf2 Kc7 74. c5 bxc5+ 75. Kxc5 Bc2 76. b6+ Kb7 77. Bb5 Bb1 78. Bc6+ Ka6 79. b7
+Ka7 80. Kd6 Kb8 81. Kxe5 Ne2 82. Kxe6 Kc7 83. Bd5 Nc3 84. Ke5 Nxd5 85. exd5
+Kxb7 86. d6 0-1
+
+
+[Event "GCT Rapid Paris 2017"]
+[Site "Paris FRA"]
+[Date "2017.06.23"]
+[Round "7.3"]
+[White "Carlsen, M."]
+[Black "Karjakin, Sergey"]
+[Result "1/2-1/2"]
+[ECO "C50"]
+[WhiteElo "2832"]
+[BlackElo "2781"]
+[PlyCount "132"]
+[EventDate "2017.06.21"]
+[EventType "tourn (rapid)"]
+[EventRounds "9"]
+[EventCountry "FRA"]
+[EventCategory "22"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. O-O Nf6 5. d3 O-O 6. h3 d5 7. exd5 Nxd5 8. a4
+f6 9. Nbd2 Be6 10. Nb3 Be7 11. Re1 Kh8 12. Bd2 Bg8 13. d4 exd4 14. Nbxd4 Nxd4
+15. Nxd4 Qd7 16. Qf3 Rfe8 17. Re4 Bf8 18. Rh4 Re5 19. Bd3 Rd8 20. Bf5 Qe8 21.
+Qd3 Ne7 22. Bxh7 Rh5 23. Rxh5 Qxh5 24. Bxg8 Kxg8 25. Be3 c5 26. Qb3+ Qd5 27. c4
+Qe4 28. Ne2 Rd3 29. Nc3 Nf5 30. Nxe4 Rxb3 31. Bxc5 Bxc5 32. Nxc5 Rxb2 33. Rd1
+Rb4 34. Rd5 b6 35. Nd3 Rb1+ 36. Kh2 Rd1 37. c5 Ne7 38. Rd8+ Kh7 39. cxb6 axb6
+40. Rd7 Nc8 41. g4 Ra1 42. Nf4 Rxa4 43. Nh5 Ra7 44. Nxf6+ Kg6 45. Rxa7 Nxa7 46.
+Nd5 b5 47. Nb4 Kf6 48. f4 Ke6 49. h4 Kd6 50. h5 Nc6 51. Nxc6 Kxc6 52. g5 b4 53.
+h6 gxh6 54. gxh6 b3 55. h7 b2 56. h8=Q b1=Q 57. Qe5 Qd3 58. Qe6+ Qd6 59. Qc8+
+Kd5 60. Kg3 Qg6+ 61. Qg4 Qf6 62. Qh5+ Kd6 63. Kg4 Ke7 64. Qh7+ Kf8 65. Qe4 Kg7
+66. Qe8 Qg6+ 1/2-1/2
+
+
+[Event "GCT Blitz YourNextMove"]
+[Site "Leuven BEL"]
+[Date "2017.07.02"]
+[Round "16.3"]
+[White "Carlsen, M."]
+[Black "Giri, A."]
+[Result "1/2-1/2"]
+[ECO "D02"]
+[WhiteElo "2832"]
+[BlackElo "2771"]
+[PlyCount "76"]
+[EventDate "2017.07.01"]
+[EventType "tourn (blitz)"]
+[EventRounds "18"]
+[EventCountry "BEL"]
+[EventCategory "22"]
+
+1. d4 Nf6 2. Nf3 d5 3. Bf4 Bf5 4. e3 e6 5. a3 Bd6 6. Bg3 O-O 7. c4 dxc4 8. Bxc4
+c5 9. Nc3 Bxg3 10. hxg3 Nbd7 11. O-O Rc8 12. Be2 Bg4 13. Rc1 cxd4 14. Qxd4 Qb6
+15. Qxb6 Nxb6 16. Rfd1 h6 17. Nb5 Rxc1 18. Rxc1 Rc8 19. Rxc8+ Nxc8 20. Kf1 Kf8
+21. Ne5 Bxe2+ 22. Kxe2 h5 23. f3 Ke7 24. e4 a6 25. Nc3 Nb6 26. b3 Nfd7 27. Nd3
+Kd6 28. Ke3 e5 29. Nd1 Nc5 30. Nxc5 Kxc5 31. Nf2 Kd6 32. f4 Nd7 33. Nd3 f6 34.
+Nb2 g5 35. Nc4+ Kc6 36. fxe5 Nxe5 37. Nxe5+ fxe5 38. g4 h4 1/2-1/2
+
+
+[Event "GCT Blitz YourNextMove"]
+[Site "Leuven BEL"]
+[Date "2017.07.02"]
+[Round "17.2"]
+[White "Carlsen, M."]
+[Black "Jobava, Ba"]
+[Result "1-0"]
+[ECO "C01"]
+[WhiteElo "2832"]
+[BlackElo "2707"]
+[PlyCount "87"]
+[EventDate "2017.07.01"]
+[EventType "tourn (blitz)"]
+[EventRounds "18"]
+[EventCountry "BEL"]
+[EventCategory "22"]
+
+1. e4 e6 2. d4 d5 3. exd5 exd5 4. Nf3 Bd6 5. c4 c6 6. Nc3 Ne7 7. Bd3 dxc4 8.
+Bxc4 O-O 9. h3 Nd7 10. O-O Nb6 11. Bb3 Ned5 12. Re1 Bf5 13. Ne5 Bxe5 14. Rxe5
+Qd7 15. Qf3 Be6 16. Ne4 Rae8 17. a4 Ne7 18. Nf6+ gxf6 19. Qxf6 Qd8 20. Rxe6
+Nbd5 21. Qg5+ Kh8 22. Re1 Rg8 23. Qh5 Qb6 24. Bxd5 Nxd5 25. Bh6 Qc7 26. Qf5 f6
+27. Qf3 Qb6 28. Re4 Qxb2 29. Rae1 Rxe4 30. Qxe4 Qa3 31. Qe6 Qd3 32. Re4 Qd1+
+33. Kh2 Qh5 34. Bd2 Qg6 35. Rg4 Qe8 36. Rxg8+ Qxg8 37. Qd7 Qb8+ 38. g3 Qc7 39.
+Qe8+ Kg7 40. a5 b5 41. axb6 axb6 42. h4 b5 43. h5 Qe7 44. h6# 1-0
+
+
+[Event "GCT Blitz YourNextMove"]
+[Site "Leuven BEL"]
+[Date "2017.07.02"]
+[Round "10.2"]
+[White "Carlsen, M."]
+[Black "Anand, V."]
+[Result "1/2-1/2"]
+[ECO "D02"]
+[WhiteElo "2832"]
+[BlackElo "2786"]
+[PlyCount "58"]
+[EventDate "2017.07.01"]
+[EventType "tourn (blitz)"]
+[EventRounds "18"]
+[EventCountry "BEL"]
+[EventCategory "22"]
+
+1. d4 Nf6 2. Nf3 d5 3. Bf4 e6 4. e3 Bd6 5. Nbd2 O-O 6. Bxd6 Qxd6 7. c4 c5 8.
+dxc5 Qxc5 9. cxd5 Qxd5 10. Bc4 Qd6 11. O-O Bd7 12. Be2 Bc6 13. Nc4 Qe7 14. Qd6
+Qxd6 15. Nxd6 Ne4 16. Rfd1 Nxd6 17. Rxd6 Rc8 18. Rc1 Kf8 19. Ne5 Ke7 20. Rd2 f6
+21. Nxc6+ Nxc6 22. Rdc2 Kd8 23. Bf3 Rab8 24. Bxc6 Rxc6 25. Rxc6 bxc6 26. b3 Kc7
+27. Kf1 a5 28. Rc4 Rb4 29. Ke2 Rxc4 1/2-1/2
+
+
+[Event "FIDE World Cup 2017"]
+[Site "Tbilisi GEO"]
+[Date "2017.09.03"]
+[Round "1.1"]
+[White "Carlsen, M."]
+[Black "Balogun, Oluwafemi"]
+[Result "1-0"]
+[ECO "B00"]
+[WhiteElo "2827"]
+[BlackElo "2255"]
+[PlyCount "77"]
+[EventDate "2017.09.03"]
+[EventType "k.o."]
+[EventRounds "7"]
+[EventCountry "GEO"]
+
+1. e4 d6 2. d4 g6 3. Bc4 Nf6 4. Qe2 Nc6 5. Nf3 Bg7 6. O-O Bg4 7. c3 O-O 8. h3
+Bxf3 9. Qxf3 e5 10. Rd1 Qe8 11. d5 Ne7 12. Qe2 Nh5 13. Bb5 Qc8 14. Na3 a6 15.
+Ba4 f5 16. Bc2 f4 17. Qg4 Qxg4 18. hxg4 Nf6 19. g5 Nd7 20. Nc4 b6 21. b4 h6 22.
+gxh6 Bxh6 23. g4 Nf6 24. f3 Bg5 25. Kg2 Kg7 26. a4 Bh4 27. Bd2 g5 28. Rh1 Ng6
+29. Kf1 Rh8 30. Ke2 Bg3 31. a5 b5 32. Na3 Ne7 33. c4 c6 34. dxc6 Nxc6 35. Bc3
+Rxh1 36. Rxh1 bxc4 37. Nxc4 Rb8 38. Nxd6 Kg6 39. Nf5 1-0
+
+
+[Event "chess.com IoM Masters"]
+[Site "Douglas ENG"]
+[Date "2017.09.23"]
+[Round "1.1"]
+[White "Carlsen, M."]
+[Black "Birkisson, Bardur Orn"]
+[Result "1-0"]
+[ECO "E50"]
+[WhiteElo "2827"]
+[BlackElo "2164"]
+[PlyCount "73"]
+[EventDate "2017.09.23"]
+[EventType "swiss"]
+[EventRounds "9"]
+[EventCountry "ENG"]
+
+1. c4 Nf6 2. Nc3 e6 3. d4 Bb4 4. e3 O-O 5. Nf3 b6 6. Bd3 Bb7 7. O-O d5 8. cxd5
+exd5 9. Ne5 Nbd7 10. f4 Ne4 11. Nxe4 dxe4 12. Bc4 Qe7 13. a3 Bd6 14. b4 Nf6 15.
+Bb2 c6 16. Qc2 b5 17. Bb3 a5 18. h3 axb4 19. axb4 Bxb4 20. Rxa8 Bxa8 21. Ra1
+Nd5 22. Rxa8 Rxa8 23. Qxc6 Nc7 24. Bxf7+ Kh8 25. Qxe4 Rf8 26. d5 Rxf7 27. Nxf7+
+Qxf7 28. Qxb4 Nxd5 29. Qxb5 Nxe3 30. Qb8+ Qg8 31. Bxg7+ Kxg7 32. Qe5+ Kf7 33.
+Qxe3 Qg6 34. Kh2 h5 35. Qb3+ Kf8 36. Qb8+ Kg7 37. Qe5+ 1-0
+
+
+[Event "chess.com IoM Masters"]
+[Site "Douglas ENG"]
+[Date "2017.10.01"]
+[Round "9.1"]
+[White "Carlsen, M."]
+[Black "Nakamura, Hi"]
+[Result "1/2-1/2"]
+[ECO "D37"]
+[WhiteElo "2827"]
+[BlackElo "2781"]
+[PlyCount "36"]
+[EventDate "2017.09.23"]
+[EventType "swiss"]
+[EventRounds "9"]
+[EventCountry "ENG"]
+
+1. d4 Nf6 2. Nf3 e6 3. c4 d5 4. Nc3 Be7 5. Bf4 O-O 6. e3 c5 7. dxc5 Bxc5 8. a3
+Nc6 9. Qc2 Qa5 10. Rd1 Re8 11. Nd2 e5 12. Bg5 Nd4 13. Qc1 Bf5 14. Bxf6 Nc2+ 15.
+Ke2 Nd4+ 16. Ke1 Nc2+ 17. Ke2 Nd4+ 18. Ke1 Nc2+ 1/2-1/2
+
+
+[Event "Carlsen-Ding Showdown G5"]
+[Site "Saint Louis USA"]
+[Date "2017.11.14"]
+[Round "3"]
+[White "Carlsen, M."]
+[Black "Ding Liren"]
+[Result "0-1"]
+[ECO "B23"]
+[WhiteElo "2837"]
+[BlackElo "2774"]
+[PlyCount "114"]
+[EventDate "2017.11.14"]
+[EventType "match (blitz)"]
+[EventRounds "12"]
+[EventCountry "USA"]
+
+1. e4 c5 2. Nc3 d6 3. Nge2 Nf6 4. g3 Nc6 5. Bg2 g6 6. d3 Bg7 7. O-O O-O 8. h3
+e6 9. Be3 b6 10. Qd2 d5 11. Bh6 Bxh6 12. Qxh6 Nd4 13. exd5 Nxe2+ 14. Nxe2 exd5
+15. Rfe1 Bb7 16. g4 Re8 17. Ng3 Qd6 18. g5 Rxe1+ 19. Rxe1 Re8 20. Rxe8+ Nxe8
+21. Nf1 Bc8 22. Qh4 d4 23. Qg3 Be6 24. a3 Kg7 25. Nd2 Qxg3 26. fxg3 Nd6 27. Kf2
+Nf5 28. Nf1 f6 29. gxf6+ Kxf6 30. g4 Nd6 31. Nd2 h5 32. gxh5 gxh5 33. Kg3 Nf5+
+34. Kf4 Ne3 35. Bf3 h4 36. Ne4+ Ke7 37. Ng5 Nxc2 38. Nxe6 Kxe6 39. Kg5 Ke5 40.
+Kxh4 Kf4 41. Bc6 Ne1 42. Bb5 Ke3 43. Kg5 Nxd3 44. h4 Nf4 45. Kf5 Kf3 46. Bc6+
+Kg3 47. Bb5 Kf3 48. Bc6+ Ke3 49. Bb5 Nh5 50. Kg5 Ng3 51. Kg4 Ne4 52. h5 Nf6+
+53. Kg5 Nxh5 54. Kxh5 d3 55. Kg4 d2 56. Ba4 Ke2 57. Kf4 d1=Q 0-1
+
+
+[Event "Carlsen-Ding Showdown G5"]
+[Site "Saint Louis USA"]
+[Date "2017.11.14"]
+[Round "5"]
+[White "Carlsen, M."]
+[Black "Ding Liren"]
+[Result "1/2-1/2"]
+[ECO "A45"]
+[WhiteElo "2837"]
+[BlackElo "2774"]
+[PlyCount "169"]
+[EventDate "2017.11.14"]
+[EventType "match (blitz)"]
+[EventRounds "12"]
+[EventCountry "USA"]
+
+1. d4 Nf6 2. Bf4 g6 3. Nc3 d5 4. e3 Bg7 5. Nf3 O-O 6. Be2 c5 7. O-O cxd4 8.
+exd4 Bg4 9. h3 Bxf3 10. Bxf3 Nc6 11. Ne2 b5 12. c3 e6 13. a3 a5 14. Nc1 b4 15.
+a4 Ne4 16. Bxe4 dxe4 17. Nb3 e5 18. dxe5 bxc3 19. bxc3 Nxe5 20. Bxe5 Bxe5 21.
+Rc1 Qg5 22. Qe2 e3 23. fxe3 Rae8 24. Rf3 Bc7 25. Nd4 Re4 26. Rcf1 Qe5 27. Qd3
+Re8 28. Kf2 Qg5 29. Rb1 Qh4+ 30. Kf1 Qg5 31. Rb5 Qe7 32. Rb7 Qc5 33. Nb5 R4e7
+34. c4 Be5 35. Rxe7 Qxe7 36. Nc3 Qa3 37. e4 Qc1+ 38. Qd1 Qxd1+ 39. Nxd1 Rb8 40.
+Rd3 Rb4 41. Rd5 f6 42. Rxa5 Rxc4 43. Ra8+ Kg7 44. Ra7+ Kh6 45. Ne3 Rxe4 46.
+Ng4+ Kg5 47. Nxe5 fxe5 48. a5 Ra4 49. a6 Kf4 50. Rxh7 Rxa6 51. Rh4+ Ke3 52. Kg1
+e4 53. Rh8 Ke2 54. Rb8 e3 55. Rb2+ Kd1 56. Rb1+ Kc2 57. Rb8 Ra1+ 58. Kh2 e2 59.
+Rc8+ Kd3 60. Rd8+ Kc4 61. Rc8+ Kd5 62. Rd8+ Kc6 63. Re8 e1=Q 64. Rxe1 Rxe1 65.
+Kg3 Re4 66. Kf3 Kd5 67. h4 Ke5 68. g3 Rd4 69. Ke3 g5 70. hxg5 Rg4 71. Kf3 Rxg5
+72. g4 Kf6 73. Kf4 Kg6 74. Kg3 Re5 75. Kf4 Kf6 76. Kf3 Kg5 77. Kg3 Re4 78. Kf3
+Rxg4 79. Ke3 Rf4 80. Kd3 Kf5 81. Ke3 Re4+ 82. Kd3 Ke5 83. Kc3 Rd4 84. Kc2 Kd5
+85. Kc3 1/2-1/2
+
+
+[Event "Carlsen-Ding Showdown G5"]
+[Site "Saint Louis USA"]
+[Date "2017.11.14"]
+[Round "7"]
+[White "Carlsen, M."]
+[Black "Ding Liren"]
+[Result "1/2-1/2"]
+[ECO "A25"]
+[WhiteElo "2837"]
+[BlackElo "2774"]
+[PlyCount "108"]
+[EventDate "2017.11.14"]
+[EventType "match (blitz)"]
+[EventRounds "12"]
+[EventCountry "USA"]
+
+1. c4 g6 2. g3 Bg7 3. Bg2 e5 4. Nc3 Nc6 5. e3 Nge7 6. Nge2 O-O 7. O-O d6 8. d3
+Be6 9. Nd5 Qd7 10. Nec3 Rae8 11. b4 e4 12. dxe4 Bxd5 13. exd5 Nxb4 14. Bd2 Nd3
+15. Rb1 Nc5 16. Ne2 Nf5 17. Qc2 h5 18. Nc1 b6 19. Nb3 h4 20. Nxc5 dxc5 21. Bh3
+Re7 22. Rfe1 hxg3 23. hxg3 Nd4 24. exd4 Rxe1+ 25. Rxe1 Qxh3 26. dxc5 bxc5 27.
+Bf4 Bd4 28. Bxc7 Rc8 29. Bf4 Kg7 30. Qe4 Rh8 31. Be5+ Bxe5 32. Qxe5+ Kg8 33.
+Qe4 Kg7 34. Qg2 Qf5 35. Qe4 Qh3 36. d6 Qh2+ 37. Kf1 Qh1+ 38. Qxh1 Rxh1+ 39. Ke2
+Rxe1+ 40. Kxe1 Kf6 41. Ke2 Ke6 42. Ke3 Kxd6 43. Kf4 f6 44. g4 Ke6 45. f3 Kd6
+46. Ke4 Ke6 47. f4 f5+ 48. Kf3 Kf6 49. Kg3 g5 50. fxg5+ Kxg5 51. gxf5 Kxf5 52.
+Kf3 Ke5 53. Ke3 Kf5 54. Kf3 Ke5 1/2-1/2
+
+
+[Event "Carlsen-Ding Showdown G5"]
+[Site "Saint Louis USA"]
+[Date "2017.11.14"]
+[Round "9"]
+[White "Carlsen, M."]
+[Black "Ding Liren"]
+[Result "1/2-1/2"]
+[ECO "B51"]
+[WhiteElo "2837"]
+[BlackElo "2774"]
+[PlyCount "84"]
+[EventDate "2017.11.14"]
+[EventType "match (blitz)"]
+[EventRounds "12"]
+[EventCountry "USA"]
+
+1. e4 c5 2. Nf3 d6 3. Bb5+ Nd7 4. a4 Ngf6 5. Nc3 a6 6. Bxd7+ Bxd7 7. a5 g6 8.
+O-O Bg7 9. e5 dxe5 10. Nxe5 O-O 11. d3 Be6 12. Re1 Nd5 13. Bd2 Qc7 14. Nxd5
+Bxd5 15. Bc3 Rad8 16. Qe2 f6 17. Nc4 e5 18. b3 Rfe8 19. f3 Bf8 20. Qf2 Bc6 21.
+Re2 Qf7 22. Rae1 g5 23. Bd2 h6 24. Be3 Qd5 25. Nd2 f5 26. Nc4 e4 27. dxe4 fxe4
+28. f4 gxf4 29. Qxf4 Bg7 30. Qh4 Kh7 31. Rd2 Qg8 32. Rxd8 Rxd8 33. Ne5 Re8 34.
+Ng4 Qe6 35. h3 Rf8 36. Bxc5 Rf5 37. Be3 h5 38. Nf2 Bf6 39. Qg3 Be5 40. Qh4 Bf6
+41. Qg3 Be5 42. Qh4 Bf6 1/2-1/2
+
+
+[Event "Carlsen-Ding Showdown G5"]
+[Site "Saint Louis USA"]
+[Date "2017.11.14"]
+[Round "11"]
+[White "Carlsen, M."]
+[Black "Ding Liren"]
+[Result "1-0"]
+[ECO "A05"]
+[WhiteElo "2837"]
+[BlackElo "2774"]
+[PlyCount "79"]
+[EventDate "2017.11.14"]
+[EventType "match (blitz)"]
+[EventRounds "12"]
+[EventCountry "USA"]
+
+1. Nf3 Nf6 2. g3 g6 3. b3 Bg7 4. Bb2 O-O 5. Bg2 d6 6. d4 c5 7. c4 Qa5+ 8. Bc3
+Qc7 9. Nbd2 Re8 10. O-O e5 11. d5 e4 12. Ng5 Bf5 13. Bxf6 Bxf6 14. Ngxe4 Bxa1
+15. Qxa1 Bxe4 16. Nxe4 Nd7 17. f4 Re7 18. g4 Rae8 19. Ng3 b5 20. e4 bxc4 21.
+bxc4 Qa5 22. Qc1 Nf6 23. e5 dxe5 24. f5 Nxg4 25. Qg5 e4 26. d6 Re5 27. Qxg4 Qc3
+28. fxg6 hxg6 29. d7 Rd8 30. Nxe4 Qd4+ 31. Kh1 Kg7 32. Nf6 Qxg4 33. Nxg4 Rg5
+34. Nf6 Rf5 35. Rxf5 gxf5 36. Ne8+ Kf8 37. Bc6 Ke7 38. h4 Rb8 39. h5 Rb4 40.
+Nd6 1-0
+
+
+[Event "chess.com Speed 5m+2spm 2017"]
+[Site "chess.com INT"]
+[Date "2017.11.21"]
+[Round "3.2"]
+[White "Carlsen, M."]
+[Black "Grischuk, A."]
+[Result "1/2-1/2"]
+[ECO "A15"]
+[WhiteElo "2832"]
+[BlackElo "2750"]
+[PlyCount "62"]
+[EventDate "2017.05.03"]
+[EventType "k.o. (blitz)"]
+[EventRounds "4"]
+[EventCountry "USA"]
+
+1. c4 Nf6 2. Nf3 c5 3. Nc3 e6 4. e3 Nc6 5. d4 d5 6. cxd5 exd5 7. Bb5 cxd4 8.
+Nxd4 Bd7 9. O-O Bd6 10. Nf3 a6 11. Bxc6 bxc6 12. e4 Bb4 13. exd5 O-O 14. Bg5
+Bxc3 15. bxc3 cxd5 16. Qd4 Rc8 17. Ne5 Be6 18. Rab1 h6 19. Bxf6 Qxf6 20. Rb6 a5
+21. f4 Rb8 22. Rfb1 Rxb6 23. Rxb6 Qf5 24. h3 Qc2 25. Nc6 Kh7 26. Ne7 Re8 27.
+Rb7 Bf5 28. Nxf5 Qxf5 29. Rb5 Re2 30. Qxd5 Qxd5 31. Rxd5 Rxa2 1/2-1/2
+
+
+[Event "9th London Classic 2017"]
+[Site "London ENG"]
+[Date "2017.12.06"]
+[Round "5.3"]
+[White "Carlsen, M."]
+[Black "So, W."]
+[Result "1/2-1/2"]
+[ECO "C65"]
+[WhiteElo "2837"]
+[BlackElo "2788"]
+[PlyCount "136"]
+[EventDate "2017.12.01"]
+[EventType "tourn"]
+[EventRounds "9"]
+[EventCountry "ENG"]
+[EventCategory "22"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6 4. d3 Bc5 5. Bg5 Nd4 6. Nxd4 Bxd4 7. c3 Bb6 8.
+Nd2 c6 9. Ba4 h6 10. Bh4 d6 11. Nc4 Bc7 12. Ne3 Bb6 13. Bb3 g5 14. Bg3 Bxe3 15.
+fxe3 Bg4 16. Qd2 Nh5 17. O-O O-O 18. Be1 Qe7 19. h3 Be6 20. Qe2 Bxb3 21. Qxh5
+Bc2 22. Qe2 Ba4 23. b3 Bb5 24. a4 Ba6 25. b4 b6 26. c4 Bb7 27. a5 f6 28. d4 Qh7
+29. c5 bxc5 30. bxc5 Qxe4 31. cxd6 exd4 32. Qc4+ Kg7 33. a6 Bc8 34. Qxd4 Qxd4
+35. exd4 Rb8 36. Bf2 Rf7 37. d5 cxd5 38. Rfc1 d4 39. Bxd4 Bf5 40. Rc7 Rd8 41.
+Bc5 Rdd7 42. Rxd7 Rxd7 43. Kf2 Be4 44. g4 f5 45. Ke3 Kf6 46. Ra5 Bc2 47. Rb5
+Ke6 48. Rb2 f4+ 49. Kd4 Bd1 50. Rb8 f3 51. Ke3 Kd5 52. Ba3 Be2 53. Rh8 Kc4 54.
+Rxh6 Kb3 55. Bc5 Kc4 56. Bd4 Kd5 57. Rg6 Rxd6 58. Rxg5+ Ke6 59. Bxa7 Rxa6 60.
+Bc5 Ra2 61. Kf4 f2 62. Re5+ Kf7 63. Rf5+ Kg8 64. Bxf2 Bf1 65. Kg3 Ra3+ 66. Rf3
+Rxf3+ 67. Kxf3 Bxh3 68. Kf4 Bxg4 1/2-1/2
+
+
+[Event "9th London Classic 2017"]
+[Site "London ENG"]
+[Date "2017.12.09"]
+[Round "7.2"]
+[White "Carlsen, M."]
+[Black "Adams, Mi"]
+[Result "1-0"]
+[ECO "A03"]
+[WhiteElo "2837"]
+[BlackElo "2715"]
+[PlyCount "115"]
+[EventDate "2017.12.01"]
+[EventType "tourn"]
+[EventRounds "9"]
+[EventCountry "ENG"]
+[EventCategory "22"]
+
+1. f4 d5 2. Nf3 Nf6 3. g3 g6 4. Bg2 Bg7 5. O-O O-O 6. d3 c5 7. c3 Nc6 8. Na3
+Re8 9. Nh4 b6 10. e4 dxe4 11. Qa4 Qxd3 12. Qxc6 Bd7 13. Qc7 Ng4 14. Re1 Bd4+
+15. cxd4 Qxd4+ 16. Be3 Nxe3 17. Qe5 f5 18. Bh3 Nc2+ 19. Qxd4 Nxd4 20. Rxe4 fxe4
+21. Bxd7 Red8 22. Ba4 e5 23. Re1 exf4 24. gxf4 a6 25. Bd1 b5 26. Nb1 Nf5 27.
+Nxf5 gxf5 28. Kf2 Kf7 29. Be2 Rd6 30. h4 c4 31. a4 Rc8 32. axb5 axb5 33. Na3
+Rd5 34. Rc1 Rdc5 35. Nc2 Ra8 36. Ne3 Rac8 37. h5 Ke6 38. h6 Kf6 39. Ra1 b4 40.
+Ra6+ Ke7 41. Ra7+ Kf6 42. Ke1 b3 43. Rb7 Ke6 44. Rb6+ Ke7 45. Rb4 R8c6 46. Bxc4
+Rxh6 47. Rxb3 Kd8 48. Rb8+ Kc7 49. Rf8 Rh3 50. Nd5+ Kb7 51. Rf7+ Kb8 52. b3 Rh2
+53. Nb4 Kc8 54. Na6 Rc6 55. Rf8+ Kb7 56. Bd5 Kxa6 57. Bxc6 Kb6 58. Bd7 1-0
+
+
+[Event "World Rapid 2017"]
+[Site "Riyadh KSA"]
+[Date "2017.12.26"]
+[Round "3.1"]
+[White "Carlsen, M."]
+[Black "Eljanov, P."]
+[Result "1/2-1/2"]
+[ECO "C65"]
+[WhiteElo "2837"]
+[BlackElo "2711"]
+[PlyCount "121"]
+[EventDate "2017.12.26"]
+[EventType "swiss (rapid)"]
+[EventRounds "15"]
+[EventCountry "SAU"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6 4. d3 Bc5 5. Bg5 h6 6. Bh4 Be7 7. O-O d6 8. d4
+O-O 9. Bxc6 bxc6 10. dxe5 Nxe4 11. Bxe7 Qxe7 12. Re1 d5 13. Nbd2 Nxd2 14. Qxd2
+Be6 15. b4 c5 16. bxc5 Qxc5 17. Nd4 Rab8 18. h3 Rb4 19. c3 Rb6 20. Qe3 Qe7 21.
+Nb3 Rc8 22. Nc5 c6 23. a4 Rcb8 24. Qd4 a5 25. Re3 Kh8 26. Rae1 Rb2 27. Rf3 Rc2
+28. Nxe6 fxe6 29. Qd3 Rcb2 30. Qg6 Rf8 31. Ree3 Rbb8 32. Qd3 Qa3 33. Qd4 Qe7
+34. Rxf8+ Rxf8 35. Qb6 Qh4 36. Rg3 Qxa4 37. Qc7 Rg8 38. Rf3 Qb5 39. Qd6 a4 40.
+Kh2 Qb8 41. c4 Qxd6 42. exd6 dxc4 43. Ra3 Rd8 44. Rxa4 Rxd6 45. Rxc4 Kg8 46. h4
+Kf7 47. h5 e5 48. f3 Ke6 49. Rc5 Kd7 50. Rxe5 Rd5 51. Rxd5+ cxd5 52. Kg3 Kd6
+53. Kf4 Kc5 54. Ke3 Kc4 55. Kd2 Kd4 56. g3 Kc4 57. Kc2 d4 58. Kd2 d3 59. g4 Kd4
+60. f4 Ke4 61. g5 1/2-1/2
+
+
+[Event "5. Norway Blitz 2017"]
+[Site "Stavanger NOR"]
+[Date "2017.06.05"]
+[Round "1.1"]
+[White "Carlsen, Magnus"]
+[Black "Nakamura, Hikaru"]
+[Result "1/2-1/2"]
+[WhiteElo "2832"]
+[BlackElo "2785"]
+[ECO "D00"]
+[EventDate "2017.06.05"]
+
+1. Nc3 d5 2. d4 Nf6 3. Bf4 a6 4. e3 Bf5 5. Bd3 Bxd3 6. cxd3 e6 7. Nf3 Bd6 
+8. Bg5 Nbd7 9. O-O h6 10. Bh4 O-O 11. e4 Be7 12. Qb3 Nb6 13. Rac1 c6 14. 
+Rfe1 Rc8 15. h3 Nfd7 16. Bg3 Re8 17. a3 Bf8 18. Qa2 Nf6 19. b4 Ra8 20. Qb2
+Nh5 21. Bh2 Nf6 22. Red1 Qe7 23. Nd2 Rec8 24. Nb3 Nfd7 25. Re1 Qd8 26. Nc5
+Ra7 27. a4 Nxc5 28. dxc5 Nd7 29. exd5 exd5 30. d4 b6 31. b5 axb5 32. axb5 
+bxc5 33. bxc6 Rxc6 34. Nxd5 Rg6 35. Qb5 Ra5 36. Qb7 Ra2 37. Bc7 Qa8 38. 
+Qxa8 Rxa8 39. Ne7+ Bxe7 40. Rxe7 Nf6 41. dxc5 Nd5 42. Rd7 Rc6 43. Rxd5 
+Rxc7 44. c6 Rac8 45. Rdc5 Kf8 46. Kh2 Ke7 47. R5c3 Kd6 48. Rg3 g5 49. Rf3 
+Ke7 50. Rfc3 Kd6 51. Kg3 f5 52. h4 Rxc6 53. Rxc6+ Rxc6 54. Rxc6+ Kxc6 55. 
+hxg5 hxg5 56. f4 g4 57. Kh4 Kd5 58. Kg5 Ke4 59. g3 Kf3 60. Kxf5 Kxg3 61. 
+Ke5 Kh2 62. f5 g3 63. f6 g2 64. f7 g1=Q 65. f8=Q Qg3+ 66. Qf4 Qxf4+ 67. 
+Kxf4 1/2-1/2

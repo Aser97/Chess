@@ -8,23 +8,37 @@
 
 /* Begin PBXBuildFile section */
 		DA36B8E82836712A0028142D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA36B8E72836712A0028142D /* main.cpp */; };
+		DA5ACE77283E4FFE00560F9A /* libSDL2-2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5ACE76283E4FFE00560F9A /* libSDL2-2.0.0.dylib */; };
+		DA5ACE79283E529800560F9A /* libSDL2_image-2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5ACE78283E529800560F9A /* libSDL2_image-2.0.0.dylib */; };
+		DA5ACE7D2842436A00560F9A /* libSDL2_ttf-2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5ACE7C2842436A00560F9A /* libSDL2_ttf-2.0.0.dylib */; };
+		DA5ACE80284243DE00560F9A /* text_rendering.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA5ACE7E284243DE00560F9A /* text_rendering.cpp */; };
+		DAE84B97283AC7AA0024F8C5 /* zobra_hashing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE84B95283AC7AA0024F8C5 /* zobra_hashing.cpp */; };
+		DAE84B9A283AC9B80024F8C5 /* utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE84B98283AC9B80024F8C5 /* utilities.cpp */; };
+		DAE84B9D283ACCF90024F8C5 /* Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE84B9B283ACCF90024F8C5 /* Board.cpp */; };
+		DAE84BAE283C40AC0024F8C5 /* animation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE84BAC283C40AC0024F8C5 /* animation.cpp */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		DA36B8E22836712A0028142D /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		DA36B8E42836712A0028142D /* Chess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Chess; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA36B8E72836712A0028142D /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		DA5ACE76283E4FFE00560F9A /* libSDL2-2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libSDL2-2.0.0.dylib"; path = "../../../../usr/local/Cellar/sdl2/2.0.22/lib/libSDL2-2.0.0.dylib"; sourceTree = "<group>"; };
+		DA5ACE78283E529800560F9A /* libSDL2_image-2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libSDL2_image-2.0.0.dylib"; path = "../../../../usr/local/Cellar/sdl2_image/2.0.5/lib/libSDL2_image-2.0.0.dylib"; sourceTree = "<group>"; };
+		DA5ACE7A283F414800560F9A /* Blacks */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Blacks; sourceTree = "<group>"; };
+		DA5ACE7B283F415500560F9A /* Whites */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Whites; sourceTree = "<group>"; };
+		DA5ACE7C2842436A00560F9A /* libSDL2_ttf-2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libSDL2_ttf-2.0.0.dylib"; path = "../../../../usr/local/Cellar/sdl2_ttf/2.0.18_1/lib/libSDL2_ttf-2.0.0.dylib"; sourceTree = "<group>"; };
+		DA5ACE7E284243DE00560F9A /* text_rendering.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = text_rendering.cpp; sourceTree = "<group>"; };
+		DA5ACE7F284243DE00560F9A /* text_rendering.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = text_rendering.hpp; sourceTree = "<group>"; };
+		DA5ACE8128428EBD00560F9A /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
+		DAE84B802836B45B0024F8C5 /* zobra_table.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = zobra_table.txt; sourceTree = "<group>"; };
+		DAE84B95283AC7AA0024F8C5 /* zobra_hashing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = zobra_hashing.cpp; sourceTree = "<group>"; };
+		DAE84B96283AC7AA0024F8C5 /* zobra_hashing.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = zobra_hashing.hpp; sourceTree = "<group>"; };
+		DAE84B98283AC9B80024F8C5 /* utilities.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = utilities.cpp; sourceTree = "<group>"; };
+		DAE84B99283AC9B80024F8C5 /* utilities.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = utilities.hpp; sourceTree = "<group>"; };
+		DAE84B9B283ACCF90024F8C5 /* Board.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Board.cpp; sourceTree = "<group>"; };
+		DAE84B9C283ACCF90024F8C5 /* Board.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Board.hpp; sourceTree = "<group>"; };
+		DAE84BAC283C40AC0024F8C5 /* animation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = animation.cpp; sourceTree = "<group>"; };
+		DAE84BAD283C40AC0024F8C5 /* animation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = animation.hpp; sourceTree = "<group>"; };
+		DAE84BB7283D39300024F8C5 /* media */ = {isa = PBXFileReference; lastKnownFileType = folder; path = media; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +46,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA5ACE7D2842436A00560F9A /* libSDL2_ttf-2.0.0.dylib in Frameworks */,
+				DA5ACE79283E529800560F9A /* libSDL2_image-2.0.0.dylib in Frameworks */,
+				DA5ACE77283E4FFE00560F9A /* libSDL2-2.0.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +60,7 @@
 			children = (
 				DA36B8E62836712A0028142D /* Chess */,
 				DA36B8E52836712A0028142D /* Products */,
+				DA5ACE75283E4FFE00560F9A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,9 +75,34 @@
 		DA36B8E62836712A0028142D /* Chess */ = {
 			isa = PBXGroup;
 			children = (
+				DA5ACE8128428EBD00560F9A /* Fonts */,
+				DA5ACE7B283F415500560F9A /* Whites */,
+				DA5ACE7A283F414800560F9A /* Blacks */,
+				DAE84BB7283D39300024F8C5 /* media */,
+				DAE84B802836B45B0024F8C5 /* zobra_table.txt */,
 				DA36B8E72836712A0028142D /* main.cpp */,
+				DAE84B95283AC7AA0024F8C5 /* zobra_hashing.cpp */,
+				DAE84B96283AC7AA0024F8C5 /* zobra_hashing.hpp */,
+				DAE84B98283AC9B80024F8C5 /* utilities.cpp */,
+				DAE84B99283AC9B80024F8C5 /* utilities.hpp */,
+				DAE84B9B283ACCF90024F8C5 /* Board.cpp */,
+				DAE84B9C283ACCF90024F8C5 /* Board.hpp */,
+				DAE84BAC283C40AC0024F8C5 /* animation.cpp */,
+				DAE84BAD283C40AC0024F8C5 /* animation.hpp */,
+				DA5ACE7E284243DE00560F9A /* text_rendering.cpp */,
+				DA5ACE7F284243DE00560F9A /* text_rendering.hpp */,
 			);
 			path = Chess;
+			sourceTree = "<group>";
+		};
+		DA5ACE75283E4FFE00560F9A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DA5ACE7C2842436A00560F9A /* libSDL2_ttf-2.0.0.dylib */,
+				DA5ACE78283E529800560F9A /* libSDL2_image-2.0.0.dylib */,
+				DA5ACE76283E4FFE00560F9A /* libSDL2-2.0.0.dylib */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,7 +114,6 @@
 			buildPhases = (
 				DA36B8E02836712A0028142D /* Sources */,
 				DA36B8E12836712A0028142D /* Frameworks */,
-				DA36B8E22836712A0028142D /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -119,7 +161,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAE84B9A283AC9B80024F8C5 /* utilities.cpp in Sources */,
+				DAE84BAE283C40AC0024F8C5 /* animation.cpp in Sources */,
 				DA36B8E82836712A0028142D /* main.cpp in Sources */,
+				DAE84B9D283ACCF90024F8C5 /* Board.cpp in Sources */,
+				DAE84B97283AC7AA0024F8C5 /* zobra_hashing.cpp in Sources */,
+				DA5ACE80284243DE00560F9A /* text_rendering.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +286,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/sdl2/2.0.22/lib,
+					/usr/local/Cellar/sdl2_image/2.0.5/lib,
+					/usr/local/Cellar/sdl2_ttf/2.0.18_1/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -247,6 +305,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/sdl2/2.0.22/lib,
+					/usr/local/Cellar/sdl2_image/2.0.5/lib,
+					/usr/local/Cellar/sdl2_ttf/2.0.18_1/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
