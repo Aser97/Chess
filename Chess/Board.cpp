@@ -853,7 +853,7 @@ void Board::train_from_record(int reward){
     }
 }
 
-void Board::play_vs_AI(bool player){
+void Board::play_vs_AI(bool player, int proba){
     std::tuple<int, int> square;
     std::tuple<int, int> start_square;
     std::tuple<int, int> final_square;
@@ -866,7 +866,6 @@ void Board::play_vs_AI(bool player){
     bool know_first_square = false;
     int x, y;
     int promote_code = -1;
-    int proba = 100;
     
     SDL_Event e;
     bool quit = false;
@@ -959,14 +958,9 @@ void Board::play_vs_AI(bool player){
             }
         }
     }
-    
-    //train from the game if the game has been completed
-    if (pair.first){
-        train_from_record(pair.second);
-    }
 }
 
-void Board::AI_vs_AI_SARSA(){
+void Board::AI_vs_AI_SARSA(int proba){
     std::tuple<int, int> start_square;
     std::tuple<int, int> final_square;
     std::tuple<int, int, int, int, int> proposal; //AI move
@@ -977,7 +971,6 @@ void Board::AI_vs_AI_SARSA(){
     
     float alpha = 1;
     float gamma = .9;
-    int proba = 85;
     
     //first moves
     //white move
@@ -1091,14 +1084,12 @@ void Board::AI_vs_AI_SARSA(){
     }
 }
 
-void Board::AI_vs_AI_MC(){
+void Board::AI_vs_AI_MC(int proba){
     std::tuple<int, int> start_square;
     std::tuple<int, int> final_square;
     std::tuple<int, int, int, int, int> proposal; //AI move
     std::pair<bool, int> pair;
     int index = 0;
-    
-    int proba = 85;
     
     SDL_Event e;
     bool quit = false;
@@ -1133,7 +1124,7 @@ void Board::AI_vs_AI_MC(){
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
-            update_board(position);
+            //update_board(position);
         
             pair = game_over();
             index = record_positions.size()-1;
@@ -1142,7 +1133,6 @@ void Board::AI_vs_AI_MC(){
                 quit = true;
                 break;
             }
-            
             //SDL_Delay(500);
         }
         
@@ -1155,7 +1145,6 @@ void Board::AI_vs_AI_MC(){
             //update_board(position);
         
             pair = game_over();
-            //reward = pair.second;
             index = record_positions.size()-1;
             
             if (pair.first){
@@ -1703,10 +1692,10 @@ void Board::handle_button(int button){
     SDL_RenderPresent( gRenderer );
     
     if (button == 0){
-        play_vs_AI(true);
+        play_vs_AI(true, 100);
     }
     else if (button == 1){
-        play_vs_AI(false);
+        play_vs_AI(false, 100);
     }
     else if (button == 2){
         for (int i=0; i<100; i++){
@@ -1715,7 +1704,7 @@ void Board::handle_button(int button){
             SDL_Rect fillRect = set_rect_for_text(4);
             SDL_RenderCopy( gRenderer, tTexture[4], nullptr, &fillRect);
             SDL_RenderPresent(gRenderer);
-            AI_vs_AI_MC();
+            AI_vs_AI_MC(85);
             initData(true);
             
             std::cout << "game" << i << "\n";
@@ -1728,7 +1717,7 @@ void Board::handle_button(int button){
             SDL_Rect fillRect = set_rect_for_text(4);
             SDL_RenderCopy( gRenderer, tTexture[4], nullptr, &fillRect);
             SDL_RenderPresent(gRenderer);
-            AI_vs_AI_SARSA();
+            AI_vs_AI_SARSA(85);
             initData(true);
             
             std::cout << "game" << i << "\n";

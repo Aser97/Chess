@@ -24,7 +24,7 @@ std::string font_address = "Chess/Fonts/lazy.ttf";
 //current font
 TTF_Font *font;
 
-int ZONE_WIDTH = 160;
+int ZONE_WIDTH = 180;
 int ZONE_HEIGHT = 300;
 extern int SCREEN_WIDTH;
 extern int SCREEN_HEIGHT;

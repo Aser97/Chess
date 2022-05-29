@@ -99,6 +99,7 @@ int main(int argc, const char * argv[]) {
         //Update screen
         SDL_RenderPresent( gRenderer );
         */
+        
         SDL_Event e;
         bool quit = false;
         while (!quit){

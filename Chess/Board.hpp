@@ -63,11 +63,11 @@ class Board{
     
     void train_from_record(int reward);
     
-    void play_vs_AI(bool player);
+    void play_vs_AI(bool player, int proba);
     
-    void AI_vs_AI_SARSA();
+    void AI_vs_AI_SARSA(int proba);
     
-    void AI_vs_AI_MC();
+    void AI_vs_AI_MC(int proba);
     //proposes a move
     std::tuple<int, int, int, int, int> propose_move(int proba, bool color);
     
