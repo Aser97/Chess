@@ -31,7 +31,6 @@ int main(int argc, const char * argv[]) {
     else {
         int x, y;
         int button;
-        int index = 0;
         
         Board board;
         board.initData(true);
@@ -41,8 +40,16 @@ int main(int argc, const char * argv[]) {
         //Update screen
         SDL_RenderPresent( gRenderer );
         
-        
+        /*
         //training with blacks
+        
+        //asking the user to wait
+        //SDL_Delay(2500);
+        messages[4] = "Please wait 40s";
+        load_text(messages[4], 4);
+        update_board(board.position);
+        
+        int index = 0;
         for (int i= 1; i<26; i++){
             std::string games = pgn_to_string("Chess/Blacks/games"+std::to_string(i)+".txt");
             int start_index = 0;
@@ -51,7 +58,7 @@ int main(int argc, const char * argv[]) {
             while (end_index < games.size() - 2){
                 //std::cout << games.substr(start_index, end_index - start_index) << "\n";
                 //std::cout << start_index << " " << end_index << "\n";
-                board.train(games.substr(start_index, end_index - start_index), false);
+                board.train_from_pgn(games.substr(start_index, end_index - start_index), false);
                 board.initData(true);
                 //SDL_Delay(100);
             
@@ -73,7 +80,7 @@ int main(int argc, const char * argv[]) {
                 //std::cout << games.substr(start_index, end_index - start_index) << "\n";
                 //std::cout << start_index << " " << end_index << "\n";
              
-                board.train(games.substr(start_index, end_index - start_index), true);
+                board.train_from_pgn(games.substr(start_index, end_index - start_index), true);
                 board.initData(true);
                 //SDL_Delay(100);
             
@@ -90,7 +97,7 @@ int main(int argc, const char * argv[]) {
         init_board(board.position);
         //Update screen
         SDL_RenderPresent( gRenderer );
-        
+        */
         SDL_Event e;
         bool quit = false;
         while (!quit){

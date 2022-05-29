@@ -60,7 +60,7 @@ class Board{
     
     void execute_move(std::tuple<int, int> start_square, std::tuple<int, int> target_square, int promote_code);
     
-    void train(std::string game, bool color);
+    void train_from_pgn(std::string game, bool color);
     
     void train_from_record(int reward);
     

@@ -791,7 +791,7 @@ void Board::execute_move(std::tuple<int, int> start_square, std::tuple<int, int>
     }
 }
 
-void Board::train(std::string game, bool color){
+void Board::train_from_pgn(std::string game, bool color){
     std::pair<int, std::tuple<int, int, int, int, int>> result; //code result of the move
     result.first = -2;
     int index = header_extractor(game); //index for reading the game
@@ -984,6 +984,11 @@ void Board::play_vs_AI(bool player){
                 break;
             }
         }
+    }
+    
+    //train from the game if the game has been completed
+    if (pair.first){
+        train_from_record(pair.second);
     }
 }
 
