@@ -791,33 +791,25 @@ void Board::execute_move(std::tuple<int, int> start_square, std::tuple<int, int>
     }
 }
 
-void Board::train_from_pgn(std::string game, bool color){
+void Board::train_from_pgn(std::string game){
     std::pair<int, std::tuple<int, int, int, int, int>> result; //code result of the move
     result.first = -2;
     int index = header_extractor(game); //index for reading the game
     std::pair<std::string, int> pair;
     float gamma = .9;
-    int n_th_move = 0;
+    int n_th_move = 1;
     int number_moves = game_length(game);
     unsigned long long int position_code;
     
-    int reward;//if the color won->+1, if draw ->0, if loss ->-1
-    int winner = winner_extractor(game);
-    //computing the reward
-    if (winner == color){
-        reward = 1;
-    }
-    else if (winner == -1){
-        reward = 0;
-    }
-    else {
-        reward = -1;
-    }
-    
+    int reward = winner_extractor(game);//if the color won->+1, if draw ->0, if loss ->-1
+    int number_turn = 0;//counting the number of turns
     //starting the training loop
     SDL_Event e;
     bool quit = false;
     while (!quit){
+        n_th_move += number_turn % 2;
+        number_turn ++;
+        
         while (SDL_PollEvent(&e)){
             if (e.type == SDL_QUIT){
                 quit = true;
@@ -854,12 +846,10 @@ void Board::train_from_pgn(std::string game, bool color){
             quit = true;
             break;
         }
-        if (color != whose_turn){
-            update_values(position_code, result.second, color, 0);
-            Q[color][position_code][result.second] += (reward*pow(gamma,number_moves-n_th_move) - Q[color][position_code][result.second]) / count[color][position_code][result.second];
-
-            n_th_move ++;
-        }
+        
+        //updating the values of the player who made last move
+        count[1-whose_turn][position_code][result.second] += 1;
+        Q[1-whose_turn][position_code][result.second] += (reward*pow(gamma,number_moves-n_th_move) - Q[1-whose_turn][position_code][result.second]) / count[1-whose_turn][position_code][result.second];
     }
 }
 
@@ -892,7 +882,7 @@ void Board::play_vs_AI(bool player){
     bool know_first_square = false;
     int x, y;
     int promote_code = -1;
-    int proba = 85;
+    int proba = 100;
     
     SDL_Event e;
     bool quit = false;

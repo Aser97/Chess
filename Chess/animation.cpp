@@ -128,9 +128,10 @@ void close() {
     }
     //Destroy window
     SDL_DestroyRenderer( gRenderer );
+    gRenderer = nullptr;
+    
     SDL_DestroyWindow( gWindow );
     gWindow = nullptr;
-    gRenderer = nullptr;
 
     //Quit SDL subsystems
     close_font();

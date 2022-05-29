@@ -200,13 +200,22 @@ Piece create_piece(int code){
     return piece;
 }
 
-//tells which color won:0->black, 1->white, (-1)->draw
+//tells which color won:(-1)->black, 1->white, 0->draw
 int winner_extractor(std::string game){
     int index = game.size() - 1;
     while (game[index] == ' '){
         index --;
     }
-    return 1 - (int) game[index] + 48;
+    int digit = (int) game[index] - 48;
+    if (digit == 1){
+        return 1;
+    }
+    else if (digit == 0){
+        return -1;
+    }
+    else {
+        return 0;
+    }
 }
 
 //finds the indice of the end of the game (game is a list of games)
