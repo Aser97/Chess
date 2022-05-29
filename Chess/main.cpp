@@ -55,7 +55,7 @@ int main(int argc, const char * argv[]) {
                 board.initData(true);
                 //SDL_Delay(100);
             
-                std::cout << " next game \n";
+                //std::cout << " next game \n";
                 start_index = end_index;
                 end_index = find_end_game(games, start_index);
             }
@@ -77,13 +77,19 @@ int main(int argc, const char * argv[]) {
                 board.initData(true);
                 //SDL_Delay(100);
             
-                std::cout << "next game \n";
+                //std::cout << "next game \n";
                 start_index = end_index;
                 end_index = find_end_game(games, start_index);
             }
             index ++;
             std::cout << index << " end of file \n";
         }
+        //giving the way to the user
+        messages[4] = "You can start";
+        load_text(messages[4], 4);
+        init_board(board.position);
+        //Update screen
+        SDL_RenderPresent( gRenderer );
         
         SDL_Event e;
         bool quit = false;

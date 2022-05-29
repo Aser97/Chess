@@ -1720,7 +1720,6 @@ void Board::step_back(){
 }
 
 void Board::handle_button(int button){
-    initData(true);
     //reseting everything
     initData(true);
     init_board(position);

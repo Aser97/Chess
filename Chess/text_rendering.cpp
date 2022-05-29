@@ -29,7 +29,7 @@ int ZONE_HEIGHT = 300;
 extern int SCREEN_WIDTH;
 extern int SCREEN_HEIGHT;
 
-std::string messages[5] = {"Play with White", "Play with Black", "Train AI-MC", "Train AI-SARSA", " helloo"};
+std::string messages[5] = {"Play with White", "Play with Black", "Train AI-MC", "Train AI-SARSA", "Please wait .."};
 
 SDL_Color color = { 255, 255, 255, 255 };;
 
