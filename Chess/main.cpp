@@ -40,7 +40,7 @@ int main(int argc, const char * argv[]) {
         //Update screen
         SDL_RenderPresent( gRenderer );
         
-        
+        /*
         //training with blacks
         
         //asking the user to wait
@@ -50,13 +50,13 @@ int main(int argc, const char * argv[]) {
         //update_board(board.position);
         
         int index = 0;
-        for (int i= 1; i<2; i++){
+        for (int i= 1; i<26; i++){
             std::string games = pgn_to_string("Chess/Blacks/games"+std::to_string(i)+".txt");
             int start_index = 0;
             int end_index = find_end_game(games, start_index);
             std::cout << end_index << "\n";
             
-            while (end_index < 1105){//games.size() - 2){
+            while (end_index < games.size() - 2){
                 //std::cout << games.substr(start_index, end_index - start_index) << "\n";
                 //std::cout << start_index << " " << end_index << "\n";
                 board.train_from_pgn(games.substr(start_index, end_index - start_index));
@@ -70,7 +70,7 @@ int main(int argc, const char * argv[]) {
             index ++;
             std::cout << index << " end of file \n";
         }
-        /*
+        
         //training with whites
         for (int i= 1; i<24; i++){
             std::string games = pgn_to_string("Chess/Whites/games"+std::to_string(i)+".txt");

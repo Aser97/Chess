@@ -38,7 +38,6 @@ class Board{
     //initializing a new game
     void initData(bool new_game, bool turn = 1, int pos[8][8] = {});
     
-    void update_values(unsigned long long int position_code, std::tuple<int, int, int, int, int> move, bool color, int init_value);
     //computes the controled squares of a piece
     std::vector <std::tuple<int, int>> controled_squares(std::tuple<int, int> square, int code);
 

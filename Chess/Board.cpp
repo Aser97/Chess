@@ -44,6 +44,8 @@ extern SDL_Renderer* gRenderer;
 extern std::string messages[5];
 extern SDL_Texture* tTexture[5];
 
+int sign[2] = {-1, 1}; //signs for each color: true-> 1 false ->-1 Useful for rewards computations
+
 //initializing a new game
 void Board::initData(bool new_game, bool turn, int pos[8][8]){
     std::vector <std::tuple<int, int>> _locations[12];//locations of pieces
@@ -103,26 +105,6 @@ void Board::initData(bool new_game, bool turn, int pos[8][8]){
     record_moves.clear();
     record_positions.clear();
     record_appreciations.clear();
-}
-
-void Board::update_values(unsigned long long int position_code, std::tuple<int, int, int, int, int> move, bool color, int init_value){
-    
-    if (not Q[color].count(position_code)){//never reached this position
-        std::map<std::tuple<int, int, int, int, int>, float> map1;
-        std::map<std::tuple<int, int, int, int, int>, int> map2;
-        map1[move] = init_value;
-        map2[move] = 1;
-        Q[color][position_code] = map1;
-        count[color][position_code] = map2;
-    }
-    
-    else if (not Q[color][position_code].count(move)){//know the position but not the move
-        Q[color][position_code][move] = init_value;
-        count[color][position_code][move] = 1;
-    }
-    else {//know both of them
-        count[color][position_code][move] += 1;
-    }
 }
 
 //computes the controled squares of a piece
@@ -802,14 +784,12 @@ void Board::train_from_pgn(std::string game){
     unsigned long long int position_code;
     
     int reward = winner_extractor(game);//if the color won->+1, if draw ->0, if loss ->-1
-    int number_turn = 0;//counting the number of turns
+    int turn_index = 0;//counting the number of turns
+    
     //starting the training loop
     SDL_Event e;
     bool quit = false;
     while (!quit){
-        n_th_move += number_turn % 2;
-        number_turn ++;
-        
         while (SDL_PollEvent(&e)){
             if (e.type == SDL_QUIT){
                 quit = true;
@@ -849,7 +829,10 @@ void Board::train_from_pgn(std::string game){
         
         //updating the values of the player who made last move
         count[1-whose_turn][position_code][result.second] += 1;
-        Q[1-whose_turn][position_code][result.second] += (reward*pow(gamma,number_moves-n_th_move) - Q[1-whose_turn][position_code][result.second]) / count[1-whose_turn][position_code][result.second];
+        Q[1-whose_turn][position_code][result.second] += (sign[1-whose_turn] * reward*pow(gamma,number_moves-n_th_move) - Q[1-whose_turn][position_code][result.second]) / count[1-whose_turn][position_code][result.second];
+        
+        n_th_move += turn_index % 2;
+        turn_index ++;
     }
 }
 
@@ -858,14 +841,15 @@ void Board::train_from_record(int reward){
     float gamma = .9;
     int n_th_move = 1;
     int number_moves = ceil(static_cast<double>(record_moves.size())/2);
-    int index = 0;
+    int turn_index = 0;//current index in the record_moves vector
     
     //starting the training loop
-    while(index < record_moves.size()){
-        Q[1 - (index % 2)][record_positions[index]][record_moves[index]] += (reward*pow(gamma, number_moves-n_th_move) - Q[1 - (index % 2)][record_positions[index]][record_moves[index]]) / count[1 - (index % 2)][record_positions[index]][record_moves[index]];
+    while(turn_index < record_moves.size()){
+        count[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]] ++;
+        Q[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]] += (sign[1 - (turn_index % 2)]*reward*pow(gamma, number_moves-n_th_move) - Q[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]]) / count[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]];
         
-        n_th_move += 1-(index %2);
-        index ++;
+        n_th_move += (turn_index %2);
+        turn_index ++;
     }
 }
 
@@ -1007,7 +991,7 @@ void Board::AI_vs_AI_SARSA(){
     reward = pair.second;
     index = record_positions.size()-1;
     //updating values (TD)
-    update_values(record_positions[index], proposal, true, pair.first);
+    count[true][record_positions[index]][proposal] += 1;
     
     //SDL_Delay(100);
     
@@ -1021,7 +1005,7 @@ void Board::AI_vs_AI_SARSA(){
     reward = pair.second;
     index = record_positions.size()-1;
     //updating values (TD)
-    update_values(record_positions[index], proposal, true, pair.first);
+    count[false][record_positions[index]][proposal] += 1;
     
     SDL_Event e;
     bool quit = false;
@@ -1063,11 +1047,11 @@ void Board::AI_vs_AI_SARSA(){
             //reward = pair.second;
             index = record_positions.size()-1;
             //updating values (TD)
-            update_values(record_positions[index], proposal, true, pair.first);
-            Q[true][record_positions[index-2]][record_moves[index-2]] += alpha*(reward + gamma*Q[true][record_positions[index]][proposal] - Q[true][record_positions[index-2]][record_moves[index-2]]);
+            count[true][record_positions[index]][proposal] += 1;
+            Q[true][record_positions[index-2]][record_moves[index-2]] += alpha*(sign[true]*reward + gamma*Q[true][record_positions[index]][proposal] - Q[true][record_positions[index-2]][record_moves[index-2]]);
             
             if (Q[true][record_positions[index-2]][record_moves[index-2]] > 0){
-                std::cout << "white ->" << Q[true][record_positions[index-2]][record_moves[index-2]] << "\n";
+                std::cout << "white -> " << Q[true][record_positions[index-2]][record_moves[index-2]] << "\n";
             }
             
             if (pair.first){
@@ -1090,8 +1074,9 @@ void Board::AI_vs_AI_SARSA(){
             //reward = pair.second;
             index = record_positions.size()-1;
             //updating values (TD)
-            update_values(record_positions[index], proposal, false, pair.first);
-            Q[false][record_positions[index-2]][record_moves[index-2]] += alpha*(reward + gamma*Q[false][record_positions[index]][proposal] - Q[false][record_positions[index-2]][record_moves[index-2]]);
+            count[false][record_positions[index]][proposal] += 1;
+            
+            Q[false][record_positions[index-2]][record_moves[index-2]] += alpha*(sign[false]*reward + gamma*Q[false][record_positions[index]][proposal] - Q[false][record_positions[index-2]][record_moves[index-2]]);
             
             if (Q[false][record_positions[index-2]][record_moves[index-2]] > 0){
                 std::cout << "black ->" << Q[false][record_positions[index-2]][record_moves[index-2]] << "\n";
@@ -1152,9 +1137,7 @@ void Board::AI_vs_AI_MC(){
         
             pair = game_over();
             index = record_positions.size()-1;
-            //updating values (TD)
-            update_values(record_positions[index], proposal, true, 0);
-            
+    
             if (pair.first){
                 quit = true;
                 break;
@@ -1174,8 +1157,6 @@ void Board::AI_vs_AI_MC(){
             pair = game_over();
             //reward = pair.second;
             index = record_positions.size()-1;
-            //updating values (TD)
-            update_values(record_positions[index], proposal, false, 0);
             
             if (pair.first){
                 quit = true;
