@@ -36,11 +36,6 @@ int main(int argc, const char * argv[]) {
         board.initData(true);
         initTable();
         
-        init_board(board.position);
-        //Update screen
-        SDL_RenderPresent( gRenderer );
-        
-        
         /*
         int index = 0;
         for (int i= 1; i<26; i++){
@@ -82,6 +77,9 @@ int main(int argc, const char * argv[]) {
         board.save_AI();
         */
         board.load_AI();
+        init_board(board.position);
+        //Update screen
+        SDL_RenderPresent( gRenderer );
         
         SDL_Event e;
         bool quit = false;
@@ -106,6 +104,9 @@ int main(int argc, const char * argv[]) {
         }
         //this line is necessary for the renderer to be destroyed safely when user don't do anything after opening the app
         update_board(board.position);
+        
+        //save the AI
+        board.save_AI();
         //Free resources and close SDL
         close();
         return 0;
