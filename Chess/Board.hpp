@@ -92,6 +92,10 @@ class Board{
     void step_back();
     
     void handle_button(int button);
+    
+    void save_AI();
+    
+    void load_AI();
 };
 
 #endif /* Board_hpp */

@@ -16,6 +16,8 @@
 #include "animation.hpp"
 #include <random>
 #include "text_rendering.hpp"
+#include <filesystem>
+#include <fstream>
 
 /*correspondance table:
  For whites:
@@ -1721,6 +1723,112 @@ void Board::handle_button(int button){
             initData(true);
             
             std::cout << "game" << i << "\n";
+        }
+    }
+}
+
+void Board::save_AI(){
+    std::map<unsigned long long int, std::map<std::tuple<int, int, int, int, int>, float>>::iterator it;
+    //for white
+    for (it = Q[true].begin(); it != Q[true].end(); it++){
+        //save the position data
+        save_position(it->first, Q[true][it->first], count[true][it->first], true);
+    }
+    
+    //for black
+    for (it = Q[false].begin(); it != Q[false].end(); it++){
+        //save the position data
+        save_position(it->first, Q[false][it->first], count[false][it->first], false);
+    }
+}
+
+//load AI from archive
+void Board::load_AI(){
+    std::ifstream fin;
+    std::string line;
+    std::tuple<int, int, int, int, int> move;
+    unsigned long long int position_code;
+    
+    //loading White_AI Q values
+    for (const auto& entry : std::filesystem::directory_iterator("Chess/White_AI/Q")) {
+        const auto filenameStr = entry.path().filename().string();
+        if (entry.is_regular_file()) {
+            position_code = str_to_i(filenameStr.substr(0, filenameStr.size()-4));
+            fin.open("Chess/White_AI/Q/" + filenameStr);
+            
+            //execute a loop until EOF (End of File)
+            while(fin){
+                // Read a Line from File
+                getline(fin, line);
+                //register the line in board if not EOF
+                if (not line.empty()){
+                    move = str_to_move(line.substr(0, 10));
+                    Q[true][position_code][move] = std::stof(line.substr(10));
+                }
+            }
+            fin.close();
+        }
+    }
+    
+    //loading White_AI count values
+    for (const auto& entry : std::filesystem::directory_iterator("Chess/White_AI/count")) {
+        const auto filenameStr = entry.path().filename().string();
+        if (entry.is_regular_file()) {
+            position_code = str_to_i(filenameStr.substr(0, filenameStr.size()-4));
+            fin.open("Chess/White_AI/count/" + filenameStr);
+            
+            //execute a loop until EOF (End of File)
+            while(fin){
+                // Read a Line from File
+                getline(fin, line);
+                //register the line in board if not EOF
+                if (not line.empty()){
+                    move = str_to_move(line.substr(0, 10));
+                    count[true][position_code][move] = std::stof(line.substr(10));
+                }
+            }
+            fin.close();
+        }
+    }
+    
+    //loading Black_AI Q values
+    for (const auto& entry : std::filesystem::directory_iterator("Chess/Black_AI/Q")) {
+        const auto filenameStr = entry.path().filename().string();
+        if (entry.is_regular_file()) {
+            position_code = str_to_i(filenameStr.substr(0, filenameStr.size()-4));
+            fin.open("Chess/Black_AI/Q/" + filenameStr);
+            
+            //execute a loop until EOF (End of File)
+            while(fin){
+                // Read a Line from File
+                getline(fin, line);
+                //register the line in board if not EOF
+                if (not line.empty()){
+                    move = str_to_move(line.substr(0, 10));
+                    Q[false][position_code][move] = std::stof(line.substr(10));
+                }
+            }
+            fin.close();
+        }
+    }
+    //loading Black_AI count values
+    for (const auto& entry : std::filesystem::directory_iterator("Chess/Black_AI/count")) {
+        const auto filenameStr = entry.path().filename().string();
+        if (entry.is_regular_file()) {
+            position_code = str_to_i(filenameStr.substr(0, filenameStr.size()-4));
+            fin.open("Chess/Black_AI/count/" + filenameStr);
+            
+            //execute a loop until EOF (End of File)
+            while(fin){
+                // Read a Line from File
+                getline(fin, line);
+                //register the line in board if not EOF
+                if (not line.empty()){
+                    move = str_to_move(line.substr(0, 10));
+                    count[false][position_code][move] = std::stof(line.substr(10));
+                }
+            }
+            fin.close();
         }
     }
 }

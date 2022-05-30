@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include <vector>
-
+#include <map>
 //this function tests whether two pieces are in same color
 bool are_nemesis(int code1, int code2);
 
@@ -18,6 +18,8 @@ bool from_a_to_h(char c);
 bool from_1_to_8(char c);
 
 int letter_to_int(char c, bool whose_turn);
+
+unsigned long long int str_to_i(std::string s);
 
 std::pair<bool, int > findInVector(std::vector<std::tuple<int, int>> vecOfElements, std::tuple<int, int> square);
 
@@ -51,4 +53,11 @@ int find_end_game(std::string game, int start_index);
 
 //display a move
 void display_move(std::tuple<int, int, int, int, int> move);
+
+//transforms a move to a 10 chars long string
+std::string move_to_str(std::tuple<int, int, int, int, int> move);
+
+std::tuple<int, int, int, int, int> str_to_move(std::string str);
+
+void save_position(unsigned long long int position_code, std::map<std::tuple<int, int, int, int, int>, float> map_Q, std::map<std::tuple<int, int, int, int, int>, int> map_count, bool color);
 #endif /* utilities_hpp */

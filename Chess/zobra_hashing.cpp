@@ -26,18 +26,6 @@ unsigned long long int randomInt()
     return dist(mt);
 }
 
-//Convert a string to int
-unsigned long long int str_to_i(string s){
-    int len = s.size();
-    unsigned long long int h = 0;
-    int digit;
-    for (int i = 0; i < len; i++){
-        digit = (int) s[i] - 48;
-        h = 10 * h + digit;
-    }
-    
-    return h;
-}
 // Initializes the table
 void initTable()
 {
@@ -57,7 +45,7 @@ void initTable()
      */
     //This part loads the data initially saved in zobra_table.txt
     std::ifstream fin;
-    fin.open("/Users/Aser/Documents/Chess/Chess/zobra_table.txt");
+    fin.open("Chess/zobra_table.txt");
     std::string line;
     for (int i = 0; i<8; i++){
         for (int j = 0; j<8; j++){

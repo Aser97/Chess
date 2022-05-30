@@ -10,7 +10,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-
+#include <map>
 /*correspondance table:
  For whites:
  pawn = 0, knight = 1, bishop = 2, rook = 3, queen = 4, king = 5
@@ -75,6 +75,18 @@ int letter_to_int(char c, bool whose_turn){//convert a piece letter to its code
     }
 }
 
+//Convert a string to int
+unsigned long long int str_to_i(std::string s){
+    int len = s.size();
+    unsigned long long int h = 0;
+    int digit;
+    for (int i = 0; i < len; i++){
+        digit = (int) s[i] - 48;
+        h = 10 * h + digit;
+    }
+    
+    return h;
+}
 //turn a pgn into a string
 std::string pgn_to_string(std::string address){
     std::string result;
@@ -234,4 +246,56 @@ int find_end_game(std::string game, int start_index){
 
 void display_move(std::tuple<int, int, int, int, int> move){
     std::cout << get<0>(move) << ", " << get<1>(move) << " -> " << get<2>(move) << ", " << get<3>(move) << " = " << get<4>(move) <<"\n";
+}
+
+//transforms a move to a 10 chars long string
+std::string move_to_str(std::tuple<int, int, int, int, int> move){
+    std::string result = std::to_string(get<0>(move)) + " " + std::to_string(get<1>(move)) + " " + std::to_string(get<2>(move)) + " " + std::to_string(get<3>(move)) + " " + std::to_string(get<4>(move));
+    
+    //making sure the result has the good size
+    if ((get<3>(move)!= -1) and (get<3>(move) != 10)){
+        result.append(" ");
+    }
+    return result;
+}
+
+std::tuple<int, int, int, int, int> str_to_move(std::string str){
+    std::tuple<int, int, int, int, int> move = {(int) str[0] -48, (int) str[2] -48, (int) str[4] -48, (int) str[6] -48, -1};
+    if (str[8] != '-'){//if the promote code is not -1
+        if (str[9] == '0'){//for promote to queen
+            get<4>(move) = 10;
+        }
+        else{
+            get<4>(move) = (int) str[8] -48;
+        }
+    }
+    return move;
+}
+
+void save_position(unsigned long long int position_code, std::map<std::tuple<int, int, int, int, int>, float> map_Q, std::map<std::tuple<int, int, int, int, int>, int> map_count, bool color){
+    
+    std::string AI;
+    if (color){
+        AI = "White";
+    }
+    else{
+        AI = "Black";
+    }
+    std::ofstream fout;
+    fout.open("Chess/" + AI +"_AI/Q/" + std::to_string(position_code) +".txt", std::ofstream::out | std::ofstream::trunc);
+
+    std::map<std::tuple<int, int, int, int, int>, float>::iterator it;
+    //save the Q values
+    for (it = map_Q.begin(); it != map_Q.end(); it++){
+        fout << move_to_str(it->first) << " " << it ->second << "\n";   //
+    }
+    fout.close();
+    
+    fout.open("Chess/" + AI +"_AI/count/" + std::to_string(position_code) +".txt", std::ofstream::out | std::ofstream::trunc);
+    std::map<std::tuple<int, int, int, int, int>, int>::iterator it2;
+    //save the count values
+    for (it2 = map_count.begin(); it2 != map_count.end(); it2++){
+        fout << move_to_str(it2->first) << " " << it2 ->second << "\n";   //
+    }
+    fout.close();
 }
