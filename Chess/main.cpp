@@ -47,8 +47,8 @@ int main(int argc, const char * argv[]) {
         
         //board.learn_from_directory("Chess/PGNs", watch);
         
-        board.learn_from_directory("Chess/Blacks", watch);
-        //board.learn_from_directory("Chess/Whites", watch);
+        //board.learn_from_directory("Chess/Blacks", watch);
+        board.learn_from_directory("Chess/Whites", watch);
         
         board.save_AI();
         

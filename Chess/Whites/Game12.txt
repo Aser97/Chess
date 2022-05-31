@@ -458,7 +458,7 @@ gxh5 1-0
 [WhiteElo "2876"]
 [BlackElo "2590"]
 [ECO "A15"]
-[Opening "English, 1...Nf6 (Anglo-Indian defense)"]
+[Opening "English, (Anglo-Indian defense)"]
 [WhiteFideId "1503014"]
 [BlackFideId "110973"]
 [EventDate "2019.09.25"]
