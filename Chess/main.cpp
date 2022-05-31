@@ -36,47 +36,23 @@ int main(int argc, const char * argv[]) {
         board.initData(true);
         initTable();
         
-        /*
-        int index = 0;
-        for (int i= 1; i<26; i++){
-            std::string games = pgn_to_string("Chess/Blacks/games"+std::to_string(i)+".txt");
-            int start_index = 0;
-            int end_index = find_end_game(games, start_index);
-            
-            while (end_index < games.size() - 2){
-                board.train_from_pgn(games.substr(start_index, end_index - start_index));
-                board.initData(true);
-        
-            
-                //std::cout << " next game \n";
-                start_index = end_index;
-                end_index = find_end_game(games, start_index);
-            }
-            index ++;
-            std::cout << index << " end of file \n";
+        bool watch = false;
+        if (watch){
+            init_board(board.position);
+            //Update screen
+            SDL_RenderPresent( gRenderer );
         }
         
+        board.load_AI();
         
-        for (int i= 1; i<24; i++){
-            std::string games = pgn_to_string("Chess/Whites/games"+std::to_string(i)+".txt");
-            int start_index = 0;
-            int end_index = find_end_game(games, start_index);
-            
-            while (end_index < games.size() - 2){
-                board.train_from_pgn(games.substr(start_index, end_index - start_index));
-                board.initData(true);
-                
-                //std::cout << "next game \n";
-                start_index = end_index;
-                end_index = find_end_game(games, start_index);
-            }
-            index ++;
-            std::cout << index << " end of file \n";
-        }
+        //board.learn_from_directory("Chess/PGNs", watch);
+        
+        board.learn_from_directory("Chess/Blacks", watch);
+        //board.learn_from_directory("Chess/Whites", watch);
         
         board.save_AI();
-        */
-        board.load_AI();
+        
+        std::cout << "hey\n";
         init_board(board.position);
         //Update screen
         SDL_RenderPresent( gRenderer );

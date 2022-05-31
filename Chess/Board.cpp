@@ -29,9 +29,10 @@
  free square = -1
  */
 
-#define white_wins 1;
-#define black_wins -1;
-#define draw 0;
+#define WHITE_WINS 1
+#define BLACK_WINS -1
+#define DRAW 0
+#define MAX_LINE 5000
 
 extern int square_size;
 extern int h_margin;
@@ -406,7 +407,7 @@ int Board::find_line(int code, bool capture, int target_line, int target_column,
             var_column = get<1>(locations[code][i]);
             if (known_column and (var_column == column)){
                 pair = findInVector(position[var_line][var_column].control,{target_line, target_column});
-                if (pair.first){
+                if (pair.first and is_legal(locations[code][i], {target_line, target_column})){//we have to check if the move is legal before
                     return var_line;
                 }
             }
@@ -416,7 +417,7 @@ int Board::find_line(int code, bool capture, int target_line, int target_column,
                 pair = findInVector(position[var_line][var_column].control,{target_line, target_column});
                 /*std::cout << var_line << " " << var_column << " " << pair.first << "\n";
                 display_vector(position[var_line][var_column].control);*/
-                if (pair.first){
+                if (pair.first and is_legal(locations[code][i], {target_line, target_column})){
                     return var_line;
                 }
             }
@@ -446,16 +447,15 @@ int Board::find_column(int code, bool capture, int target_line, int target_colum
             var_column = get<1>(locations[code][i]);
             if (known_line and (var_line == line)){
                 pair = findInVector(position[var_line][var_column].control,{target_line, target_column});
-                if (pair.first){
+                if (pair.first and is_legal(locations[code][i], {target_line, target_column})){//we need to check if the move is legal
                     return var_column;
                 }
             }
             else if (known_line and (var_line != line)){
-                
             }
             else {
                 pair = findInVector(position[var_line][var_column].control,{target_line, target_column});
-                if (pair.first){
+                if (pair.first and is_legal(locations[code][i], {target_line, target_column})){
                     return var_column;
                 }
             }
@@ -470,15 +470,15 @@ std::pair<int, std::tuple<int, int, int, int, int>>  Board::interpret_pgn(std::s
     std::pair<int, std::tuple<int, int, int, int, int>> result;
     //dealing with the final score
     if (move.substr(0, 3) == "1/2"){
-        result.first = draw;
+        result.first = DRAW;
         return result;
     }
     else if (move.substr(0, 3) == "1-0"){
-        result.first = white_wins;
+        result.first = WHITE_WINS;
         return result;
     }
     else if (move.substr(0, 3) == "0-1"){
-        result.first = black_wins;
+        result.first = BLACK_WINS;
         return result;
     }
     
@@ -491,15 +491,13 @@ std::pair<int, std::tuple<int, int, int, int, int>>  Board::interpret_pgn(std::s
         else{
             i = 7;
         }
-        if (move.length() == 3){//short_castle
-            //castle(true);
-            execute_move({i, 4}, {i, 6}, -1);
-            result.second = {i, 4, i, 6, -1};
-        }
-        else {//long_castle
-            //castle(false);
+        if (move[3] == '-'){//long_castle
             execute_move({i, 4}, {i, 2}, -1);
             result.second = {i, 4, i, 2, -1};
+        }
+        else {//short_castle
+            execute_move({i, 4}, {i, 6}, -1);
+            result.second = {i, 4, i, 6, -1};
         }
         result.first = -2;
         return result;
@@ -775,7 +773,8 @@ void Board::execute_move(std::tuple<int, int> start_square, std::tuple<int, int>
     }
 }
 
-void Board::train_from_pgn(std::string game){
+void Board::train_from_pgn(std::string game, bool watch){
+    
     std::pair<int, std::tuple<int, int, int, int, int>> result; //code result of the move
     result.first = -2;
     int index = header_extractor(game); //index for reading the game
@@ -791,6 +790,12 @@ void Board::train_from_pgn(std::string game){
     //starting the training loop
     SDL_Event e;
     bool quit = false;
+    
+    //no need to learn from drawn games
+    if (reward == 0){
+        quit = true;
+    }
+    
     while (!quit){
         while (SDL_PollEvent(&e)){
             if (e.type == SDL_QUIT){
@@ -816,14 +821,19 @@ void Board::train_from_pgn(std::string game){
                 }
             }
         }
+        if (watch){
+            SDL_Delay(2000);
+        }
+        
         position_code = computeHash(position);
         pair = move_extractor(game, index, whose_turn);
         result = interpret_pgn(pair.first);
         index = pair.second;
         
-        //update_board(position);
-        //std::cout << "code :" << position_code << "\n";
-
+        if (watch){
+            update_board(position);
+        }
+        
         if (result.first > -2){
             quit = true;
             break;
@@ -839,19 +849,21 @@ void Board::train_from_pgn(std::string game){
 }
 
 void Board::train_from_record(int reward){
-    std::pair<std::string, int> pair;
-    float gamma = .9;
-    int n_th_move = 1;
-    int number_moves = ceil(static_cast<double>(record_moves.size())/2);
-    int turn_index = 0;//current index in the record_moves vector
-    
-    //starting the training loop
-    while(turn_index < record_moves.size()){
-        count[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]] ++;
-        Q[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]] += (sign[1 - (turn_index % 2)]*reward*pow(gamma, number_moves-n_th_move) - Q[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]]) / count[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]];
+    if (reward != 0){//no need to learn from drawn game
+        std::pair<std::string, int> pair;
+        float gamma = .9;
+        int n_th_move = 1;
+        int number_moves = ceil(static_cast<double>(record_moves.size())/2);
+        int turn_index = 0;//current index in the record_moves vector
         
-        n_th_move += (turn_index %2);
-        turn_index ++;
+        //starting the training loop
+        while(turn_index < record_moves.size()){
+            count[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]] ++;
+            Q[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]] += (sign[1 - (turn_index % 2)]*reward*pow(gamma, number_moves-n_th_move) - Q[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]]) / count[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]];
+            
+            n_th_move += (turn_index %2);
+            turn_index ++;
+        }
     }
 }
 
@@ -1613,11 +1625,11 @@ std::pair<bool, int> Board::game_over(){
         if ( checks.size()> 0){
             if (whose_turn){//black won
                 winner = "Black";
-                result.second = black_wins;
+                result.second = BLACK_WINS;
             }
             else {
                 winner = "White";
-                result.second = white_wins;
+                result.second = WHITE_WINS;
             }
             
             messages[4] = "Mate! " + winner + " wins";
@@ -1625,7 +1637,7 @@ std::pair<bool, int> Board::game_over(){
             load_text(messages[4], 4);
         }
         else{
-            result.second = draw;
+            result.second = DRAW;
             
             messages[4] = "Stalemate! Draw ";
             std::cout << messages[4] << "\n";
@@ -1640,7 +1652,7 @@ std::pair<bool, int> Board::game_over(){
     auto it = std::find(record_appreciations.end() - 50, record_appreciations.end(), true);
     if ((it == record_appreciations.end()) and (record_appreciations.size() > 50)){//rule of the 50 moves satisfied ?
         result.first = true;
-        result.second = draw;
+        result.second = DRAW;
         
         messages[4] = "Draw! 50 moves' rule";
         std::cout << messages[4] << "\n";
@@ -1652,7 +1664,7 @@ std::pair<bool, int> Board::game_over(){
     //rule of repetition
     if (std::count(record_positions.begin(), record_positions.end(), record_positions[record_positions.size()-1]) > 2){
         result.first = true;
-        result.second = draw;
+        result.second = DRAW;
         messages[4] = "Draw per repetition";
         std::cout << messages[4] << "\n";
         load_text(messages[4], 4);
@@ -1729,17 +1741,117 @@ void Board::handle_button(int button){
 
 void Board::save_AI(){
     std::map<unsigned long long int, std::map<std::tuple<int, int, int, int, int>, float>>::iterator it;
-    //for white
+    std::map<std::tuple<int, int, int, int, int>, float>::iterator it2;
+    std::map<std::tuple<int, int, int, int, int>, int>::iterator it3;
+    
+    int file_index;
+    int line_index;
+    std::ofstream fout;
+    
+    //for white Q values
+    file_index = 0;
+    line_index = 0;
+    fout.open("Chess/WHITE_AI/Q/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+    
     for (it = Q[true].begin(); it != Q[true].end(); it++){
         //save the position data
-        save_position(it->first, Q[true][it->first], count[true][it->first], true);
+        fout << it->first << "\n";//first line is the position code
+        line_index ++;
+        
+        for (it2 = Q[true][it->first].begin(); it2 != Q[true][it->first].end(); it2++){
+            //std::cout << "hey\n";
+            fout << move_to_str(it2->first) << " " << it2 ->second << "\n";
+            line_index ++;
+        }
+        
+        if (line_index > MAX_LINE){//if the file is full
+            fout.close();
+            file_index ++;
+            
+            //start again with a new file
+            fout.open("Chess/WHITE_AI/Q/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+            line_index = 0;
+        }
     }
+    fout.close();
     
-    //for black
+    //for white count values
+    file_index = 0;
+    line_index = 0;
+    fout.open("Chess/WHITE_AI/COUNT/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+    
+    for (it = Q[true].begin(); it != Q[true].end(); it++){
+        //save the position data
+        fout << it->first << "\n";//first line is the position code
+        line_index ++;
+        
+        for (it3 = count[true][it->first].begin(); it3 != count[true][it->first].end(); it3++){
+            fout << move_to_str(it3->first) << " " << it3 ->second << "\n";
+            line_index ++;
+        }
+        
+        if (line_index > MAX_LINE){//if the file is full
+            fout.close();
+            file_index ++;
+            
+            //start again with a new file
+            fout.open("Chess/WHITE_AI/COUNT/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+            line_index = 0;
+        }
+    }
+    fout.close();
+    
+    
+    //for black Q values
+    file_index = 0;
+    line_index = 0;
+    fout.open("Chess/BLACK_AI/Q/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+    
     for (it = Q[false].begin(); it != Q[false].end(); it++){
         //save the position data
-        save_position(it->first, Q[false][it->first], count[false][it->first], false);
+        fout << it->first << "\n";//first line is the position code
+        line_index ++;
+        
+        for (it2 = Q[false][it->first].begin(); it2 != Q[false][it->first].end(); it2++){
+            fout << move_to_str(it2->first) << " " << it2 ->second << "\n";
+            line_index ++;
+        }
+        
+        if (line_index > MAX_LINE){//if the file is full
+            fout.close();
+            file_index ++;
+            
+            //start again with a new file
+            fout.open("Chess/BLACK_AI/Q/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+            line_index = 0;
+        }
     }
+    fout.close();
+    
+    //for black count values
+    line_index = 0;
+    fout.open("Chess/BLACK_AI/COUNT/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+    
+    for (it = Q[false].begin(); it != Q[false].end(); it++){
+        //save the position data
+        fout << it->first << "\n";//first line is the position code
+        line_index ++;
+        
+        for (it3 = count[false][it->first].begin(); it3 != count[false][it->first].end(); it3++){
+            fout << move_to_str(it3->first) << " " << it3 ->second << "\n";
+            line_index ++;
+        }
+        
+        if (line_index > MAX_LINE){//if the file is full
+            fout.close();
+            file_index ++;
+            
+            //start again with a new file
+            fout.open("Chess/BLACK_AI/COUNT/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+            line_index = 0;
+        }
+    }
+    fout.close();
 }
 
 //load AI from archive
@@ -1750,20 +1862,22 @@ void Board::load_AI(){
     unsigned long long int position_code;
     
     //loading White_AI Q values
-    for (const auto& entry : std::filesystem::directory_iterator("Chess/White_AI/Q")) {
+    for (const auto& entry : std::filesystem::directory_iterator("Chess/WHITE_AI/Q")) {
         const auto filenameStr = entry.path().filename().string();
         if (entry.is_regular_file()) {
-            position_code = str_to_i(filenameStr.substr(0, filenameStr.size()-4));
-            fin.open("Chess/White_AI/Q/" + filenameStr);
-            
             //execute a loop until EOF (End of File)
+            fin.open("Chess/WHITE_AI/Q/" + filenameStr);
             while(fin){
                 // Read a Line from File
                 getline(fin, line);
-                //register the line in board if not EOF
-                if (not line.empty()){
+                if (line.empty()){
+                }
+                else if (line[1] == ' '){//the line contains a move
                     move = str_to_move(line.substr(0, 10));
                     Q[true][position_code][move] = std::stof(line.substr(10));
+                }
+                else {//the line contains a position code
+                    position_code = str_to_i(line);
                 }
             }
             fin.close();
@@ -1771,20 +1885,22 @@ void Board::load_AI(){
     }
     
     //loading White_AI count values
-    for (const auto& entry : std::filesystem::directory_iterator("Chess/White_AI/count")) {
+    for (const auto& entry : std::filesystem::directory_iterator("Chess/WHITE_AI/COUNT")) {
         const auto filenameStr = entry.path().filename().string();
         if (entry.is_regular_file()) {
-            position_code = str_to_i(filenameStr.substr(0, filenameStr.size()-4));
-            fin.open("Chess/White_AI/count/" + filenameStr);
-            
             //execute a loop until EOF (End of File)
+            fin.open("Chess/WHITE_AI/COUNT/" + filenameStr);
             while(fin){
                 // Read a Line from File
                 getline(fin, line);
-                //register the line in board if not EOF
-                if (not line.empty()){
+                if (line.empty()){
+                }
+                else if (line[1] == ' '){//the line contains a move
                     move = str_to_move(line.substr(0, 10));
                     count[true][position_code][move] = std::stof(line.substr(10));
+                }
+                else {//the line contains a position code
+                    position_code = str_to_i(line);
                 }
             }
             fin.close();
@@ -1792,43 +1908,73 @@ void Board::load_AI(){
     }
     
     //loading Black_AI Q values
-    for (const auto& entry : std::filesystem::directory_iterator("Chess/Black_AI/Q")) {
+    for (const auto& entry : std::filesystem::directory_iterator("Chess/BLACK_AI/Q")) {
         const auto filenameStr = entry.path().filename().string();
         if (entry.is_regular_file()) {
-            position_code = str_to_i(filenameStr.substr(0, filenameStr.size()-4));
-            fin.open("Chess/Black_AI/Q/" + filenameStr);
-            
             //execute a loop until EOF (End of File)
+            fin.open("Chess/BLACK_AI/Q/" + filenameStr);
             while(fin){
                 // Read a Line from File
                 getline(fin, line);
-                //register the line in board if not EOF
-                if (not line.empty()){
+                if (line.empty()){
+                }
+                else if (line[1] == ' '){//the line contains a move
                     move = str_to_move(line.substr(0, 10));
                     Q[false][position_code][move] = std::stof(line.substr(10));
+                }
+                else {//the line contains a position code
+                    position_code = str_to_i(line);
                 }
             }
             fin.close();
         }
     }
+    
     //loading Black_AI count values
-    for (const auto& entry : std::filesystem::directory_iterator("Chess/Black_AI/count")) {
+    for (const auto& entry : std::filesystem::directory_iterator("Chess/BLACK_AI/COUNT")) {
         const auto filenameStr = entry.path().filename().string();
         if (entry.is_regular_file()) {
-            position_code = str_to_i(filenameStr.substr(0, filenameStr.size()-4));
-            fin.open("Chess/Black_AI/count/" + filenameStr);
-            
             //execute a loop until EOF (End of File)
+            fin.open("Chess/BLACK_AI/COUNT/" + filenameStr);
             while(fin){
                 // Read a Line from File
                 getline(fin, line);
-                //register the line in board if not EOF
-                if (not line.empty()){
+                if (line.empty()){
+                }
+                else if (line[1] == ' '){//the line contains a move
                     move = str_to_move(line.substr(0, 10));
                     count[false][position_code][move] = std::stof(line.substr(10));
                 }
+                else {//the line contains a position code
+                    position_code = str_to_i(line);
+                }
             }
             fin.close();
+        }
+    }
+}
+
+void Board::learn_from_directory(std::string address, bool watch){
+    std::string games;
+    int start_index, end_index;
+    for (const auto& entry : std::filesystem::directory_iterator(address)) {
+        const auto filenameStr = entry.path().filename().string();
+        if (entry.is_regular_file() and filenameStr != ".DS_Store") {
+            games = pgn_to_string(address + "/" + filenameStr);
+            std::cout << filenameStr << "\n";
+            start_index = 0;
+            end_index = find_end_game(games, start_index);
+            //std::cout << games.size() << "\n";
+            while (end_index < games.size() - 2){
+                //std::cout << end_index << "\n";
+                train_from_pgn(games.substr(start_index, end_index - start_index), watch);
+                initData(true);
+        
+                //std::cout << " next game \n";
+                start_index = end_index;
+                end_index = find_end_game(games, start_index);
+            }
+            //std::cout << " end of file \n";
         }
     }
 }

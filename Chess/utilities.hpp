@@ -59,5 +59,4 @@ std::string move_to_str(std::tuple<int, int, int, int, int> move);
 
 std::tuple<int, int, int, int, int> str_to_move(std::string str);
 
-void save_position(unsigned long long int position_code, std::map<std::tuple<int, int, int, int, int>, float> map_Q, std::map<std::tuple<int, int, int, int, int>, int> map_count, bool color);
 #endif /* utilities_hpp */

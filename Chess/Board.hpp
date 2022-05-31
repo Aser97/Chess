@@ -59,7 +59,7 @@ class Board{
     
     void execute_move(std::tuple<int, int> start_square, std::tuple<int, int> target_square, int promote_code);
     
-    void train_from_pgn(std::string game);
+    void train_from_pgn(std::string game, bool watch);
     
     void train_from_record(int reward);
     
@@ -96,6 +96,8 @@ class Board{
     void save_AI();
     
     void load_AI();
+    
+    void learn_from_directory(std::string address, bool watch);
 };
 
 #endif /* Board_hpp */

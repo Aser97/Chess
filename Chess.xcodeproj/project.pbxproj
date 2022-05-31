@@ -29,6 +29,7 @@
 		DA5ACE7E284243DE00560F9A /* text_rendering.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = text_rendering.cpp; sourceTree = "<group>"; };
 		DA5ACE7F284243DE00560F9A /* text_rendering.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = text_rendering.hpp; sourceTree = "<group>"; };
 		DA5ACE8128428EBD00560F9A /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
+		DA5ACE842844691A00560F9A /* PGNs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PGNs; sourceTree = "<group>"; };
 		DAE84B802836B45B0024F8C5 /* zobra_table.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = zobra_table.txt; sourceTree = "<group>"; };
 		DAE84B95283AC7AA0024F8C5 /* zobra_hashing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = zobra_hashing.cpp; sourceTree = "<group>"; };
 		DAE84B96283AC7AA0024F8C5 /* zobra_hashing.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = zobra_hashing.hpp; sourceTree = "<group>"; };
@@ -75,6 +76,7 @@
 		DA36B8E62836712A0028142D /* Chess */ = {
 			isa = PBXGroup;
 			children = (
+				DA5ACE842844691A00560F9A /* PGNs */,
 				DA5ACE8128428EBD00560F9A /* Fonts */,
 				DA5ACE7B283F415500560F9A /* Whites */,
 				DA5ACE7A283F414800560F9A /* Blacks */,

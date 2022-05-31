@@ -11,6 +11,8 @@
 #include <vector>
 #include <fstream>
 #include <map>
+#include <filesystem>
+
 /*correspondance table:
  For whites:
  pawn = 0, knight = 1, bishop = 2, rook = 3, queen = 4, king = 5
@@ -100,10 +102,12 @@ std::string pgn_to_string(std::string address){
         // Read a Line from File
         getline(fin, line);
         
-        //append it to the result
-        result.append(line);
+        //append it to the result if not empty line
+        if (not line.empty()){
+            result.append(line);
         
-        result.append(" ");
+            result.append(" ");
+        }
     }
     return result;
 }
@@ -113,39 +117,51 @@ int header_extractor(std::string str){
     int i = 0;
     bool header_end = false;
     while (not header_end){
-        if ((str[i] == '1') and (str[i+1] == '.') and (str[i+2] == ' ')){
+        if (str.substr(i, 3) == " 1."){
             header_end = true;
         }
         else{
             i ++; 
         }
     }
-    return i;
+    return i+1;
 }
 
 //extracts the move and returns it and the index of the next move
 std::pair<std::string, int> move_extractor(std::string str, int index, bool turn){
     std::pair<std::string, int> pair;
     //dealing with final score
-    if (((str[index] == '1') or (str[index] == '0')) and (str[index + 1] == '-')){
+    if ((str.substr(index, 2) == "1-") or (str.substr(index, 2) == "0-")){
         pair.second = index + 3;
         pair.first = str.substr(index, 3);
         //std::cout << pair.first << "\n";
         return pair;
     }
-    else if (str[index + 1] == '/'){
+    if ((str.substr(index+1, 2) == "1-") or (str.substr(index+1, 2) == "0-")){
+        pair.second = index + 4;
+        pair.first = str.substr(index+1, 3);
+        //std::cout << pair.first << "\n";
+        return pair;
+    }
+    if (str[index + 1] == '/'){
         pair.second = index + 7;
         pair.first = str.substr(index, 7);
         //std::cout << pair.first << "\n";
         return pair;
     }
-    
+    if (str[index + 2] == '/'){
+        pair.second = index + 8;
+        pair.first = str.substr(index+1, 7);
+        //std::cout << pair.first << "\n";
+        return pair;
+    }
     int i = 0;
     if (turn){
         while (str[index + i] != '.'){
             i ++;
         }
         i++;
+        
         while (str[index + i] == ' '){
             i ++;
         }
@@ -270,32 +286,4 @@ std::tuple<int, int, int, int, int> str_to_move(std::string str){
         }
     }
     return move;
-}
-
-void save_position(unsigned long long int position_code, std::map<std::tuple<int, int, int, int, int>, float> map_Q, std::map<std::tuple<int, int, int, int, int>, int> map_count, bool color){
-    
-    std::string AI;
-    if (color){
-        AI = "White";
-    }
-    else{
-        AI = "Black";
-    }
-    std::ofstream fout;
-    fout.open("Chess/" + AI +"_AI/Q/" + std::to_string(position_code) +".txt", std::ofstream::out | std::ofstream::trunc);
-
-    std::map<std::tuple<int, int, int, int, int>, float>::iterator it;
-    //save the Q values
-    for (it = map_Q.begin(); it != map_Q.end(); it++){
-        fout << move_to_str(it->first) << " " << it ->second << "\n";   //
-    }
-    fout.close();
-    
-    fout.open("Chess/" + AI +"_AI/count/" + std::to_string(position_code) +".txt", std::ofstream::out | std::ofstream::trunc);
-    std::map<std::tuple<int, int, int, int, int>, int>::iterator it2;
-    //save the count values
-    for (it2 = map_count.begin(); it2 != map_count.end(); it2++){
-        fout << move_to_str(it2->first) << " " << it2 ->second << "\n";   //
-    }
-    fout.close();
 }
