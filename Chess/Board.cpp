@@ -29,11 +29,6 @@
  free square = -1
  */
 
-#define WHITE_WINS 1
-#define BLACK_WINS -1
-#define DRAW 0
-#define MAX_LINE 5000
-
 extern int square_size;
 extern int h_margin;
 extern int w_margin;
@@ -468,6 +463,8 @@ int Board::find_column(int code, bool capture, int target_line, int target_colum
 //executes a move taken in pgn notation and returns the detals of the move: pair{move_output, action} where action is {start_square, target_square}
 std::pair<int, std::tuple<int, int, int, int, int>>  Board::interpret_pgn(std::string move){
     std::pair<int, std::tuple<int, int, int, int, int>> result;
+    int promote_code = -1;//code of the promoted piece
+    
     //dealing with the final score
     if (move.substr(0, 3) == "1/2"){
         result.first = DRAW;
@@ -492,12 +489,12 @@ std::pair<int, std::tuple<int, int, int, int, int>>  Board::interpret_pgn(std::s
             i = 7;
         }
         if (move[3] == '-'){//long_castle
-            execute_move({i, 4}, {i, 2}, -1);
-            result.second = {i, 4, i, 2, -1};
+            execute_move({i, 4}, {i, 2}, promote_code);
+            result.second = {i, 4, i, 2, promote_code};
         }
         else {//short_castle
-            execute_move({i, 4}, {i, 6}, -1);
-            result.second = {i, 4, i, 6, -1};
+            execute_move({i, 4}, {i, 6}, promote_code);
+            result.second = {i, 4, i, 6, promote_code};
         }
         result.first = -2;
         return result;
@@ -505,7 +502,6 @@ std::pair<int, std::tuple<int, int, int, int, int>>  Board::interpret_pgn(std::s
     
     int depth; //depth of the exploration of the move
     int code = -1; //code of the piece involved
-    int promote_code = -1;//code of the promoted piece
     bool known_column = false; //do we know the column of the piece involved
     bool known_line = false;//do we know the line of the piece involved
     bool capture = false;//is there capture
@@ -732,7 +728,7 @@ void Board::execute_move(std::tuple<int, int> start_square, std::tuple<int, int>
         if (promote_code > -1){//there is a pawn promotion
             position[final_line][final_column] = create_piece(promote_code);
             position[final_line][final_column].has_moved = true;
-            init_board(position);//will create the new piece
+            init_board(position);//will display the new piece
             
             //updating the locations of the promoted pawn
             pair = findInVector(locations[position[start_line][start_column].code], {start_line, start_column});
@@ -959,12 +955,131 @@ void Board::play_vs_AI(bool player, int proba){
             }
         }
         if (not quit and (whose_turn == not player)){//if it is Ai's turn
-            proposal = propose_move(proba, not player);
+            proposal = propose_move(proba, whose_turn);
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
             update_board(position);
         
+            pair = game_over();
+            if (pair.first){
+                quit = true;
+                break;
+            }
+        }
+    }
+}
+
+void Board::play_vs_Stockfish(bool player, int Elo){
+    std::tuple<int, int> square;
+    std::tuple<int, int> start_square;
+    std::tuple<int, int> final_square;
+    std::tuple<int, int, int, int, int> proposal; //AI move
+    std::vector<std::tuple<int, int>> legal_moves;
+    std::pair<bool, int> pair;
+    int line;
+    int col;
+    std::string moves_record;
+    std::string str0 = "setoption name UCI_Elo value " + std::to_string(Elo);
+    std::string str1;
+    std::string str2 = "go movetime 100";
+    std::string nextMove;
+    int eval;
+    
+    bool know_first_square = false;
+    int x, y;
+    int promote_code = -1;
+    
+    SDL_Event e;
+    bool quit = false;
+    while (!quit){
+        while (SDL_PollEvent(&e)){
+            if (e.type == SDL_QUIT){
+                quit = true;
+            }
+            if (e.type == SDL_KEYDOWN){
+                switch (e.key.keysym.sym){
+                    case SDLK_LEFT:
+                        step_back();
+                        break;
+                        
+                }
+            }
+            //If mouse event happened
+            if(e.type == SDL_MOUSEBUTTONDOWN){
+                //Get mouse position
+                SDL_GetMouseState( &x, &y );
+                int button = locate_button(x, y);
+                if (button < 4){
+                    handle_button(button);
+                    quit= true;
+                    break;
+                }
+                
+                else if ((x>w_margin) and (x < w_margin+8*square_size) and (y > h_margin) and (y < h_margin + 8*square_size)){
+                    if (know_first_square){
+                        square = locate_square(x, y);
+                        line = get<0>(start_square);
+                        col = get<1>(start_square);
+                        pair = findInVector(legal_moves, square);
+                        know_first_square = false;
+                        
+                        if (pair.first){
+                            final_square = square;
+                            if (((get<0>(final_square) == 0) or (get<0>(final_square) == 7)) and ((position[line][col].code == 0) or (position[line][col].code == 6))){//dealing with promotion
+                                //std::cout << "Which piece do you want to promote to ? \n";
+                                //std::cin >> promote_code;
+                                promote_code = 4 + (1-player)*6;
+                            }
+                            messages[4] = " ";
+                            load_text(messages[4], 4);
+                            
+                            execute_move(start_square, final_square, promote_code);
+                            moves_record += move_to_str({get<0>(start_square), get<1>(start_square), get<0>(final_square), get<1>(final_square), promote_code}) + " ";
+                            update_board(position);
+                            promote_code = -1;//reset the variable
+                            
+                            SDL_Delay(100);
+                            pair = game_over();
+                            if (pair.first){
+                                quit = true;
+                                break;
+                            }
+                        }
+                        else{
+                            std::cout << "Move (following) is not permitted ";
+                            display_move({line, col, get<0>(square), get<1>(square), -1});
+                            display_vector(legal_moves);
+                            messages[4] = "Illegal move !";
+                            load_text(messages[4], 4);
+                            update_board(position);
+                        }
+                    }
+                    else {
+                        square = locate_square(x, y);
+                        if (not are_nemesis(position[get<0>(square)][get<1>(square)].code, 1 + (1-whose_turn)*6)){//is the piece the same color than player?
+                            start_square = square;
+                            know_first_square = true;
+                            legal_moves = compute_legal_moves(square);
+                            highlight_moves(legal_moves, position);
+                            
+                        }
+                    }
+                }
+            }
+        }
+        if (not quit and (whose_turn == not player)){//if it is Ai's turn
+            str1 = "position startpos moves " + moves_record;
+            eval = getNextMoveStockfish(str0, str1, str2, nextMove, not player);
+            
+            proposal = str_to_move(nextMove);
+            start_square = {get<0>(proposal), get<1>(proposal)};
+            final_square = {get<2>(proposal), get<3>(proposal)};
+            execute_move(start_square, final_square, get<4>(proposal));
+            moves_record += nextMove + " ";
+            
+            update_board(position);
+            
             pair = game_over();
             if (pair.first){
                 quit = true;
@@ -988,7 +1103,7 @@ void Board::AI_vs_AI_SARSA(int proba){
     
     //first moves
     //white move
-    proposal = propose_move(proba, true);
+    proposal = propose_move(proba, whose_turn);
     start_square = {get<0>(proposal), get<1>(proposal)};
     final_square = {get<2>(proposal), get<3>(proposal)};
     execute_move(start_square, final_square, get<4>(proposal));
@@ -1003,7 +1118,7 @@ void Board::AI_vs_AI_SARSA(int proba){
     //SDL_Delay(100);
     
     //black move
-    proposal = propose_move(proba, false);
+    proposal = propose_move(proba, whose_turn);
     start_square = {get<0>(proposal), get<1>(proposal)};
     final_square = {get<2>(proposal), get<3>(proposal)};
     execute_move(start_square, final_square, get<4>(proposal));
@@ -1044,7 +1159,7 @@ void Board::AI_vs_AI_SARSA(int proba){
         }
         //white move
         if (not quit and whose_turn){
-            proposal = propose_move(proba, true);
+            proposal = propose_move(proba, whose_turn);
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
@@ -1071,7 +1186,7 @@ void Board::AI_vs_AI_SARSA(int proba){
         
         //black move
         if (not quit and not whose_turn){
-            proposal = propose_move(proba, false);
+            proposal = propose_move(proba, whose_turn);
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
@@ -1098,13 +1213,12 @@ void Board::AI_vs_AI_SARSA(int proba){
     }
 }
 
-void Board::AI_vs_AI_MC(int proba){
+void Board::AI_vs_AI_MC(int proba, int horizon){
     std::tuple<int, int> start_square;
     std::tuple<int, int> final_square;
     std::tuple<int, int, int, int, int> proposal; //AI move
     std::pair<bool, int> pair;
-    int index = 0;
-    
+    int nth_move = 0;
     SDL_Event e;
     bool quit = false;
     while (!quit){
@@ -1134,15 +1248,14 @@ void Board::AI_vs_AI_MC(int proba){
         }
         //white move
         if (not quit and whose_turn){
-            proposal = propose_move(proba, true);
+            proposal = propose_move(proba, whose_turn);
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
             //update_board(position);
         
             pair = game_over();
-            index = record_positions.size()-1;
-    
+            
             if (pair.first){
                 quit = true;
                 break;
@@ -1152,19 +1265,120 @@ void Board::AI_vs_AI_MC(int proba){
         
         //black move
         if (not quit and not whose_turn){
-            proposal = propose_move(proba, false);
+            proposal = propose_move(proba, whose_turn);
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
             //update_board(position);
         
             pair = game_over();
-            index = record_positions.size()-1;
             
             if (pair.first){
                 quit = true;
             }
             //SDL_Delay(500);
+        }
+        nth_move ++;
+        if (nth_move == horizon){
+            pair.second = eval_pos(locations);
+            quit = true;
+        }
+    }
+    
+    //learning from the game
+    train_from_record(pair.second);
+}
+
+void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon){
+    std::tuple<int, int> start_square;
+    std::tuple<int, int> final_square;
+    std::tuple<int, int, int, int, int> proposal; //AI move
+    std::pair<bool, int> pair;
+    std::string str0 = "setoption name UCI_Elo value " + std::to_string(Elo);
+    std::string str1;
+    std::string str2 = "go movetime 100";
+    std::string nextMove;
+    std::string moves_record;
+    int eval;
+    
+    float nth_move = 0;
+    SDL_Event e;
+    bool quit = false;
+    while (!quit){
+        while (SDL_PollEvent(&e)){
+            if (e.type == SDL_QUIT){
+                quit = true;
+            }
+            if (e.type == SDL_KEYDOWN){
+                switch (e.key.keysym.sym){
+                    case SDLK_LEFT:
+                        step_back();
+                        break;
+                }
+            }
+            //If mouse event happened
+            if(e.type == SDL_MOUSEBUTTONDOWN){
+                //Get mouse position
+                int x, y;
+                SDL_GetMouseState( &x, &y );
+                int button = locate_button(x, y);
+                if (button < 4){
+                    handle_button(button);
+                    quit= true;
+                    break;
+                }
+            }
+        }
+        //AI turn
+        if (not quit and whose_turn == color){
+            str1 = "position startpos moves " + moves_record;
+            eval = getNextMoveStockfish(str0, str1, str2, nextMove, color);
+            
+            proposal = propose_move(proba, whose_turn);
+            start_square = {get<0>(proposal), get<1>(proposal)};
+            final_square = {get<2>(proposal), get<3>(proposal)};
+            execute_move(start_square, final_square, get<4>(proposal));
+            moves_record += move_to_str({get<0>(proposal), get<1>(proposal), get<2>(proposal), get<3>(proposal), get<4>(proposal)}) + " ";
+            //update_board(position);
+        
+            pair = game_over();
+            
+            if (pair.first){
+                quit = true;
+                break;
+            }
+            nth_move += .5;
+            //SDL_Delay(500);
+        }
+        if (nth_move == horizon){
+            pair.second = eval_pos(locations);
+            quit = true;
+        }
+        //Stockfish turn
+        if (not quit and not (whose_turn == color)){
+            str1 = "position startpos moves " + moves_record;
+            eval = getNextMoveStockfish(str0, str1, str2, nextMove, not color);
+            
+            proposal = str_to_move(nextMove);
+            start_square = {get<0>(proposal), get<1>(proposal)};
+            final_square = {get<2>(proposal), get<3>(proposal)};
+            execute_move(start_square, final_square, get<4>(proposal));
+            moves_record += nextMove + " ";
+            
+            //update_board(position);
+        
+            pair = game_over();
+            
+            if (pair.first){
+                quit = true;
+            }
+            nth_move += .5;
+            //SDL_Delay(500);
+        }
+        
+        if (nth_move == horizon){
+            pair.second = eval_pos(locations);
+            quit = true;
         }
     }
     
@@ -1181,12 +1395,15 @@ std::tuple<int, int, int, int, int> Board::propose_move(int proba, bool color){
         std::uniform_int_distribution<> distrib(0, 100);
         
         if (distrib(gen) <= proba){//propose the best move so far}
+            std::cout << "hey";
             auto pr = std::max_element(Q[color][position_code].begin(), Q[color][position_code].end(), [](std::pair<std::tuple<int, int, int, int, int>, float> const &x, std::pair<std::tuple<int, int, int, int, int>, float> const &y){return x.second < y.second;});
+           
+            if (Q[color][position_code][pr->first] > -0.3){
+                std::cout << pr->second << " " << count[color][position_code][pr->first] << ": ";
+                display_move(pr->first);
             
-            std::cout << pr->second << " " << count[color][position_code][pr->first] << ": ";
-            display_move(pr->first);
-            
-            return pr->first;
+                return pr->first;
+            }
         }
     }
     
@@ -1212,12 +1429,13 @@ std::tuple<int, int, int, int, int> Board::propose_move(int proba, bool color){
     }
 
     //std::cout << "---------------\n";
-    int n = proposals.size();
+    
     
     //chosing the move
-    std::uniform_int_distribution<> distrib(0, n-1);
-    
-    return proposals[distrib(gen)];
+    std::uniform_int_distribution<> distrib(0, proposals.size()-1);
+    int n = distrib(gen);
+    //std::cout << "n = " << n << "\n";
+    return proposals[n];
 }
 
 
@@ -1633,14 +1851,14 @@ std::pair<bool, int> Board::game_over(){
             }
             
             messages[4] = "Mate! " + winner + " wins";
-            std::cout << messages[4] << "\n";
+            //std::cout << messages[4] << "\n";
             load_text(messages[4], 4);
         }
         else{
             result.second = DRAW;
             
             messages[4] = "Stalemate! Draw ";
-            std::cout << messages[4] << "\n";
+            //std::cout << messages[4] << "\n";
             load_text(messages[4], 4);
         
         }
@@ -1655,7 +1873,7 @@ std::pair<bool, int> Board::game_over(){
         result.second = DRAW;
         
         messages[4] = "Draw! 50 moves' rule";
-        std::cout << messages[4] << "\n";
+        //std::cout << messages[4] << "\n";
         load_text(messages[4], 4);
         update_board(position);
         return result;
@@ -1666,7 +1884,7 @@ std::pair<bool, int> Board::game_over(){
         result.first = true;
         result.second = DRAW;
         messages[4] = "Draw per repetition";
-        std::cout << messages[4] << "\n";
+        //std::cout << messages[4] << "\n";
         load_text(messages[4], 4);
         update_board(position);
         
@@ -1712,6 +1930,8 @@ void Board::handle_button(int button){
         play_vs_AI(false, 100);
     }
     else if (button == 2){
+        play_vs_Stockfish(true, 1350);
+        /*
         for (int i=0; i<100; i++){
             messages[4] = "game " + std::to_string(i);
             load_text(messages[4], 4);
@@ -1722,20 +1942,10 @@ void Board::handle_button(int button){
             initData(true);
             
             std::cout << "game" << i << "\n";
-        }
+        }*/
     }
     else if (button == 3){
-        for (int i=0; i<100; i++){
-            messages[4] = "game " + std::to_string(i);
-            load_text(messages[4], 4);
-            SDL_Rect fillRect = set_rect_for_text(4);
-            SDL_RenderCopy( gRenderer, tTexture[4], nullptr, &fillRect);
-            SDL_RenderPresent(gRenderer);
-            AI_vs_AI_SARSA(85);
-            initData(true);
-            
-            std::cout << "game" << i << "\n";
-        }
+        play_vs_Stockfish(false, 1350);
     }
 }
 
@@ -1829,6 +2039,7 @@ void Board::save_AI(){
     fout.close();
     
     //for black count values
+    file_index = 0;
     line_index = 0;
     fout.open("Chess/BLACK_AI/COUNT/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
     
@@ -1873,8 +2084,8 @@ void Board::load_AI(){
                 if (line.empty()){
                 }
                 else if (line[1] == ' '){//the line contains a move
-                    move = str_to_move(line.substr(0, 10));
-                    Q[true][position_code][move] = std::stof(line.substr(10));
+                    move = str_to_move(line.substr(0, 5));
+                    Q[true][position_code][move] = std::stof(line.substr(5));
                 }
                 else {//the line contains a position code
                     position_code = str_to_i(line);
@@ -1896,8 +2107,8 @@ void Board::load_AI(){
                 if (line.empty()){
                 }
                 else if (line[1] == ' '){//the line contains a move
-                    move = str_to_move(line.substr(0, 10));
-                    count[true][position_code][move] = std::stof(line.substr(10));
+                    move = str_to_move(line.substr(0, 5));
+                    count[true][position_code][move] = std::stof(line.substr(5));
                 }
                 else {//the line contains a position code
                     position_code = str_to_i(line);
@@ -1919,8 +2130,8 @@ void Board::load_AI(){
                 if (line.empty()){
                 }
                 else if (line[1] == ' '){//the line contains a move
-                    move = str_to_move(line.substr(0, 10));
-                    Q[false][position_code][move] = std::stof(line.substr(10));
+                    move = str_to_move(line.substr(0, 5));
+                    Q[false][position_code][move] = std::stof(line.substr(5));
                 }
                 else {//the line contains a position code
                     position_code = str_to_i(line);
@@ -1942,8 +2153,8 @@ void Board::load_AI(){
                 if (line.empty()){
                 }
                 else if (line[1] == ' '){//the line contains a move
-                    move = str_to_move(line.substr(0, 10));
-                    count[false][position_code][move] = std::stof(line.substr(10));
+                    move = str_to_move(line.substr(0, 5));
+                    count[false][position_code][move] = std::stof(line.substr(5));
                 }
                 else {//the line contains a position code
                     position_code = str_to_i(line);
@@ -1959,13 +2170,13 @@ void Board::learn_from_directory(std::string address, bool watch){
     int start_index, end_index;
     for (const auto& entry : std::filesystem::directory_iterator(address)) {
         const auto filenameStr = entry.path().filename().string();
-        if (entry.is_regular_file() and filenameStr != ".DS_Store") {
+        if (entry.is_regular_file() and filenameStr != ".DS_Store" and filenameStr == "Baden2015.txt") {
             games = pgn_to_string(address + "/" + filenameStr);
             std::cout << filenameStr << "\n";
             start_index = 0;
             end_index = find_end_game(games, start_index);
             //std::cout << games.size() << "\n";
-            while (end_index < games.size() - 2){
+            while (end_index < 1143){//games.size() - 2){
                 //std::cout << end_index << "\n";
                 train_from_pgn(games.substr(start_index, end_index - start_index), watch);
                 initData(true);

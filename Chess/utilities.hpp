@@ -10,6 +10,9 @@
 #include <iostream>
 #include <vector>
 #include <map>
+
+
+#define MESS_SIZE 8192
 //this function tests whether two pieces are in same color
 bool are_nemesis(int code1, int code2);
 
@@ -18,6 +21,8 @@ bool from_a_to_h(char c);
 bool from_1_to_8(char c);
 
 int letter_to_int(char c, bool whose_turn);
+
+char int_to_letter(int code);
 
 unsigned long long int str_to_i(std::string s);
 
@@ -59,4 +64,9 @@ std::string move_to_str(std::tuple<int, int, int, int, int> move);
 
 std::tuple<int, int, int, int, int> str_to_move(std::string str);
 
+int getNextMoveStockfish(std::string& str0, std::string& str1, std::string& str2, std::string& nextMove, bool turn);
+
+int readNextMoveFromFile(std::string& nextMove, bool turn);
+
+int eval_pos(std::vector <std::tuple<int, int>> locations[12]);
 #endif /* utilities_hpp */

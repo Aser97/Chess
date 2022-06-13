@@ -12,6 +12,9 @@
 #include <fstream>
 #include <map>
 #include <filesystem>
+#include <unistd.h>
+#include <fcntl.h>
+#include "Board.hpp"
 
 /*correspondance table:
  For whites:
@@ -22,6 +25,75 @@
  
  free square = -1
  */
+int PawnTable[] ={
+     0,  0,  0,  0,  0,  0,  0,  0,
+    50, 50, 50, 50, 50, 50, 50, 50,
+    10, 10, 20, 30, 30, 20, 10, 10,
+     5,  5, 10, 27, 27, 10,  5,  5,
+     0,  0,  0, 25, 25,  0,  0,  0,
+     5, -5,-10,  0,  0,-10, -5,  5,
+     5, 10, 10,-25,-25, 10, 10,  5,
+     0,  0,  0,  0,  0,  0,  0,  0
+};
+
+int KnightTable[] ={
+    -50,-40,-30,-30,-30,-30,-40,-50,
+    -40,-20,  0,  0,  0,  0,-20,-40,
+    -30,  0, 10, 15, 15, 10,  0,-30,
+    -30,  5, 15, 20, 20, 15,  5,-30,
+    -30,  0, 15, 20, 20, 15,  0,-30,
+    -30,  5, 10, 15, 15, 10,  5,-30,
+    -40,-20,  0,  5,  5,  0,-20,-40,
+    -50,-40,-20,-30,-30,-20,-40,-50
+};
+
+int BishopTable[] ={
+    -20,-10,-10,-10,-10,-10,-10,-20,
+    -10,  0,  0,  0,  0,  0,  0,-10,
+    -10,  0,  5, 10, 10,  5,  0,-10,
+    -10,  5,  5, 10, 10,  5,  5,-10,
+    -10,  0, 10, 10, 10, 10,  0,-10,
+    -10, 10, 10, 10, 10, 10, 10,-10,
+    -10,  5,  0,  0,  0,  0,  5,-10,
+    -20,-10,-40,-10,-10,-40,-10,-20
+};
+
+int RookTable[] ={
+    0,  0,  0,  0,  0,  0,  0,  0,
+    5,  10,  10,  10,  10,  10,  10,5,
+    -5,  0,  0,  0,  0,  0,  0,  -5,
+    -5,  0,  0,  0,  0,  0,  0,  -5,
+    -5,  0,  0,  0,  0,  0,  0,  -5,
+    -5,  0,  0,  0,  0,  0,  0,  -5,
+    -5,  0,  0,  0,  0,  0,  0,  -5,
+    0,  0,  0,  5,  5,  0,  0,  0
+};
+
+int QueenTable[] = {
+    -20, -10, -10, -5, -5, -10, -10, -20,
+    -10,  0,  0,  0,  0,  0,  0,  -10,
+    -10,  0,  5,  5,  5,  5,  0,  -10,
+    -5,  0,  5,  5,  5,  5,  0,  -5,
+    0,  0,  5,  5,  5,  5,  0,  -5,
+    -10,  5,  5,  5,  5,  5,  0,  -10,
+    -10,  0,  5,  0,  0,  0,  0,  -10,
+    -20, -10, -10, -5, -5, -10, -10, -20
+};
+
+int KingTable[] ={
+  -30, -40, -40, -50, -50, -40, -40, -30,
+  -30, -40, -40, -50, -50, -40, -40, -30,
+  -30, -40, -40, -50, -50, -40, -40, -30,
+  -30, -40, -40, -50, -50, -40, -40, -30,
+  -20, -30, -30, -40, -40, -30, -30, -20,
+  -10, -20, -20, -20, -20, -20, -20, -10,
+   20,  20,   0,   0,   0,   0,  20,  20,
+   20,  30,  10,   0,   0,  10,  30,  20
+};
+
+int* PieceSquareValue[6] = {PawnTable, KnightTable, BishopTable, RookTable, QueenTable, KingTable};
+
+extern int sign[2];
 
 //this function tests whether two pieces are in same color
 bool are_nemesis(int code1, int code2){
@@ -74,6 +146,25 @@ int letter_to_int(char c, bool whose_turn){//convert a piece letter to its code
     }
     else {
         return code + 6;
+    }
+}
+
+//for promotion (stockfish)
+char int_to_letter(int code){
+    if (code == -1){
+        return ' ';
+    }
+    else if ((code == 1) or (code == 7)){
+        return 'n';
+    }
+    else if ((code == 2) or (code == 8)){
+        return 'b';
+    }
+    else if ((code == 3) or (code == 9)){
+        return 'r';
+    }
+    else {
+        return 'q';
     }
 }
 
@@ -264,26 +355,132 @@ void display_move(std::tuple<int, int, int, int, int> move){
     std::cout << get<0>(move) << ", " << get<1>(move) << " -> " << get<2>(move) << ", " << get<3>(move) << " = " << get<4>(move) <<"\n";
 }
 
-//transforms a move to a 10 chars long string
+//transforms a move to a 5 chars long string
 std::string move_to_str(std::tuple<int, int, int, int, int> move){
-    std::string result = std::to_string(get<0>(move)) + " " + std::to_string(get<1>(move)) + " " + std::to_string(get<2>(move)) + " " + std::to_string(get<3>(move)) + " " + std::to_string(get<4>(move));
+    char result[5];
+    result[1] = get<0>(move) + 49;
+    result[0] = (char) (97 + get<1>(move));
+    result[3] = get<2>(move) + 49;
+    result[2] = (char) (97 + get<3>(move));
+    result[4] = int_to_letter(get<4>(move));
+    result[5] = '\0';
     
-    //making sure the result has the good size
-    if ((get<3>(move)!= -1) and (get<3>(move) != 10)){
-        result.append(" ");
-    }
-    return result;
+    return std::string(result);
 }
 
 std::tuple<int, int, int, int, int> str_to_move(std::string str){
-    std::tuple<int, int, int, int, int> move = {(int) str[0] -48, (int) str[2] -48, (int) str[4] -48, (int) str[6] -48, -1};
-    if (str[8] != '-'){//if the promote code is not -1
-        if (str[9] == '0'){//for promote to queen
-            get<4>(move) = 10;
-        }
-        else{
-            get<4>(move) = (int) str[8] -48;
-        }
+    std::tuple<int, int, int, int, int> move = {(int) str[1] -49, (int) str[0] -97, (int) str[3] -49, (int) str[2] -97, -1};
+    if (str[4] != ' '){//if the promote code is not -1
+        get<4>(move) = letter_to_int((char) (str[4]-32), str[3] == '8');
     }
     return move;
+}
+
+int getNextMoveStockfish(std::string& str0, std::string& str1, std::string& str2, std::string& nextMove, bool turn){
+    int pid = fork();
+    if (pid == 0){//child process
+        int file  = open("Chess/redirected_output.txt",
+                          O_WRONLY| O_NONBLOCK| O_TRUNC);
+        dup2(file, STDOUT_FILENO);
+        close(file);
+        execlp("Chess/stockfish", "stockfish",
+               str0.c_str(), str1.c_str(), str2.c_str(), (char*)nullptr);
+        return 0;
+    }
+    else {//parent process
+        char* ptr;
+        char* message = (char *) calloc( (MESS_SIZE + 1), sizeof(char) );
+        
+        //memset ((*message), 0, (MESS_SIZE + 1)*sizeof(char));
+        int file = open("Chess/redirected_output.txt", O_RDONLY| O_TRUNC);
+        int length;
+        do{
+            length = read(file, message, MESS_SIZE);
+            (message)[length] = '\0';
+            ptr = strstr((message), "bestmove");
+        }
+        while (ptr == nullptr);
+        close(file);
+        free(message);
+        return readNextMoveFromFile(nextMove, turn);
+    }
+}
+
+int readNextMoveFromFile(std::string& nextMove, bool turn){
+    std::ifstream file("Chess/redirected_output.txt", std::ios::out);
+    std::string line;
+    int n, m, eval;
+    int count = 0;
+    int count_ = 0;
+    bool mate = false;
+    
+    while(getline(file, line)) {
+        count ++;
+        //look for mate
+        n = line.find(" mate ");
+        if (n != -1){
+            mate = true;
+            if (line[n + 6] == '-'){//the opponent wins
+                eval = 31800 * sign[not turn];
+            }
+            else{
+                eval = 31800 * sign[turn];
+            }
+        }
+        //look for the move
+        n = line.find("bestmove");
+        if (n != -1){
+            file.close();
+            nextMove = line.substr(n + 9, 5);
+            break;
+        }
+    }
+    //read the eval
+    if (!mate){
+        file.open("Chess/redirected_output.txt", std::ios::out);
+        while (true) {
+            getline(file, line);
+            count_ ++;
+            if (count_ == count-1){//if we reach the last line before bestmove
+                n = line.find(" cp ");
+                m = 0;
+                while (line[n+4+m] != ' '){//looking for the ending position of the eval
+                    m ++;
+                }
+                eval = sign[turn]*std::stoi(line.substr(n+4, m));
+                break;
+            }
+        }
+        file.close();
+    }
+    return eval;
+}
+
+int eval_pos(std::vector <std::tuple<int, int>> locations[12]){
+    int white_val = 0;
+    int black_val = 0;
+    int line, col;
+    for (int i=0; i<6; i++){
+        for (int j=0; j<locations[i].size(); j++){
+            line = get<0>(locations[i][j]);
+            col = get<1>(locations[i][j]);
+            white_val += PieceSquareValue[i][(7-line)*8+col];
+        }
+    }
+    for (int i=6; i<12; i++){
+        for (int j=0; j<locations[i].size(); j++){
+            line = get<0>(locations[i][j]);
+            col = get<1>(locations[i][j]);
+            black_val += PieceSquareValue[i-6][line*8 + col];
+        }
+    }
+    if (white_val>black_val){
+        return WHITE_WINS;
+    }
+    if (white_val<black_val){
+        return BLACK_WINS;
+    }
+    else{
+        return DRAW;
+    }
 }

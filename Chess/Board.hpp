@@ -14,6 +14,12 @@
 #include <vector>
 #include <map>
 #include <random>
+
+#define WHITE_WINS 1
+#define BLACK_WINS -1
+#define DRAW 0
+#define MAX_LINE 5000
+
 /*correspondance table:
  For whites:
  pawn = 0, knight = 1, bishop = 2, rook = 3, queen = 4, king = 5
@@ -47,10 +53,10 @@ class Board{
         
     
     //find the line of a piece from its code, its target square and possibly its column
-    int find_line(int code, bool capture, int target_line, int target_column, bool known_column = false, int column = -1);
+    int find_line(int code, bool capture, int target_line, int target_column, bool known_column, int column);
     
     //find the column of a piece from its code, its target square and possibly its column
-    int find_column(int code, bool capture, int target_line, int target_column, bool known_line = false, int line = -1);
+    int find_column(int code, bool capture, int target_line, int target_column, bool known_line, int line);
     
     //execute a move taken in pgn notation
     std::pair<int, std::tuple<int, int, int, int, int>> interpret_pgn(std::string move);
@@ -65,9 +71,14 @@ class Board{
     
     void play_vs_AI(bool player, int proba);
     
+    void play_vs_Stockfish(bool player, int Elo);
+    
     void AI_vs_AI_SARSA(int proba);
     
-    void AI_vs_AI_MC(int proba);
+    void AI_vs_AI_MC(int proba, int horizon = 1000);
+    
+    void AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon);
+    
     //proposes a move
     std::tuple<int, int, int, int, int> propose_move(int proba, bool color);
     

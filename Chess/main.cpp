@@ -44,15 +44,22 @@ int main(int argc, const char * argv[]) {
         }
         
         board.load_AI();
-        
         //board.learn_from_directory("Chess/PGNs", watch);
-        
         //board.learn_from_directory("Chess/Blacks", watch);
-        board.learn_from_directory("Chess/Whites", watch);
+        //board.learn_from_directory("Chess/Whites", watch);
         
-        board.save_AI();
+        /*
+        for (int i = 0; i<10; i++){
+            std::cout << "game batch " << i << "\n";
+            for (int j = 0; j<100; j++){
+                board.AI_vs_Stockfish_MC(true, 1350, 60, 3);
+                board.initData(true);
+            }
+        }
         
-        std::cout << "hey\n";
+        //board.save_AI();
+        */
+        
         init_board(board.position);
         //Update screen
         SDL_RenderPresent( gRenderer );
@@ -81,8 +88,7 @@ int main(int argc, const char * argv[]) {
         //this line is necessary for the renderer to be destroyed safely when user don't do anything after opening the app
         update_board(board.position);
         
-        //save the AI
-        board.save_AI();
+        //board.save_AI();
         //Free resources and close SDL
         close();
         return 0;
