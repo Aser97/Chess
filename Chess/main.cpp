@@ -49,10 +49,10 @@ int main(int argc, const char * argv[]) {
         //board.learn_from_directory("Chess/Whites", watch);
         
         ///*
-        for (int i = 0; i<11; i++){
+        for (int i = 0; i<10; i++){
             std::cout << "game batch " << i << "\n";
-            for (int j = 0; j<100; j++){
-                board.AI_vs_Stockfish_MC(true, 1350, 60, 3);
+            for (int j = 0; j<1; j++){
+                board.AI_vs_Stockfish_MC(true, 1350, 60, 1000, false);
                 board.initData(true);
                 std::cout << j << "\n";
                 //init_board(board.position);
@@ -64,7 +64,7 @@ int main(int argc, const char * argv[]) {
         std::cout << "ready\n";
         //board.save_AI();
         //*/
-        
+        //std::cout << "hey";
         init_board(board.position);
         //Update screen
         SDL_RenderPresent( gRenderer );

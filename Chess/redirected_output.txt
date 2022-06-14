@@ -1,17 +1,1 @@
 Stockfish 100622 by the Stockfish developers (see AUTHORS file)
-100
-info string NNUE evaluation using nn-3c0aa92af1da.nnue enabled
-info depth 1 seldepth 1 multipv 1 score cp 606 nodes 53 nps 53000 tbhits 0 time 1 pv f8b4 c2c3 b4c3 c1d2 c3a1 d1a1
-info depth 2 seldepth 2 multipv 1 score cp 606 nodes 100 nps 100000 tbhits 0 time 1 pv f8b4 c2c3 b4c3 c1d2 c3a1 d1a1
-info depth 3 seldepth 3 multipv 1 score cp 606 nodes 156 nps 156000 tbhits 0 time 1 pv f8b4 c2c3 b4c3 c1d2 c3a1 d1a1
-info depth 4 seldepth 4 multipv 1 score cp 606 nodes 209 nps 209000 tbhits 0 time 1 pv f8b4 c2c3 b4c3 c1d2 c3a1 d1a1
-info depth 5 seldepth 5 multipv 1 score cp 608 nodes 259 nps 259000 tbhits 0 time 1 pv f8b4 c2c3 b4c3 c1d2 c3d4
-info depth 6 seldepth 6 multipv 1 score cp 608 nodes 330 nps 165000 tbhits 0 time 2 pv f8b4 c2c3 b4c3 c1d2 c3d4
-info depth 7 seldepth 6 multipv 1 score cp 747 nodes 411 nps 205500 tbhits 0 time 2 pv f8b4 c2c3 b4c3 c1d2 c3d4
-info depth 8 seldepth 7 multipv 1 score cp 723 nodes 814 nps 407000 tbhits 0 time 2 pv f8b4 c2c3 b4c3 c1d2 c3a1 d1a1 e5d4
-info depth 9 seldepth 10 multipv 1 score cp 679 nodes 1551 nps 387750 tbhits 0 time 4 pv f8b4 c2c3 b4c3 c1d2 c3d4 a1b1 d4b6 e2e3 g8f6
-info depth 10 seldepth 13 multipv 1 score cp 683 nodes 6592 nps 549333 tbhits 0 time 12 pv f8b4 c2c3 b4c3 c1d2 c3d4 a1c1 g8f6 h2h3
-info depth 11 seldepth 18 multipv 1 score cp 670 nodes 25220 nps 586511 tbhits 0 time 43 pv f8b4 c2c3 b4c3 c1d2 c3d4 a1b1 d4b6 e2e3 g8e7 b3b4 e8g8
-info depth 12 seldepth 20 multipv 1 score cp 711 nodes 45583 nps 599776 tbhits 0 time 76 pv f8b4 c2c3 b4c3 c1d2 c3d4 a1b1 d4b6 e2e3 g8f6 g1f3 e5e4 f3d4 e8g8 b3b4 a7a5 b4a5 b6a5
-info depth 13 seldepth 20 multipv 1 score cp 711 nodes 59826 nps 592336 tbhits 0 time 101 pv f8b4 c2c3 b4c3 c1d2 c3d4 a1b1 d4b6 e2e3 g8f6 g1f3 e5e4 f3d4 e8g8 b3b4 a7a5 b4a5 b6a5
-bestmove f8b4 ponder c2c3

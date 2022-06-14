@@ -44,12 +44,23 @@ extern SDL_Texture* tTexture[5];
 
 int sign[2] = {-1, 1}; //signs for each color: true-> 1 false ->-1 Useful for rewards computations
 
+//useful variables for the rest of the project
+std::vector <std::tuple<int, int>> _locations[12];//locations of pieces
+std::vector <std::tuple<int, int>> control;
+std::string str0;
+std::string str1;
+std::string str2;
+std::string nextMove;
+
+
+
 //initializing a new game
 void Board::initData(bool new_game){
-    std::vector <std::tuple<int, int>> _locations[12];//locations of pieces
+    _locations[12].clear();//locations of pieces
     //We set a new board
     if (new_game){
         whose_turn = true;
+        moves_record = "";
         for (int i=0; i<8; i++){
             position[1][i] = create_piece(0);
             position[6][i] = create_piece(6);
@@ -85,6 +96,7 @@ void Board::initData(bool new_game){
     }
     else {
         whose_turn = boardCopy.whose_turnBuffer;
+        moves_record = boardCopy.moves_recordBuffer;
         for (int i = 0; i<8; i++){
             for (int j = 0; j<8; j++){
                 position[i][j] = create_piece(boardCopy.positionBuffer[i][j]);
@@ -113,6 +125,7 @@ void Board::initData(bool new_game){
 
 void Board::memorizeBoard(){
     boardCopy.whose_turnBuffer = whose_turn;
+    boardCopy.moves_recordBuffer = moves_record;
     for (int i = 0; i<8; i++){
         for (int j = 0; j<8; j++){
             boardCopy.positionBuffer[i][j] = position[i][j].code;
@@ -125,7 +138,7 @@ void Board::memorizeBoard(){
 
 //computes the controled squares of a piece
 std::vector <std::tuple<int, int>> Board::controled_squares(std::tuple<int, int> square, int code){
-    std::vector <std::tuple<int, int>> control;
+    control.clear();
     if (code != -1){
         int line = get<0>(square);
         int col = get<1>(square);
@@ -672,6 +685,7 @@ void Board::execute_move(std::tuple<int, int> start_square, std::tuple<int, int>
     //recording
     record_moves.push_back({start_line, start_column, final_line, final_column, promote_code});
     record_positions.push_back(computeHash(position));
+    //std::cout << computeHash(position) <<"\n";
     //figuring out whether there is castle
     if (((position[start_line][start_column].code == 5) or (position[start_line][start_column].code == 11)) and (abs(start_column - final_column) == 2)){
         position[start_line][start_column].has_moved = true;
@@ -783,6 +797,8 @@ void Board::execute_move(std::tuple<int, int> start_square, std::tuple<int, int>
         //recording appreciation
         record_appreciations.push_back(appreciation);
         whose_turn = not whose_turn;
+        moves_record += move_to_str({get<0>(start_square), get<1>(start_square), get<0>(target_square), get<1>(target_square), promote_code}) + " ";
+        
     }
 }
 
@@ -818,6 +834,7 @@ void Board::train_from_pgn(std::string game, bool watch){
                 switch (e.key.keysym.sym){
                     case SDLK_LEFT:
                         step_back();
+                        SDL_Delay(1000);
                         break;
                         
                 }
@@ -893,6 +910,11 @@ void Board::play_vs_AI(bool player, int proba){
     bool know_first_square = false;
     int x, y;
     int promote_code = -1;
+    str0 = "setoption name UCI_Elo value 1350";
+    //std::string str1;
+    str2 = "go movetime 100";
+    //std::string nextMove;
+    int eval;
     
     SDL_Event e;
     bool quit = false;
@@ -905,6 +927,7 @@ void Board::play_vs_AI(bool player, int proba){
                 switch (e.key.keysym.sym){
                     case SDLK_LEFT:
                         step_back();
+                        SDL_Delay(1000);
                         break;
                         
                 }
@@ -972,7 +995,7 @@ void Board::play_vs_AI(bool player, int proba){
             }
         }
         if (not quit and (whose_turn == not player)){//if it is Ai's turn
-            proposal = propose_move(proba, whose_turn);
+            proposal = propose_move(proba, whose_turn, false);
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
@@ -985,6 +1008,11 @@ void Board::play_vs_AI(bool player, int proba){
             }
         }
     }
+    //learn from the game
+    str1 = "position startpos moves " + moves_record;
+    eval = getNextMoveStockfish(str0, str1, str2, nextMove, whose_turn);
+    pair.second = eval_Stockfish(eval);
+    train_from_record(pair.second);
 }
 
 void Board::play_vs_Stockfish(bool player, int Elo){
@@ -996,11 +1024,10 @@ void Board::play_vs_Stockfish(bool player, int Elo){
     std::pair<bool, int> pair;
     int line;
     int col;
-    std::string moves_record;
-    std::string str0 = "setoption name UCI_Elo value " + std::to_string(Elo);
-    std::string str1;
-    std::string str2 = "go movetime 100";
-    std::string nextMove;
+    str0 = "setoption name UCI_Elo value " + std::to_string(Elo);
+    //std::string str1;
+    str2 = "go movetime 100";
+    //std::string nextMove;
     int eval;
     
     bool know_first_square = false;
@@ -1018,6 +1045,7 @@ void Board::play_vs_Stockfish(bool player, int Elo){
                 switch (e.key.keysym.sym){
                     case SDLK_LEFT:
                         step_back();
+                        SDL_Delay(1000);
                         break;
                         
                 }
@@ -1052,7 +1080,6 @@ void Board::play_vs_Stockfish(bool player, int Elo){
                             load_text(messages[4], 4);
                             
                             execute_move(start_square, final_square, promote_code);
-                            moves_record += move_to_str({get<0>(start_square), get<1>(start_square), get<0>(final_square), get<1>(final_square), promote_code}) + " ";
                             update_board(position);
                             promote_code = -1;//reset the variable
                             
@@ -1085,7 +1112,7 @@ void Board::play_vs_Stockfish(bool player, int Elo){
                 }
             }
         }
-        if (not quit and (whose_turn == not player)){//if it is Ai's turn
+        if (not quit and (whose_turn == not player)){//if it is Stockfish's turn
             str1 = "position startpos moves " + moves_record;
             eval = getNextMoveStockfish(str0, str1, str2, nextMove, not player);
             
@@ -1093,7 +1120,6 @@ void Board::play_vs_Stockfish(bool player, int Elo){
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
-            moves_record += nextMove + " ";
             
             update_board(position);
             
@@ -1104,6 +1130,11 @@ void Board::play_vs_Stockfish(bool player, int Elo){
             }
         }
     }
+    //learn from the game
+    str1 = "position startpos moves " + moves_record;
+    eval = getNextMoveStockfish(str0, str1, str2, nextMove, whose_turn);
+    pair.second = eval_Stockfish(eval);
+    train_from_record(pair.second);
 }
 
 void Board::AI_vs_AI_SARSA(int proba){
@@ -1157,6 +1188,7 @@ void Board::AI_vs_AI_SARSA(int proba){
                 switch (e.key.keysym.sym){
                     case SDLK_LEFT:
                         step_back();
+                        SDL_Delay(1000);
                         break;
                 }
             }
@@ -1247,6 +1279,7 @@ void Board::AI_vs_AI_MC(int proba, int horizon){
                 switch (e.key.keysym.sym){
                     case SDLK_LEFT:
                         step_back();
+                        SDL_Delay(1000);
                         break;
                 }
             }
@@ -1306,16 +1339,16 @@ void Board::AI_vs_AI_MC(int proba, int horizon){
     train_from_record(pair.second);
 }
 
-void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon){
+void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon, bool train){
     std::tuple<int, int> start_square;
     std::tuple<int, int> final_square;
     std::tuple<int, int, int, int, int> proposal; //AI move
     std::pair<bool, int> pair;
-    std::string str0 = "setoption name UCI_Elo value " + std::to_string(Elo);
-    std::string str1;
-    std::string str2 = "go movetime 100";
-    std::string nextMove;
-    std::string moves_record;
+    str0 = "setoption name UCI_Elo value " + std::to_string(Elo);
+    //std::string str1;
+    str2 = "go movetime 100";
+    //std::string nextMove;
+    
     int eval;
     
     float nth_move = 0;
@@ -1330,6 +1363,7 @@ void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon){
                 switch (e.key.keysym.sym){
                     case SDLK_LEFT:
                         step_back();
+                        SDL_Delay(1000);
                         break;
                 }
             }
@@ -1348,14 +1382,10 @@ void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon){
         }
         //AI turn
         if (not quit and whose_turn == color){
-            str1 = "position startpos moves " + moves_record;
-            eval = getNextMoveStockfish(str0, str1, str2, nextMove, color);
-            
-            proposal = propose_move(proba, whose_turn);
+            proposal = propose_move(proba, whose_turn, train);
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
-            moves_record += move_to_str({get<0>(proposal), get<1>(proposal), get<2>(proposal), get<3>(proposal), get<4>(proposal)}) + " ";
             //update_board(position);
         
             pair = game_over();
@@ -1368,7 +1398,6 @@ void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon){
             //SDL_Delay(500);
         }
         if (nth_move == horizon){
-            pair.second = eval_Stockfish(eval);
             quit = true;
         }
         //Stockfish turn
@@ -1380,7 +1409,6 @@ void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon){
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
-            moves_record += nextMove + " ";
             
             //update_board(position);
         
@@ -1394,23 +1422,38 @@ void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon){
         }
         
         if (nth_move == horizon){
-            pair.second = eval_Stockfish(eval);
             quit = true;
         }
     }
     //learning from the game
+    str1 = "position startpos moves " + moves_record;
+    eval = getNextMoveStockfish(str0, str1, str2, nextMove, whose_turn);
+    pair.second = eval_Stockfish(eval);
     train_from_record(pair.second);
 }
 
-std::tuple<int, int, int, int, int> Board::propose_move(int proba, bool color){
+std::tuple<int, int, int, int, int> Board::propose_move(int proba, bool color, bool train){
     unsigned long long int position_code = computeHash(position);
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
     
     //std::cout << color << " " << Q[color].count(position_code) << " " << Q[not color].count(position_code) << "\n";
+    if ((Q[color].count(position_code) == 0) and not train){//if we have to explore a bit around the position in a not training game
+        memorizeBoard();
+        for (int j = 0; j<5; j++){
+            AI_vs_Stockfish_MC(color, 1350, 60, 3);
+            initData(false);
+            std::cout << j;
+            //init_board(position);
+            //SDL_RenderPresent( gRenderer );
+        }
+        std::cout << "\nhoy ";
+    }
     if (Q[color].count(position_code) > 0){
         std::uniform_int_distribution<> distrib(0, 100);
-        std::cout <<"hey\n";
+        if (!train){
+            std::cout <<"hey\n";
+        }
         if (distrib(gen) <= proba){//propose the best move so far}
             auto pr = std::max_element(Q[color][position_code].begin(), Q[color][position_code].end(), [](std::pair<std::tuple<int, int, int, int, int>, float> const &x, std::pair<std::tuple<int, int, int, int, int>, float> const &y){return x.second < y.second;});
            
@@ -1453,7 +1496,6 @@ std::tuple<int, int, int, int, int> Board::propose_move(int proba, bool color){
     //std::cout << "n = " << n << "\n";
     return proposals[n];
 }
-
 
 std::vector<std::tuple<int, int>> Board::compute_possible_moves(std::tuple<int, int> square){
     std::vector<std::tuple<int, int>> possible_moves;
@@ -1916,16 +1958,13 @@ std::pair<bool, int> Board::game_over(){
 void Board::step_back(){
     if (record_moves.size() > 0){
         //replay the whole game till the last position
-        std::vector <std::tuple<int, int, int, int, int>> _record_moves = record_moves;//record the moves
-        std::vector <unsigned long long int> _record_positions = record_positions;//record the positions
-        std::vector<bool> _record_appreciations = record_appreciations; //record wether the moves were capture or pawn
-        
+        memorizeBoard();
         initData(true);
         init_board(position);
         
         std::tuple<int, int, int, int, int> move;
-        for (int i = 0; i < _record_moves.size() -1; i++){
-            move = _record_moves[i];
+        for (int i = 0; i < boardCopy.record_movesBuffer.size() -1; i++){
+            move = boardCopy.record_movesBuffer[i];
             execute_move({get<0>(move), get<1>(move)}, {get<2>(move), get<3>(move)}, get<4>(move));
         }
         update_board(position);
@@ -1940,10 +1979,10 @@ void Board::handle_button(int button){
     SDL_RenderPresent( gRenderer );
     
     if (button == 0){
-        play_vs_AI(true, 100);
+        play_vs_AI(true, 95);
     }
     else if (button == 1){
-        play_vs_AI(false, 100);
+        play_vs_AI(false, 95);
     }
     else if (button == 2){
         play_vs_Stockfish(true, 1350);
@@ -2122,7 +2161,7 @@ void Board::load_AI(){
                 getline(fin, line);
                 if (line.empty()){
                 }
-                else if (line[1] == ' '){//the line contains a move
+                else if (line[5] == ' '){//the line contains a move
                     move = str_to_move(line.substr(0, 5));
                     count[true][position_code][move] = std::stof(line.substr(5));
                 }
@@ -2145,7 +2184,7 @@ void Board::load_AI(){
                 getline(fin, line);
                 if (line.empty()){
                 }
-                else if (line[1] == ' '){//the line contains a move
+                else if (line[5] == ' '){//the line contains a move
                     move = str_to_move(line.substr(0, 5));
                     Q[false][position_code][move] = std::stof(line.substr(5));
                 }
@@ -2168,7 +2207,7 @@ void Board::load_AI(){
                 getline(fin, line);
                 if (line.empty()){
                 }
-                else if (line[1] == ' '){//the line contains a move
+                else if (line[5] == ' '){//the line contains a move
                     move = str_to_move(line.substr(0, 5));
                     count[false][position_code][move] = std::stof(line.substr(5));
                 }

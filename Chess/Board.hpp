@@ -36,6 +36,7 @@ struct BufferBoard{
     std::vector <std::tuple<int, int, int, int, int>> record_movesBuffer;//record the moves
     std::vector <unsigned long long int> record_positionsBuffer;//record the positions
     std::vector<bool> record_appreciationsBuffer; //record wether the moves were capture or pawn
+    std::string moves_recordBuffer;
 };
 
 
@@ -47,6 +48,7 @@ class Board{
     std::map<unsigned long long int, std::map<std::tuple<int, int, int, int, int>, float>> Q[2]; //Q(S, A) map functions
     std::map<unsigned long long int, std::map<std::tuple<int, int, int, int, int>, int>> count[2]; //Count(S, A) map functions
     std::vector <std::tuple<int, int, int, int, int>> record_moves;//record the moves
+    std::string moves_record; //string version of record_moves
     std::vector <unsigned long long int> record_positions;//record the positions
     std::vector<bool> record_appreciations; //record wether the moves were capture or pawn push
     BufferBoard boardCopy;
@@ -90,10 +92,12 @@ class Board{
     
     void AI_vs_AI_MC(int proba, int horizon = 1000);
     
-    void AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon);
+    void AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon, bool train = true);
     
     //proposes a move
-    std::tuple<int, int, int, int, int> propose_move(int proba, bool color);
+    std::tuple<int, int, int, int, int> propose_move(int proba, bool color, bool train = true);
+    
+    std::tuple<int, int, int, int, int> propose_moveStockfish(int proba, bool color);
     
     std::vector<std::tuple<int, int>> compute_possible_moves(std::tuple<int, int> square);
     
