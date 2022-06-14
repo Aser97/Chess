@@ -45,11 +45,11 @@ extern SDL_Texture* tTexture[5];
 int sign[2] = {-1, 1}; //signs for each color: true-> 1 false ->-1 Useful for rewards computations
 
 //initializing a new game
-void Board::initData(bool new_game, bool turn, int pos[8][8]){
+void Board::initData(bool new_game){
     std::vector <std::tuple<int, int>> _locations[12];//locations of pieces
-    whose_turn = turn;
     //We set a new board
     if (new_game){
+        whose_turn = true;
         for (int i=0; i<8; i++){
             position[1][i] = create_piece(0);
             position[6][i] = create_piece(6);
@@ -77,13 +77,22 @@ void Board::initData(bool new_game, bool turn, int pos[8][8]){
         position[7][5] = create_piece(8);
         position[7][6] = create_piece(7);
         position[7][7] = create_piece(9);
+        //clear the records
+        record_moves.clear();
+        record_positions.clear();
+        record_appreciations.clear();
         
-    } else {
+    }
+    else {
+        whose_turn = boardCopy.whose_turnBuffer;
         for (int i = 0; i<8; i++){
             for (int j = 0; j<8; j++){
-                position[i][j] = create_piece(pos[i][j]);
+                position[i][j] = create_piece(boardCopy.positionBuffer[i][j]);
             }
         }
+        record_moves = boardCopy.record_movesBuffer;
+        record_positions = boardCopy.record_positionsBuffer;
+        record_appreciations = boardCopy.record_appreciationsBuffer;
     }
     
     //computation of the controled squares and locations
@@ -99,10 +108,19 @@ void Board::initData(bool new_game, bool turn, int pos[8][8]){
     for (int i = 0; i<12; i++){
         locations[i] = _locations[i];
     }
-    //clear the records
-    record_moves.clear();
-    record_positions.clear();
-    record_appreciations.clear();
+    
+}
+
+void Board::memorizeBoard(){
+    boardCopy.whose_turnBuffer = whose_turn;
+    for (int i = 0; i<8; i++){
+        for (int j = 0; j<8; j++){
+            boardCopy.positionBuffer[i][j] = position[i][j].code;
+        }
+    }
+    boardCopy.record_movesBuffer = record_moves;
+    boardCopy.record_positionsBuffer = record_positions;
+    boardCopy.record_appreciationsBuffer = record_appreciations;
 }
 
 //computes the controled squares of a piece
@@ -654,7 +672,6 @@ void Board::execute_move(std::tuple<int, int> start_square, std::tuple<int, int>
     //recording
     record_moves.push_back({start_line, start_column, final_line, final_column, promote_code});
     record_positions.push_back(computeHash(position));
-    
     //figuring out whether there is castle
     if (((position[start_line][start_column].code == 5) or (position[start_line][start_column].code == 11)) and (abs(start_column - final_column) == 2)){
         position[start_line][start_column].has_moved = true;
@@ -1351,7 +1368,7 @@ void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon){
             //SDL_Delay(500);
         }
         if (nth_move == horizon){
-            pair.second = eval_pos(locations);
+            pair.second = eval_Stockfish(eval);
             quit = true;
         }
         //Stockfish turn
@@ -1377,11 +1394,10 @@ void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon){
         }
         
         if (nth_move == horizon){
-            pair.second = eval_pos(locations);
+            pair.second = eval_Stockfish(eval);
             quit = true;
         }
     }
-    
     //learning from the game
     train_from_record(pair.second);
 }
@@ -1391,11 +1407,11 @@ std::tuple<int, int, int, int, int> Board::propose_move(int proba, bool color){
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
     
-    if (Q[color].count(position_code)){
+    //std::cout << color << " " << Q[color].count(position_code) << " " << Q[not color].count(position_code) << "\n";
+    if (Q[color].count(position_code) > 0){
         std::uniform_int_distribution<> distrib(0, 100);
-        
+        std::cout <<"hey\n";
         if (distrib(gen) <= proba){//propose the best move so far}
-            std::cout << "hey";
             auto pr = std::max_element(Q[color][position_code].begin(), Q[color][position_code].end(), [](std::pair<std::tuple<int, int, int, int, int>, float> const &x, std::pair<std::tuple<int, int, int, int, int>, float> const &y){return x.second < y.second;});
            
             if (Q[color][position_code][pr->first] > -0.3){
@@ -2075,7 +2091,7 @@ void Board::load_AI(){
     //loading White_AI Q values
     for (const auto& entry : std::filesystem::directory_iterator("Chess/WHITE_AI/Q")) {
         const auto filenameStr = entry.path().filename().string();
-        if (entry.is_regular_file()) {
+        if (entry.is_regular_file() and filenameStr != ".DS_Store") {
             //execute a loop until EOF (End of File)
             fin.open("Chess/WHITE_AI/Q/" + filenameStr);
             while(fin){
@@ -2083,7 +2099,7 @@ void Board::load_AI(){
                 getline(fin, line);
                 if (line.empty()){
                 }
-                else if (line[1] == ' '){//the line contains a move
+                else if (line[5] == ' '){//the line contains a move
                     move = str_to_move(line.substr(0, 5));
                     Q[true][position_code][move] = std::stof(line.substr(5));
                 }
@@ -2098,7 +2114,7 @@ void Board::load_AI(){
     //loading White_AI count values
     for (const auto& entry : std::filesystem::directory_iterator("Chess/WHITE_AI/COUNT")) {
         const auto filenameStr = entry.path().filename().string();
-        if (entry.is_regular_file()) {
+        if (entry.is_regular_file() and filenameStr != ".DS_Store") {
             //execute a loop until EOF (End of File)
             fin.open("Chess/WHITE_AI/COUNT/" + filenameStr);
             while(fin){
@@ -2121,7 +2137,7 @@ void Board::load_AI(){
     //loading Black_AI Q values
     for (const auto& entry : std::filesystem::directory_iterator("Chess/BLACK_AI/Q")) {
         const auto filenameStr = entry.path().filename().string();
-        if (entry.is_regular_file()) {
+        if (entry.is_regular_file() and filenameStr != ".DS_Store") {
             //execute a loop until EOF (End of File)
             fin.open("Chess/BLACK_AI/Q/" + filenameStr);
             while(fin){
@@ -2144,7 +2160,7 @@ void Board::load_AI(){
     //loading Black_AI count values
     for (const auto& entry : std::filesystem::directory_iterator("Chess/BLACK_AI/COUNT")) {
         const auto filenameStr = entry.path().filename().string();
-        if (entry.is_regular_file()) {
+        if (entry.is_regular_file() and filenameStr != ".DS_Store") {
             //execute a loop until EOF (End of File)
             fin.open("Chess/BLACK_AI/COUNT/" + filenameStr);
             while(fin){
@@ -2170,13 +2186,13 @@ void Board::learn_from_directory(std::string address, bool watch){
     int start_index, end_index;
     for (const auto& entry : std::filesystem::directory_iterator(address)) {
         const auto filenameStr = entry.path().filename().string();
-        if (entry.is_regular_file() and filenameStr != ".DS_Store" and filenameStr == "Baden2015.txt") {
+        if (entry.is_regular_file() and filenameStr != ".DS_Store") {
             games = pgn_to_string(address + "/" + filenameStr);
             std::cout << filenameStr << "\n";
             start_index = 0;
             end_index = find_end_game(games, start_index);
             //std::cout << games.size() << "\n";
-            while (end_index < 1143){//games.size() - 2){
+            while (end_index < games.size() - 2){
                 //std::cout << end_index << "\n";
                 train_from_pgn(games.substr(start_index, end_index - start_index), watch);
                 initData(true);

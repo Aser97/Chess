@@ -69,4 +69,6 @@ int getNextMoveStockfish(std::string& str0, std::string& str1, std::string& str2
 int readNextMoveFromFile(std::string& nextMove, bool turn);
 
 int eval_pos(std::vector <std::tuple<int, int>> locations[12]);
+
+int eval_Stockfish(int eval);
 #endif /* utilities_hpp */

@@ -29,6 +29,14 @@
  
  free square = -1
  */
+//makes a simplified copy of the board
+struct BufferBoard{
+    int positionBuffer[8][8];
+    bool whose_turnBuffer; //1 for white and 0 for black
+    std::vector <std::tuple<int, int, int, int, int>> record_movesBuffer;//record the moves
+    std::vector <unsigned long long int> record_positionsBuffer;//record the positions
+    std::vector<bool> record_appreciationsBuffer; //record wether the moves were capture or pawn
+};
 
 
 class Board{
@@ -41,8 +49,13 @@ class Board{
     std::vector <std::tuple<int, int, int, int, int>> record_moves;//record the moves
     std::vector <unsigned long long int> record_positions;//record the positions
     std::vector<bool> record_appreciations; //record wether the moves were capture or pawn push
+    BufferBoard boardCopy;
+    
     //initializing a new game
-    void initData(bool new_game, bool turn = 1, int pos[8][8] = {});
+    void initData(bool new_game);
+    
+    //prints the board in the buffer
+    void memorizeBoard();
     
     //computes the controled squares of a piece
     std::vector <std::tuple<int, int>> controled_squares(std::tuple<int, int> square, int code);

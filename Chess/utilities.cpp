@@ -377,22 +377,31 @@ std::tuple<int, int, int, int, int> str_to_move(std::string str){
 }
 
 int getNextMoveStockfish(std::string& str0, std::string& str1, std::string& str2, std::string& nextMove, bool turn){
-    int pid = fork();
-    if (pid == 0){//child process
+    //int pid = fork();
+    if (false){//child process
+        /*
         int file  = open("Chess/redirected_output.txt",
                           O_WRONLY| O_NONBLOCK| O_TRUNC);
         dup2(file, STDOUT_FILENO);
         close(file);
         execlp("Chess/stockfish", "stockfish",
                str0.c_str(), str1.c_str(), str2.c_str(), (char*)nullptr);
-        return 0;
+        */
     }
     else {//parent process
-        char* ptr;
-        char* message = (char *) calloc( (MESS_SIZE + 1), sizeof(char) );
+        int file  = open("Chess/redirected_output.txt",
+                          O_WRONLY| O_NONBLOCK| O_TRUNC);
+        int stdoutCopy = dup(STDOUT_FILENO);
+        dup2(file, STDOUT_FILENO);
+        close(file);
+        std::string cmd = "Chess/stockfish \"" + str0 + "\" \"" + str1 + "\" \"" + str2 + "\"";
+        system(cmd.c_str());
+        //char* ptr;
+        //char* message = (char *) calloc( (MESS_SIZE + 1), sizeof(char) );
         
-        //memset ((*message), 0, (MESS_SIZE + 1)*sizeof(char));
-        int file = open("Chess/redirected_output.txt", O_RDONLY| O_TRUNC);
+        
+        //file = open("Chess/redirected_output.txt", O_RDONLY);
+        /*
         int length;
         do{
             length = read(file, message, MESS_SIZE);
@@ -400,10 +409,12 @@ int getNextMoveStockfish(std::string& str0, std::string& str1, std::string& str2
             ptr = strstr((message), "bestmove");
         }
         while (ptr == nullptr);
-        close(file);
-        free(message);
-        return readNextMoveFromFile(nextMove, turn);
+        */
+        //close(file);
+        //free(message);
+        dup2(stdoutCopy, STDOUT_FILENO);
     }
+    return readNextMoveFromFile(nextMove, turn);
 }
 
 int readNextMoveFromFile(std::string& nextMove, bool turn){
@@ -483,4 +494,14 @@ int eval_pos(std::vector <std::tuple<int, int>> locations[12]){
     else{
         return DRAW;
     }
+}
+
+int eval_Stockfish(int eval){
+    if (eval > 150){
+        return WHITE_WINS;
+    }
+    if (eval < -150){
+        return BLACK_WINS;
+    }
+    return DRAW;
 }

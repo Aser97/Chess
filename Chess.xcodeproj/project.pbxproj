@@ -31,7 +31,7 @@
 		DA5ACE8128428EBD00560F9A /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
 		DA5ACE842844691A00560F9A /* PGNs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PGNs; sourceTree = "<group>"; };
 		DA98A170285405A700F26CD8 /* redirected_output.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = redirected_output.txt; sourceTree = "<group>"; };
-		DA98A171285405F400F26CD8 /* stockfish */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = stockfish; sourceTree = "<group>"; };
+		DA98A17628579EB900F26CD8 /* stockfish */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = stockfish; sourceTree = "<group>"; };
 		DAE84B802836B45B0024F8C5 /* zobra_table.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = zobra_table.txt; sourceTree = "<group>"; };
 		DAE84B95283AC7AA0024F8C5 /* zobra_hashing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = zobra_hashing.cpp; sourceTree = "<group>"; };
 		DAE84B96283AC7AA0024F8C5 /* zobra_hashing.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = zobra_hashing.hpp; sourceTree = "<group>"; };
@@ -78,7 +78,7 @@
 		DA36B8E62836712A0028142D /* Chess */ = {
 			isa = PBXGroup;
 			children = (
-				DA98A171285405F400F26CD8 /* stockfish */,
+				DA98A17628579EB900F26CD8 /* stockfish */,
 				DA98A170285405A700F26CD8 /* redirected_output.txt */,
 				DA5ACE842844691A00560F9A /* PGNs */,
 				DA5ACE8128428EBD00560F9A /* Fonts */,
