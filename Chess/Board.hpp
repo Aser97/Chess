@@ -31,7 +31,7 @@
  */
 //makes a simplified copy of the board
 struct BufferBoard{
-    int positionBuffer[8][8];
+    Piece positionBuffer[8][8];
     bool whose_turnBuffer; //1 for white and 0 for black
     std::vector <std::tuple<int, int, int, int, int>> record_movesBuffer;//record the moves
     std::vector <unsigned long long int> record_positionsBuffer;//record the positions
@@ -108,14 +108,14 @@ class Board{
     
     bool is_controled(std::tuple<int, int> square);
     
-    std::pair<bool, std::tuple<int, int>> is_pinned(std::tuple<int, int> square, int numb_checks);
+    std::pair<bool, std::tuple<int, int>> is_pinned(std::tuple<int, int> square, int numb_checks, std::tuple<int, int> checking_square = {-1, -1});
     
     //lists all the squares containing a piece that checks the king
     std::vector<std::tuple<int, int>> count_checks();
     
     bool is_stuck();
     
-    std::pair<bool, int> game_over();
+    std::pair<bool, int> game_over(bool train = false);
     
     void step_back();
     

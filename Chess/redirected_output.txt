@@ -1,1 +1,15 @@
 Stockfish 100622 by the Stockfish developers (see AUTHORS file)
+info string NNUE evaluation using nn-3c0aa92af1da.nnue enabled
+info depth 1 seldepth 1 multipv 1 score cp -2196 nodes 32 nps 32000 tbhits 0 time 1 pv e3e4
+info depth 2 seldepth 2 multipv 1 score cp -2097 nodes 64 nps 64000 tbhits 0 time 1 pv c2c4
+info depth 3 seldepth 2 multipv 1 score cp -2097 nodes 88 nps 88000 tbhits 0 time 1 pv c2c4
+info depth 4 seldepth 2 multipv 1 score cp -2097 nodes 112 nps 112000 tbhits 0 time 1 pv c2c4
+info depth 5 seldepth 2 multipv 1 score cp -2068 nodes 150 nps 150000 tbhits 0 time 1 pv e3e4
+info depth 6 seldepth 3 multipv 1 score cp -2054 nodes 378 nps 378000 tbhits 0 time 1 pv e3e4 d5b4
+info depth 7 seldepth 4 multipv 1 score cp -2054 nodes 1252 nps 626000 tbhits 0 time 2 pv e3e4 d5b4 c2c4 d7d6
+info depth 8 seldepth 7 multipv 1 score cp -2116 nodes 4952 nps 990400 tbhits 0 time 5 pv c2c4 d5e3 f1d3 f7g8 b1a3
+info depth 9 seldepth 9 multipv 1 score cp -2086 nodes 20088 nps 1434857 tbhits 0 time 14 pv f1d3 d5e3 b1c3
+info depth 10 seldepth 11 multipv 1 score cp -2103 nodes 39687 nps 1526423 tbhits 0 time 26 pv f1d3 d5e3 b1c3 d7d6
+info depth 11 seldepth 14 multipv 1 score cp -2121 nodes 105307 nps 1548632 tbhits 0 time 68 pv f1d3 d5e3 c2c3 d8f6 e1d2 f6g5 d3e2 f8d6
+info depth 12 seldepth 14 multipv 1 score cp -2121 nodes 160611 nps 1574617 tbhits 0 time 102 pv f1d3 d5e3 c2c3 d8f6 e1d2 f6g5 d3e2 f8d6
+bestmove f1d3 ponder d5e3

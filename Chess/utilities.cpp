@@ -370,50 +370,22 @@ std::string move_to_str(std::tuple<int, int, int, int, int> move){
 
 std::tuple<int, int, int, int, int> str_to_move(std::string str){
     std::tuple<int, int, int, int, int> move = {(int) str[1] -49, (int) str[0] -97, (int) str[3] -49, (int) str[2] -97, -1};
-    if (str[4] != ' '){//if the promote code is not -1
+    if ((str.size() == 5) and (str[4] != ' ')){//if the promote code is not -1
         get<4>(move) = letter_to_int((char) (str[4]-32), str[3] == '8');
     }
     return move;
 }
 
 int getNextMoveStockfish(std::string& str0, std::string& str1, std::string& str2, std::string& nextMove, bool turn){
-    //int pid = fork();
-    if (false){//child process
-        /*
-        int file  = open("Chess/redirected_output.txt",
-                          O_WRONLY| O_NONBLOCK| O_TRUNC);
-        dup2(file, STDOUT_FILENO);
-        close(file);
-        execlp("Chess/stockfish", "stockfish",
-               str0.c_str(), str1.c_str(), str2.c_str(), (char*)nullptr);
-        */
-    }
-    else {//parent process
-        int file  = open("Chess/redirected_output.txt",
-                          O_WRONLY| O_NONBLOCK| O_TRUNC);
-        int stdoutCopy = dup(STDOUT_FILENO);
-        dup2(file, STDOUT_FILENO);
-        close(file);
-        std::string cmd = "Chess/stockfish \"" + str0 + "\" \"" + str1 + "\" \"" + str2 + "\"";
-        system(cmd.c_str());
-        //char* ptr;
-        //char* message = (char *) calloc( (MESS_SIZE + 1), sizeof(char) );
-        
-        
-        //file = open("Chess/redirected_output.txt", O_RDONLY);
-        /*
-        int length;
-        do{
-            length = read(file, message, MESS_SIZE);
-            (message)[length] = '\0';
-            ptr = strstr((message), "bestmove");
-        }
-        while (ptr == nullptr);
-        */
-        //close(file);
-        //free(message);
-        dup2(stdoutCopy, STDOUT_FILENO);
-    }
+    int file  = open("Chess/redirected_output.txt",
+                      O_WRONLY| O_NONBLOCK| O_TRUNC);
+    int stdoutCopy = dup(STDOUT_FILENO);
+    dup2(file, STDOUT_FILENO);
+    close(file);
+    std::string cmd = "Chess/stockfish \"" + str0 + "\" \"" + str1 + "\" \"" + str2 + "\"";
+    system(cmd.c_str());
+    
+    dup2(stdoutCopy, STDOUT_FILENO);
     return readNextMoveFromFile(nextMove, turn);
 }
 
