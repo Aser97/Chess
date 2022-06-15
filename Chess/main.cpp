@@ -48,7 +48,7 @@ int main(int argc, const char * argv[]) {
         //board.learn_from_directory("Chess/Blacks", watch);
         //board.learn_from_directory("Chess/Whites", watch);
         
-        ///*
+        /*
         for (int i = 0; i<10; i++){
             std::cout << "game batch " << i << "\n";
             for (int j = 0; j<10; j++){

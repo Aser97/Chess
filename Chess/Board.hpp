@@ -84,9 +84,7 @@ class Board{
     
     void train_from_record(int reward);
     
-    void play_vs_AI(bool player, int proba);
-    
-    void play_vs_Stockfish(bool player, int Elo);
+    void play_vs_machine(bool player, std::string machine, int Elo = 0);
     
     void AI_vs_AI_SARSA(int proba);
     
@@ -96,8 +94,6 @@ class Board{
     
     //proposes a move
     std::tuple<int, int, int, int, int> propose_move(int proba, bool color, bool train = true);
-    
-    std::tuple<int, int, int, int, int> propose_moveStockfish(int proba, bool color);
     
     std::vector<std::tuple<int, int>> compute_possible_moves(std::tuple<int, int> square);
     

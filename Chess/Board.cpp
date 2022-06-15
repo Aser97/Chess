@@ -896,7 +896,7 @@ void Board::train_from_record(int reward){
     }
 }
 
-void Board::play_vs_AI(bool player, int proba){
+void Board::play_vs_machine(bool player, std::string machine, int Elo){
     std::tuple<int, int> square;
     std::tuple<int, int> start_square;
     std::tuple<int, int> final_square;
@@ -994,8 +994,21 @@ void Board::play_vs_AI(bool player, int proba){
                 }
             }
         }
-        if (not quit and (whose_turn == not player)){//if it is Ai's turn
-            proposal = propose_move(proba, whose_turn, false);
+        if (not quit and (whose_turn == not player)){//if it is machine's turn
+            if (machine == "AI"){
+                proposal = propose_move(100, whose_turn, false);
+            }
+            
+            else if (machine == "Stockfish"){
+                str1 = "position startpos moves " + moves_record;
+                eval = getNextMoveStockfish(str0, str1, str2, nextMove, not player);
+                proposal = str_to_move(nextMove);
+            }
+            
+            else{
+                std::cout << "Unknown machine\n";
+            }
+            
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
@@ -1015,131 +1028,6 @@ void Board::play_vs_AI(bool player, int proba){
         eval = getNextMoveStockfish(str0, str1, str2, nextMove, whose_turn);
         pair.second = eval_Stockfish(eval);
         
-    }
-    train_from_record(pair.second);
-}
-
-void Board::play_vs_Stockfish(bool player, int Elo){
-    std::tuple<int, int> square;
-    std::tuple<int, int> start_square;
-    std::tuple<int, int> final_square;
-    std::tuple<int, int, int, int, int> proposal; //AI move
-    std::vector<std::tuple<int, int>> legal_moves;
-    std::pair<bool, int> pair;
-    pair.first = false;
-    int line;
-    int col;
-    str0 = "setoption name UCI_Elo value " + std::to_string(Elo);
-    //std::string str1;
-    str2 = "go movetime 100";
-    //std::string nextMove;
-    int eval;
-    
-    bool know_first_square = false;
-    int x, y;
-    int promote_code = -1;
-    
-    SDL_Event e;
-    bool quit = false;
-    while (!quit){
-        while (SDL_PollEvent(&e)){
-            if (e.type == SDL_QUIT){
-                quit = true;
-            }
-            if (e.type == SDL_KEYDOWN){
-                switch (e.key.keysym.sym){
-                    case SDLK_LEFT:
-                        step_back();
-                        SDL_Delay(1000);
-                        break;
-                        
-                }
-            }
-            //If mouse event happened
-            if(e.type == SDL_MOUSEBUTTONDOWN){
-                //Get mouse position
-                SDL_GetMouseState( &x, &y );
-                int button = locate_button(x, y);
-                if (button < 4){
-                    handle_button(button);
-                    quit= true;
-                    break;
-                }
-                
-                else if ((x>w_margin) and (x < w_margin+8*square_size) and (y > h_margin) and (y < h_margin + 8*square_size)){
-                    if (know_first_square){
-                        square = locate_square(x, y);
-                        line = get<0>(start_square);
-                        col = get<1>(start_square);
-                        pair = findInVector(legal_moves, square);
-                        know_first_square = false;
-                        
-                        if (pair.first){
-                            final_square = square;
-                            if (((get<0>(final_square) == 0) or (get<0>(final_square) == 7)) and ((position[line][col].code == 0) or (position[line][col].code == 6))){//dealing with promotion
-                                //std::cout << "Which piece do you want to promote to ? \n";
-                                //std::cin >> promote_code;
-                                promote_code = 4 + (1-player)*6;
-                            }
-                            messages[4] = " ";
-                            load_text(messages[4], 4);
-                            
-                            execute_move(start_square, final_square, promote_code);
-                            update_board(position);
-                            promote_code = -1;//reset the variable
-                            
-                            SDL_Delay(100);
-                            pair = game_over();
-                            if (pair.first){
-                                quit = true;
-                                break;
-                            }
-                        }
-                        else{
-                            std::cout << "Move (following) is not permitted ";
-                            display_move({line, col, get<0>(square), get<1>(square), -1});
-                            display_vector(legal_moves);
-                            messages[4] = "Illegal move !";
-                            load_text(messages[4], 4);
-                            update_board(position);
-                        }
-                    }
-                    else {
-                        square = locate_square(x, y);
-                        if (not are_nemesis(position[get<0>(square)][get<1>(square)].code, 1 + (1-whose_turn)*6)){//is the piece the same color than player?
-                            start_square = square;
-                            know_first_square = true;
-                            legal_moves = compute_legal_moves(square);
-                            highlight_moves(legal_moves, position);
-                            
-                        }
-                    }
-                }
-            }
-        }
-        if (not quit and (whose_turn == not player)){//if it is Stockfish's turn
-            str1 = "position startpos moves " + moves_record;
-            eval = getNextMoveStockfish(str0, str1, str2, nextMove, not player);
-            
-            proposal = str_to_move(nextMove);
-            start_square = {get<0>(proposal), get<1>(proposal)};
-            final_square = {get<2>(proposal), get<3>(proposal)};
-            execute_move(start_square, final_square, get<4>(proposal));
-            
-            update_board(position);
-            
-            pair = game_over();
-            if (pair.first){
-                quit = true;
-                break;
-            }
-        }
-    }
-    //learn from the game
-    if (!pair.first){
-        str1 = "position startpos moves " + moves_record;
-        eval = getNextMoveStockfish(str0, str1, str2, nextMove, whose_turn);
-        pair.second = eval_Stockfish(eval);
     }
     train_from_record(pair.second);
 }
@@ -1995,28 +1883,16 @@ void Board::handle_button(int button){
     SDL_RenderPresent( gRenderer );
     
     if (button == 0){
-        play_vs_AI(true, 100);
+        play_vs_machine(true, "AI");
     }
     else if (button == 1){
-        play_vs_AI(false, 100);
+        play_vs_machine(false, "AI");
     }
     else if (button == 2){
-        play_vs_Stockfish(true, 1350);
-        /*
-        for (int i=0; i<100; i++){
-            messages[4] = "game " + std::to_string(i);
-            load_text(messages[4], 4);
-            SDL_Rect fillRect = set_rect_for_text(4);
-            SDL_RenderCopy( gRenderer, tTexture[4], nullptr, &fillRect);
-            SDL_RenderPresent(gRenderer);
-            AI_vs_AI_MC(85);
-            initData(true);
-            
-            std::cout << "game" << i << "\n";
-        }*/
+        play_vs_machine(true, "Stockfish", 1350);
     }
     else if (button == 3){
-        play_vs_Stockfish(false, 1350);
+        play_vs_machine(false, "Stockfish", 1350);
     }
 }
 
