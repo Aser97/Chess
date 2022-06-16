@@ -11,9 +11,15 @@
 #include <iostream>
 #include <iomanip>
 #include "utilities.hpp"
+#include "zobra_hashing.hpp"
 #include <vector>
 #include <map>
+#include <cmath>
+#include "animation.hpp"
 #include <random>
+#include "text_rendering.hpp"
+#include <filesystem>
+#include <fstream>
 
 #define WHITE_WINS 1
 #define BLACK_WINS -1
@@ -86,21 +92,17 @@ class Board{
     
     void play_vs_machine(bool player, std::string machine, int Elo = 0);
     
-    void AI_vs_AI_SARSA(int proba);
-    
-    void AI_vs_AI_MC(int proba, int horizon = 1000);
-    
     void AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon, bool train = true);
     
     //proposes a move
     std::tuple<int, int, int, int, int> propose_move(int proba, bool color, bool train = true);
     
-    std::vector<std::tuple<int, int>> compute_possible_moves(std::tuple<int, int> square);
+    void compute_possible_moves(std::tuple<int, int> square);
     
     //checks if a possible move is legal
     bool is_legal(std::tuple<int, int> start_square, std::tuple<int, int> final_square);
     
-    std::vector<std::tuple<int, int>> compute_legal_moves(std::tuple<int, int> square);
+    void compute_legal_moves(std::tuple<int, int> square);
     
     bool is_controled(std::tuple<int, int> square);
     

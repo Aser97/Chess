@@ -9,8 +9,6 @@
 
 #include <iostream>
 #include <vector>
-#include <map>
-
 
 #define MESS_SIZE 8192
 //this function tests whether two pieces are in same color
@@ -32,7 +30,6 @@ struct Piece{
     int code;//value ex:white pawn->0. Rmk: empty is also a piece
     bool en_passant = false; //can we take the pawn en_passant
     bool has_moved = false;//already moved
-    std::vector<std::tuple<int, int>> legal_moves; //list of legal reachable squares
     std::vector <std::tuple<int, int>> control;//list of controled squares
 };
 

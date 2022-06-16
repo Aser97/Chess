@@ -7,12 +7,10 @@
 
 #ifndef animation_hpp
 #define animation_hpp
-
-#include <iostream>
+#include "utilities.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-#include "utilities.hpp"
+
 
 //Starts up SDL and creates window
 bool init();

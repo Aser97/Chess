@@ -6,12 +6,10 @@
 //
 
 #include "zobra_hashing.hpp"
+#include <iostream>
+#include "utilities.hpp"
 
 // A program to illustrate Zobrist Hashing Algorithm
-#include <iostream>
-#include <random>
-#include <fstream>
-#include "utilities.hpp"
 
 // random piece keys [piece][square]
 U64 piece_keys[12][8][8];
@@ -91,7 +89,7 @@ void initTable()
     side_key = get_random_U64_number();
 }
  
-int castle_rights(Piece (&pos)[8][8]){
+int castle_rights(Piece pos[8][8]){
     /*
     bin  dec
         
@@ -129,7 +127,7 @@ int castle_rights(Piece (&pos)[8][8]){
 }
 
 // Computes the hash value of a given position
-unsigned long long int computeHash(Piece (&pos)[8][8], bool turn){
+unsigned long long int computeHash(Piece pos[8][8], bool turn){
     unsigned long long int h = 0;
     for (int i = 0; i<8; i++)
     {

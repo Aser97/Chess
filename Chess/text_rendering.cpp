@@ -6,10 +6,8 @@
 //
 
 #include "text_rendering.hpp"
-#include <iostream>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 //The window renderer
 extern SDL_Renderer* gRenderer;
@@ -88,6 +86,10 @@ SDL_Texture* loadTexture_text(std::string text){
 bool load_text(std::string text, int code){
     //Loading success flag
     bool success = true;
+    
+    if (tTexture[code] != nullptr){
+        SDL_DestroyTexture( tTexture[code] );
+    }
     
     tTexture[code] = loadTexture_text(text);
     if (tTexture[code] == nullptr){

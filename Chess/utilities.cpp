@@ -7,10 +7,8 @@
 
 #include "utilities.hpp"
 
-#include <iostream>
-#include <vector>
-#include <fstream>
 #include <map>
+#include <fstream>
 #include <filesystem>
 #include <unistd.h>
 #include <fcntl.h>
@@ -25,6 +23,11 @@
  
  free square = -1
  */
+
+std::ifstream filestream;
+int filedescriptor;
+int stdoutCopy;
+
 int PawnTable[] ={
      0,  0,  0,  0,  0,  0,  0,  0,
     50, 50, 50, 50, 50, 50, 50, 50,
@@ -377,27 +380,28 @@ std::tuple<int, int, int, int, int> str_to_move(std::string str){
 }
 
 int getNextMoveStockfish(std::string& str0, std::string& str1, std::string& str2, std::string& nextMove, bool turn){
-    int file  = open("Chess/redirected_output.txt",
+    filedescriptor  = open("Chess/redirected_output.txt",
                       O_WRONLY| O_NONBLOCK| O_TRUNC);
-    int stdoutCopy = dup(STDOUT_FILENO);
-    dup2(file, STDOUT_FILENO);
-    close(file);
+    stdoutCopy = dup(STDOUT_FILENO);
+    dup2(filedescriptor, STDOUT_FILENO);
+    close(filedescriptor);
     std::string cmd = "Chess/stockfish \"" + str0 + "\" \"" + str1 + "\" \"" + str2 + "\"";
     system(cmd.c_str());
     
     dup2(stdoutCopy, STDOUT_FILENO);
+    close(stdoutCopy);
     return readNextMoveFromFile(nextMove, turn);
 }
 
 int readNextMoveFromFile(std::string& nextMove, bool turn){
-    std::ifstream file("Chess/redirected_output.txt", std::ios::out);
+    filestream.open("Chess/redirected_output.txt", std::ios::out);
     std::string line;
     int n, m, eval;
     int count = 0;
     int count_ = 0;
     bool mate = false;
     
-    while(getline(file, line)) {
+    while(getline(filestream, line)) {
         count ++;
         //look for mate
         n = line.find(" mate ");
@@ -413,16 +417,16 @@ int readNextMoveFromFile(std::string& nextMove, bool turn){
         //look for the move
         n = line.find("bestmove");
         if (n != -1){
-            file.close();
+            filestream.close();
             nextMove = line.substr(n + 9, 5);
             break;
         }
     }
     //read the eval
     if (!mate){
-        file.open("Chess/redirected_output.txt", std::ios::out);
+        filestream.open("Chess/redirected_output.txt", std::ios::out);
         while (true) {
-            getline(file, line);
+            getline(filestream, line);
             count_ ++;
             if (count_ == count-1){//if we reach the last line before bestmove
                 n = line.find(" cp ");
@@ -434,7 +438,8 @@ int readNextMoveFromFile(std::string& nextMove, bool turn){
                 break;
             }
         }
-        file.close();
+        //std::cout << "eval = " << eval << "\n";
+        filestream.close();
     }
     return eval;
 }

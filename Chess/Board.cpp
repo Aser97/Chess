@@ -6,18 +6,6 @@
 //
 
 #include "Board.hpp"
-#include <iostream>
-#include <iomanip>
-#include "utilities.hpp"
-#include "zobra_hashing.hpp"
-#include <vector>
-#include <map>
-#include <cmath>
-#include "animation.hpp"
-#include <random>
-#include "text_rendering.hpp"
-#include <filesystem>
-#include <fstream>
 
 /*correspondance table:
  For whites:
@@ -47,12 +35,13 @@ int sign[2] = {-1, 1}; //signs for each color: true-> 1 false ->-1 Useful for re
 //useful variables for the rest of the project
 std::vector <std::tuple<int, int>> _locations[12];//locations of pieces
 std::vector <std::tuple<int, int>> control;
-std::string str0;
+std::string str0 = "setoption name UCI_Elo value 1350";
 std::string str1;
-std::string str2;
+std::string str2 = "go movetime 100";
 std::string nextMove;
-
-
+std::vector<std::tuple<int, int>> PossibleMoves[8][8];
+std::vector<std::tuple<int, int>> LegalMoves[8][8];
+long int random_int;
 
 //initializing a new game
 void Board::initData(bool new_game){
@@ -96,9 +85,10 @@ void Board::initData(bool new_game){
         record_appreciations.clear();
         
     }
-    else {
+    else {//come back to a previous state
         whose_turn = boardCopy.whose_turnBuffer;
         moves_record = boardCopy.moves_recordBuffer;
+        
         for (int i = 0; i<8; i++){
             for (int j = 0; j<8; j++){
                 position[i][j] = boardCopy.positionBuffer[i][j];
@@ -122,6 +112,7 @@ void Board::initData(bool new_game){
     for (int i = 0; i<12; i++){
         locations[i] = _locations[i];
     }
+    init_board(position);
 }
 
 void Board::memorizeBoard(){
@@ -630,7 +621,8 @@ void Board::castle(bool short_castle){
         //updating textures
         pTexture[index][6] = pTexture[index][4];
         pTexture[index][5] = pTexture[index][7];
-        
+        pTexture[index][4] = nullptr;
+        pTexture[index][7] = nullptr;
         //recomputing the controled squares
         for (int i = 0; i<8; i++){
             for (int j = 0; j<8; j++){
@@ -656,6 +648,8 @@ void Board::castle(bool short_castle){
         //updating textures
         pTexture[index][2] = pTexture[index][4];
         pTexture[index][3] = pTexture[index][0];
+        pTexture[index][4] = nullptr;
+        pTexture[index][0] = nullptr;
         
         //recomputing the controled squares
         for (int i = 0; i<8; i++){
@@ -744,6 +738,12 @@ void Board::execute_move(std::tuple<int, int> start_square, std::tuple<int, int>
                 pair = findInVector(locations[position[start_line][final_column].code], {start_line, final_column});
                 locations[position[start_line][final_column].code].erase(locations[position[start_line][final_column].code].begin() + pair.second);
                 
+                //updating textures
+                if (pTexture[start_line][final_column] != nullptr){
+                    SDL_DestroyTexture( pTexture[final_line][final_column]);
+                    pTexture[start_line][final_column] = nullptr;
+                }
+                
                 //removing the pawn from the board
                 position[start_line][final_column] = create_piece(-1);
             }
@@ -770,7 +770,11 @@ void Board::execute_move(std::tuple<int, int> start_square, std::tuple<int, int>
             position[final_line][final_column] = position[start_line][start_column];
             position[final_line][final_column].has_moved = true;
             //updating textures
+            if (pTexture[final_line][final_column] != nullptr){
+                SDL_DestroyTexture( pTexture[final_line][final_column]);
+            }
             pTexture[final_line][final_column] = pTexture[start_line][start_column];
+            pTexture[start_line][start_column] = nullptr;
             
             //updating the locations
             pair = findInVector(locations[position[final_line][final_column].code], {start_line, start_column});
@@ -818,11 +822,6 @@ void Board::train_from_pgn(std::string game, bool watch){
     //starting the training loop
     SDL_Event e;
     bool quit = false;
-    
-    //no need to learn from drawn games
-    if (reward == 0){
-        quit = true;
-    }
     
     while (!quit){
         while (SDL_PollEvent(&e)){
@@ -878,21 +877,19 @@ void Board::train_from_pgn(std::string game, bool watch){
 }
 
 void Board::train_from_record(int reward){
-    if (reward != 0){//no need to learn from drawn game
-        std::pair<std::string, int> pair;
-        float gamma = .9;
-        int n_th_move = 1;
-        int number_moves = ceil(static_cast<double>(record_moves.size())/2);
-        int turn_index = 0;//current index in the record_moves vector
+    std::pair<std::string, int> pair;
+    float gamma = .9;
+    int n_th_move = 1;
+    int number_moves = ceil(static_cast<double>(record_moves.size())/2);
+    int turn_index = 0;//current index in the record_moves vector
+    
+    //starting the training loop
+    while(turn_index < record_moves.size()){
+        count[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]] ++;
+        Q[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]] += (sign[1 - (turn_index % 2)]*reward*pow(gamma, number_moves-n_th_move) - Q[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]]) / count[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]];
         
-        //starting the training loop
-        while(turn_index < record_moves.size()){
-            count[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]] ++;
-            Q[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]] += (sign[1 - (turn_index % 2)]*reward*pow(gamma, number_moves-n_th_move) - Q[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]]) / count[1 - (turn_index % 2)][record_positions[turn_index]][record_moves[turn_index]];
-            
-            n_th_move += (turn_index %2);
-            turn_index ++;
-        }
+        n_th_move += (turn_index %2);
+        turn_index ++;
     }
 }
 
@@ -901,7 +898,6 @@ void Board::play_vs_machine(bool player, std::string machine, int Elo){
     std::tuple<int, int> start_square;
     std::tuple<int, int> final_square;
     std::tuple<int, int, int, int, int> proposal; //AI move
-    std::vector<std::tuple<int, int>> legal_moves;
     std::pair<bool, int> pair;
     pair.first = false;
     int line;
@@ -910,10 +906,6 @@ void Board::play_vs_machine(bool player, std::string machine, int Elo){
     bool know_first_square = false;
     int x, y;
     int promote_code = -1;
-    str0 = "setoption name UCI_Elo value 1350";
-    //std::string str1;
-    str2 = "go movetime 100";
-    //std::string nextMove;
     int eval;
     
     SDL_Event e;
@@ -946,9 +938,7 @@ void Board::play_vs_machine(bool player, std::string machine, int Elo){
                 else if ((x>w_margin) and (x < w_margin+8*square_size) and (y > h_margin) and (y < h_margin + 8*square_size)){
                     if (know_first_square){
                         square = locate_square(x, y);
-                        line = get<0>(start_square);
-                        col = get<1>(start_square);
-                        pair = findInVector(legal_moves, square);
+                        pair = findInVector(LegalMoves[line][col], square);
                         know_first_square = false;
                         
                         if (pair.first){
@@ -975,7 +965,7 @@ void Board::play_vs_machine(bool player, std::string machine, int Elo){
                         else{
                             std::cout << "Move (following) is not permitted ";
                             display_move({line, col, get<0>(square), get<1>(square), -1});
-                            display_vector(legal_moves);
+                            display_vector(LegalMoves[line][col]);
                             messages[4] = "Illegal move !";
                             load_text(messages[4], 4);
                             update_board(position);
@@ -983,12 +973,13 @@ void Board::play_vs_machine(bool player, std::string machine, int Elo){
                     }
                     else {
                         square = locate_square(x, y);
+                        line = get<0>(square);
+                        col = get<1>(square);
                         if (not are_nemesis(position[get<0>(square)][get<1>(square)].code, 1 + (1-whose_turn)*6)){//is the piece the same color than player?
                             start_square = square;
                             know_first_square = true;
-                            legal_moves = compute_legal_moves(square);
-                            highlight_moves(legal_moves, position);
-                            
+                            compute_legal_moves(square);
+                            highlight_moves(LegalMoves[line][col], position);
                         }
                     }
                 }
@@ -1021,15 +1012,16 @@ void Board::play_vs_machine(bool player, std::string machine, int Elo){
             }
         }
     }
-    
-    //learn from the game
-    if (!pair.first){
-        str1 = "position startpos moves " + moves_record;
-        eval = getNextMoveStockfish(str0, str1, str2, nextMove, whose_turn);
-        pair.second = eval_Stockfish(eval);
-        
+    if (machine == "Stockfish"){//if we play AI, the game is already learned automatically
+        //learn from the game
+        if (!pair.first){
+            str1 = "position startpos moves " + moves_record;
+            eval = getNextMoveStockfish(str0, str1, str2, nextMove, whose_turn);
+            pair.second = eval_Stockfish(eval);
+            
+        }
+        train_from_record(pair.second);
     }
-    train_from_record(pair.second);
 }
 
 void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon, bool train){
@@ -1038,11 +1030,6 @@ void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon, bool
     std::tuple<int, int, int, int, int> proposal; //AI move
     std::pair<bool, int> pair;
     pair.first = false;
-    str0 = "setoption name UCI_Elo value " + std::to_string(Elo);
-    //std::string str1;
-    str2 = "go movetime 100";
-    //std::string nextMove;
-    
     int eval;
     
     float nth_move = 0;
@@ -1080,8 +1067,11 @@ void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon, bool
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
-            //update_board(position);
-        
+            
+            if (!train){
+                //update_board(position);
+            }
+            
             pair = game_over(train);
             
             if (pair.first){
@@ -1089,7 +1079,10 @@ void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon, bool
                 break;
             }
             nth_move += .5;
-            //SDL_Delay(500);
+            
+            if (!train){
+                //SDL_Delay(500);
+            }
         }
         if (nth_move == horizon){
             quit = true;
@@ -1103,7 +1096,10 @@ void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon, bool
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
-            //update_board(position);
+            
+            if (!train){
+                //update_board(position);
+            }
         
             pair = game_over(train);
             
@@ -1111,50 +1107,51 @@ void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon, bool
                 quit = true;
             }
             nth_move += .5;
-            //SDL_Delay(500);
+            if (!train){
+                //SDL_Delay(500);
+            }
         }
         
         if (nth_move == horizon){
             quit = true;
         }
     }
-    //learning from the game
-    if (!pair.first){
-        str1 = "position startpos moves " + moves_record;
-        eval = getNextMoveStockfish(str0, str1, str2, nextMove, whose_turn);
-        pair.second = eval_Stockfish(eval);
+    
+    if (train){//learn the game when training
+        //learning from the game
+        if (!pair.first){
+            str1 = "position startpos moves " + moves_record;
+            eval = getNextMoveStockfish(str0, str1, str2, nextMove, whose_turn);
+            pair.second = eval_Stockfish(eval);
+        }
+        train_from_record(pair.second);
     }
-    train_from_record(pair.second);
 }
 
 std::tuple<int, int, int, int, int> Board::propose_move(int proba, bool color, bool train){
     unsigned long long int position_code = computeHash(position, whose_turn);
-    std::random_device rd;  //Will be used to obtain a seed for the random number engine
-    std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
-    
-    
     if ((Q[color].count(position_code) == 0) and not train){//if we have to explore a bit around the position in a not training game
         memorizeBoard();
-        for (int j = 0; j<5; j++){
-            AI_vs_Stockfish_MC(color, 1350, 60, 3);
+        int horizon = 1;
+        int proba_ = 60;//to be distinguished from the argument proba
+        int numb_games = 15;
+        for (int j = 0; j<numb_games; j++){
+            AI_vs_Stockfish_MC(color, 1350, proba_, horizon);
             initData(false);
-            std::cout << j;
-            //init_board(position);
+            //std::cout << j;
             //SDL_RenderPresent( gRenderer );
         }
-        std::cout << "\n";
-        init_board(position);
         //std::cout << "\nhoy ";
     }
     if (Q[color].count(position_code) > 0){
-        std::uniform_int_distribution<> distrib(0, 100);
         /*if (!train){
             std::cout <<"hey\n";
         }*/
-        if (distrib(gen) <= proba){//propose the best move so far}
+        random_int = random();
+        if ((random_int % 100) <= proba){//propose the best move so far}
             auto pr = std::max_element(Q[color][position_code].begin(), Q[color][position_code].end(), [](std::pair<std::tuple<int, int, int, int, int>, float> const &x, std::pair<std::tuple<int, int, int, int, int>, float> const &y){return x.second < y.second;});
            
-            if (Q[color][position_code][pr->first] > -0.3){
+            if (!train or (Q[color][position_code][pr->first] > -0.3)){
                 std::cout << pr->second << " " << count[color][position_code][pr->first] << ": ";
                 display_move(pr->first);
                 return pr->first;
@@ -1164,86 +1161,81 @@ std::tuple<int, int, int, int, int> Board::propose_move(int proba, bool color, b
     
     //explore in other cases
     std::vector<std::tuple<int, int, int, int, int>> proposals; //AI moves
-    std::vector<std::tuple<int, int>> legal_moves;
+    int line, col, promote_code;
     //spanning all the legal moves
     for (int i = (1-whose_turn)*6; i < (2-whose_turn)*6; i++){
         for (int j = 0; j < locations[i].size(); j++){
-            //std::cout << "key = " << get<0>(locations[i][j]) << " " << get<1>(locations[i][j]) << "\n";
-            legal_moves = compute_legal_moves(locations[i][j]);
-            for (int k = 0; k < legal_moves.size(); k++){
-                if ((position[get<0>(locations[i][j])][get<1>(locations[i][j])].code == (1-whose_turn)*6) and (get<0>(legal_moves[k]) == 7*whose_turn)){//dealing with promotion
-                    proposals.push_back({get<0>(locations[i][j]), get<1>(locations[i][j]), get<0>(legal_moves[k]), get<1>(legal_moves[k]), 4+(1-whose_turn)*6});
+            compute_legal_moves(locations[i][j]);
+            line = get<0>(locations[i][j]);
+            col = get<1>(locations[i][j]);
+            for (int k = 0; k < LegalMoves[line][col].size(); k++){
+                if ((position[line][col].code == (1-whose_turn)*6) and (get<0>(LegalMoves[line][col][k]) == 7*whose_turn)){//dealing with promotion
+                    promote_code = 4+(1-whose_turn)*6;
                 }
                 else{
-                    proposals.push_back({get<0>(locations[i][j]), get<1>(locations[i][j]), get<0>(legal_moves[k]), get<1>(legal_moves[k]), -1});
-
+                    promote_code = -1;
                 }
-                //display_move(proposals[proposals.size()-1]);
+                proposals.push_back({line, col, get<0>(LegalMoves[line][col][k]), get<1>(LegalMoves[line][col][k]), promote_code});
             }
         }
     }
 
-    //std::cout << "---------------\n";
-    
-    
     //chosing the move
-    std::uniform_int_distribution<> distrib(0, proposals.size()-1);
-    int n = distrib(gen);
-    //std::cout << "n = " << n << "\n";
-    return proposals[n];
+    random_int = random();
+    return proposals[random_int % proposals.size()];
 }
 
-std::vector<std::tuple<int, int>> Board::compute_possible_moves(std::tuple<int, int> square){
-    std::vector<std::tuple<int, int>> possible_moves;
+void Board::compute_possible_moves(std::tuple<int, int> square){
     int line = get<0>(square);
     int col = get<1>(square);
     int code = position[line][col].code;
     int var_line;
     int var_col;
+    PossibleMoves[line][col].clear();
     
     if (code == 0){//white pawn
         if (position[line+1][col].code == -1){//1 square move
-            possible_moves.push_back({line+1, col});
+            PossibleMoves[line][col].push_back({line+1, col});
             
             if ((line == 1) and (position[line+2][col].code == -1)){//2 square move
-                possible_moves.push_back({line+2, col});
+                PossibleMoves[line][col].push_back({line+2, col});
             }
         }
         if ((col + 1 < 8) and (are_nemesis(code, position[line+1][col+1].code))and (position[line+1][col+1].code != -1)){//capture
-            possible_moves.push_back({line+1, col+1});
+            PossibleMoves[line][col].push_back({line+1, col+1});
         }
         if ((col - 1 > -1) and (are_nemesis(code, position[line+1][col-1].code))and (position[line+1][col-1].code != -1)){//capture
-            possible_moves.push_back({line+1, col-1});
+            PossibleMoves[line][col].push_back({line+1, col-1});
         }
         
         if ((col + 1 < 8) and (are_nemesis(code, position[line][col+1].code)) and position[line][col+1].en_passant){//en passant
-            possible_moves.push_back({line+1, col+1});
+            PossibleMoves[line][col].push_back({line+1, col+1});
         }
         if ((col - 1 > -1) and (are_nemesis(code, position[line][col-1].code)) and position[line][col-1].en_passant){//en passant
-            possible_moves.push_back({line+1, col-1});
+            PossibleMoves[line][col].push_back({line+1, col-1});
         }
     }
     
     else if (code == 6){//black pawn
         if (position[line-1][col].code == -1){//1 square move
-            possible_moves.push_back({line-1, col});
+            PossibleMoves[line][col].push_back({line-1, col});
             
             if ((line == 6) and (position[line-2][col].code == -1)){//2 square move
-                possible_moves.push_back({line-2, col});
+                PossibleMoves[line][col].push_back({line-2, col});
             }
         }
         if ((col + 1 < 8) and (are_nemesis(code, position[line-1][col+1].code)) and (position[line-1][col+1].code != -1)){//capture
-            possible_moves.push_back({line-1, col+1});
+            PossibleMoves[line][col].push_back({line-1, col+1});
         }
         if ((col - 1 > -1) and (are_nemesis(code, position[line-1][col-1].code)) and (position[line-1][col-1].code != -1)){//capture
-            possible_moves.push_back({line-1, col-1});
+            PossibleMoves[line][col].push_back({line-1, col-1});
         }
         
         if ((col + 1 < 8) and (are_nemesis(code, position[line][col+1].code)) and (position[line][col+1].en_passant)){//en passant
-            possible_moves.push_back({line-1, col+1});
+            PossibleMoves[line][col].push_back({line-1, col+1});
         }
         if ((col - 1 > -1) and (are_nemesis(code, position[line][col-1].code)) and position[line][col-1].en_passant){//en passant
-            possible_moves.push_back({line-1, col-1});
+            PossibleMoves[line][col].push_back({line-1, col-1});
         }
     }
     
@@ -1254,19 +1246,19 @@ std::vector<std::tuple<int, int>> Board::compute_possible_moves(std::tuple<int, 
             var_col = get<1>(position[line][col].control[i]);
             if ((not is_controled(position[line][col].control[i])) and are_nemesis(code, position[var_line][var_col].code)){
                 //std::cout << "----" << var_line << " " << var_col << "\n";
-                possible_moves.push_back(position[line][col].control[i]);
+                PossibleMoves[line][col].push_back(position[line][col].control[i]);
             }
         }
         
         if ((not position[line][col].has_moved) and (position[line][5].code == -1) and (position[line][6].code == -1) and (not are_nemesis(code, position[line][7].code)) and (not position[line][7].has_moved) and (position[line][7].code==3 or position[line][7].code==9)){//short castle
             if ((not is_controled({line, 5})) and (not is_controled({line, 6}))){
-                possible_moves.push_back({line, 6});
+                PossibleMoves[line][col].push_back({line, 6});
             }
         }
         
         if ((not position[line][col].has_moved) and (position[line][3].code == -1) and (position[line][2].code == -1) and (position[line][1].code == -1) and (not are_nemesis(code, position[line][0].code)) and (not position[line][0].has_moved) and (position[line][0].code==3 or position[line][0].code==9)){//long castle
             if ((not is_controled({line, 3})) and (not is_controled({line, 2}))){
-                possible_moves.push_back({line, 2});
+                PossibleMoves[line][col].push_back({line, 2});
             }
         }
     }
@@ -1275,11 +1267,10 @@ std::vector<std::tuple<int, int>> Board::compute_possible_moves(std::tuple<int, 
             var_line = get<0>(position[line][col].control[i]);
             var_col = get<1>(position[line][col].control[i]);
             if (are_nemesis(code, position[var_line][var_col].code)){
-                possible_moves.push_back(position[line][col].control[i]);
+                PossibleMoves[line][col].push_back(position[line][col].control[i]);
             }
         }
     }
-    return possible_moves;
 }
 
 
@@ -1533,17 +1524,17 @@ bool Board::is_legal(std::tuple<int, int> start_square, std::tuple<int, int> fin
     return true;
 }
 
-std::vector<std::tuple<int, int>> Board::compute_legal_moves(std::tuple<int, int> square){
-    std::vector<std::tuple<int, int>> possible_moves;
-    std::vector<std::tuple<int, int>> legal_moves;
+void Board::compute_legal_moves(std::tuple<int, int> square){
     //spanning all the possible moves
-    possible_moves = compute_possible_moves(square);
-    for (int k = 0; k < possible_moves.size(); k++){
-        if (is_legal(square, possible_moves[k])){
-            legal_moves.push_back(possible_moves[k]);
+    compute_possible_moves(square);
+    int line = get<0>(square);
+    int col = get<1>(square);
+    LegalMoves[line][col].clear();
+    for (int k = 0; k < PossibleMoves[line][col].size(); k++){
+        if (is_legal(square, PossibleMoves[line][col][k])){
+            LegalMoves[line][col].push_back(PossibleMoves[line][col][k]);
         }
     }
-    return legal_moves;
 }
 std::vector<std::tuple<int, int>> Board::count_checks(){
     std::pair<bool, int> pair;
@@ -1577,13 +1568,15 @@ std::vector<std::tuple<int, int>> Board::count_checks(){
 }
 
 bool Board::is_stuck(){
-    std::vector<std::tuple<int, int>> possible_moves;
+    int line, col;
     //spanning all the possible moves
     for (int i = (1-whose_turn)*6; i < (2-whose_turn)*6; i++){
         for (int j = 0; j < locations[i].size(); j++){
-            possible_moves = compute_possible_moves(locations[i][j]);
-            for (int k = 0; k < possible_moves.size(); k++){
-                if (is_legal(locations[i][j], possible_moves[k])){
+            line = get<0>(locations[i][j]);
+            col = get<1>(locations[i][j]);
+            compute_possible_moves(locations[i][j]);
+            for (int k = 0; k < PossibleMoves[line][col].size(); k++){
+                if (is_legal(locations[i][j], PossibleMoves[line][col][k])){
                     return false;
                 }
             }
@@ -1662,7 +1655,6 @@ void Board::step_back(){
         //replay the whole game till the last position
         memorizeBoard();
         initData(true);
-        init_board(position);
         
         std::tuple<int, int, int, int, int> move;
         for (int i = 0; i < boardCopy.record_movesBuffer.size() -1; i++){
@@ -1676,7 +1668,6 @@ void Board::step_back(){
 void Board::handle_button(int button){
     //reseting everything
     initData(true);
-    init_board(position);
     //Update screen
     SDL_RenderPresent( gRenderer );
     

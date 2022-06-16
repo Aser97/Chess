@@ -8,7 +8,7 @@
 #ifndef text_rendering_hpp
 #define text_rendering_hpp
 #include <iostream>
-#include <SDL2/SDL_image.h>
+#include <SDL2/SDL.h>
 
 bool init_font();
 void close_font();

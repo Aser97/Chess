@@ -8,12 +8,8 @@
 #include "animation.hpp"
 
 #include <iostream>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include "utilities.hpp"
 #include <SDL2/SDL_ttf.h>
 #include "text_rendering.hpp"
-
 
 int SCREEN_WIDTH = 1000;
 int SCREEN_HEIGHT = 800;
@@ -98,15 +94,16 @@ SDL_Texture* loadTexture( std::string path ){
         //Get rid of old loaded surface
         SDL_FreeSurface( loadedSurface );
     }
-
     return newTexture;
 }
 
 bool loadMedia(int code, int line, int col){
     //Loading success flag
     bool success = true;
-
     //Load PNG textures
+    if(pTexture[line][col] != nullptr){
+        SDL_DestroyTexture( pTexture[line][col] );
+    }
     pTexture[line][col] = loadTexture(paths[code]);
     
     if( pTexture[line][col] == nullptr ){
@@ -192,7 +189,7 @@ void init_board(Piece position[8][8]){
         for (int j = 0; j<8; j++){
             if (position[i][j].code != -1){
                 if( !loadMedia(position[i][j].code, i, j)) {
-                    //std::cout << "Failed to load media!\n";
+                    std::cout << "Failed to load media!\n";
                 }
                 else {
                     //Render texture to screen

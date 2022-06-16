@@ -38,7 +38,6 @@ int main(int argc, const char * argv[]) {
         
         bool watch = false;
         if (watch){
-            init_board(board.position);
             //Update screen
             SDL_RenderPresent( gRenderer );
         }
@@ -49,10 +48,13 @@ int main(int argc, const char * argv[]) {
         //board.learn_from_directory("Chess/Whites", watch);
         
         ///*
+        int horizon = 1000;
+        int proba_ = 60;
+        int numb_games = 10;
         for (int i = 0; i<10; i++){
             std::cout << "game batch " << i << "\n";
-            for (int j = 0; j<10; j++){
-                board.AI_vs_Stockfish_MC(true, 1350, 60, 1000, false);
+            for (int j = 0; j<numb_games; j++){
+                board.AI_vs_Stockfish_MC(false, 1350, proba_, horizon, false);
                 board.initData(true);
                 std::cout << j << "\n";
                 //init_board(board.position);
@@ -63,8 +65,7 @@ int main(int argc, const char * argv[]) {
         
         //board.save_AI();
         //*/
-        //std::cout << "hey";
-        init_board(board.position);
+        
         //Update screen
         SDL_RenderPresent( gRenderer );
         std::cout << "ready\n";
