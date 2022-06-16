@@ -47,7 +47,7 @@ int main(int argc, const char * argv[]) {
         //board.learn_from_directory("Chess/Blacks", watch);
         //board.learn_from_directory("Chess/Whites", watch);
         
-        ///*
+        /*
         int horizon = 1000;
         int proba_ = 60;
         int numb_games = 10;
