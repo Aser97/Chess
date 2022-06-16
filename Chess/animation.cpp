@@ -31,7 +31,7 @@ extern std::string messages[5];
 extern SDL_Texture* tTexture[5];
 
 //paths to pieces images
-std::string paths[12] = {"Chess/media/Pawn_White.png", "Chess/media/Knight_White.png", "Chess/media/Bishop_White.png", "Chess/media/Rook_White.png", "Chess/media/Queen_White.png", "Chess/media/King_White.png", "Chess/media/Pawn_Black.png", "Chess/media/Knight_Black.png", "Chess/media/Bishop_Black.png", "Chess/media/Rook_Black.png", "Chess/media/Queen_Black.png", "Chess/media/King_Black.png"};
+std::string paths[12] = {"/Users/Aser/Documents/Chess/Chess/media/Pawn_White.png", "/Users/Aser/Documents/Chess/Chess/media/Knight_White.png", "/Users/Aser/Documents/Chess/Chess/media/Bishop_White.png", "/Users/Aser/Documents/Chess/Chess/media/Rook_White.png", "/Users/Aser/Documents/Chess/Chess/media/Queen_White.png", "/Users/Aser/Documents/Chess/Chess/media/King_White.png", "/Users/Aser/Documents/Chess/Chess/media/Pawn_Black.png", "/Users/Aser/Documents/Chess/Chess/media/Knight_Black.png", "/Users/Aser/Documents/Chess/Chess/media/Bishop_Black.png", "/Users/Aser/Documents/Chess/Chess/media/Rook_Black.png", "/Users/Aser/Documents/Chess/Chess/media/Queen_Black.png", "/Users/Aser/Documents/Chess/Chess/media/King_Black.png"};
 
 //dimensions of pieces
 std::tuple<int, int> piece_dim[12] = {{40, 50}, {50, 56}, {40, 70}, {50, 60}, {40, 74}, {40, 74}, {40, 50}, {50, 56}, {40, 70}, {50, 60}, {40, 74}, {40, 74}};

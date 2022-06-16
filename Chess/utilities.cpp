@@ -380,12 +380,12 @@ std::tuple<int, int, int, int, int> str_to_move(std::string str){
 }
 
 int getNextMoveStockfish(std::string& str0, std::string& str1, std::string& str2, std::string& nextMove, bool turn){
-    filedescriptor  = open("Chess/redirected_output.txt",
+    filedescriptor  = open("/Users/Aser/Documents/Chess/Chess/redirected_output.txt",
                       O_WRONLY| O_NONBLOCK| O_TRUNC);
     stdoutCopy = dup(STDOUT_FILENO);
     dup2(filedescriptor, STDOUT_FILENO);
     close(filedescriptor);
-    std::string cmd = "Chess/stockfish \"" + str0 + "\" \"" + str1 + "\" \"" + str2 + "\"";
+    std::string cmd = "/Users/Aser/Documents/Chess/Chess/stockfish \"" + str0 + "\" \"" + str1 + "\" \"" + str2 + "\"";
     system(cmd.c_str());
     
     dup2(stdoutCopy, STDOUT_FILENO);
@@ -394,7 +394,7 @@ int getNextMoveStockfish(std::string& str0, std::string& str1, std::string& str2
 }
 
 int readNextMoveFromFile(std::string& nextMove, bool turn){
-    filestream.open("Chess/redirected_output.txt", std::ios::out);
+    filestream.open("/Users/Aser/Documents/Chess/Chess/redirected_output.txt", std::ios::out);
     std::string line;
     int n, m, eval;
     int count = 0;
@@ -424,7 +424,7 @@ int readNextMoveFromFile(std::string& nextMove, bool turn){
     }
     //read the eval
     if (!mate){
-        filestream.open("Chess/redirected_output.txt", std::ios::out);
+        filestream.open("/Users/Aser/Documents/Chess/Chess/redirected_output.txt", std::ios::out);
         while (true) {
             getline(filestream, line);
             count_ ++;

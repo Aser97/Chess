@@ -43,9 +43,9 @@ int main(int argc, const char * argv[]) {
         }
         
         board.load_AI();
-        //board.learn_from_directory("Chess/PGNs", watch);
-        //board.learn_from_directory("Chess/Blacks", watch);
-        //board.learn_from_directory("Chess/Whites", watch);
+        //board.learn_from_directory("/Users/Aser/Documents/Chess/Chess/PGNs", watch);
+        //board.learn_from_directory("/Users/Aser/Documents/Chess/Chess/Blacks", watch);
+        //board.learn_from_directory("/Users/Aser/Documents/Chess/Chess/Whites", watch);
         
         /*
         int horizon = 1000;

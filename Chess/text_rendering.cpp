@@ -17,7 +17,7 @@ SDL_Texture* tTexture[5] = {nullptr};
 
 int fontSize = 18;
 
-std::string font_address = "Chess/Fonts/lazy.ttf";
+std::string font_address = "/Users/Aser/Documents/Chess/Chess/Fonts/lazy.ttf";
 
 //current font
 TTF_Font *font;

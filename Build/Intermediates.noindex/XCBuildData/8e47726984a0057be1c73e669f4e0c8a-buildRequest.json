@@ -1,0 +1,57 @@
+{
+  "_buildCommand2" : {
+    "command" : "build",
+    "skipDependencies" : false,
+    "style" : "buildAndRun"
+  },
+  "buildCommand" : "build",
+  "configuredTargets" : [
+    {
+      "guid" : "1949810dc011405d5185eb2679eba64e2b67b0a5074d84b80ac577d61971dbbb"
+    }
+  ],
+  "containerPath" : "/Users/Aser/Documents/Chess/Chess.xcodeproj",
+  "continueBuildingAfterErrors" : false,
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "activeArchitecture" : "x86_64",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : false,
+      "platform" : "macosx",
+      "sdk" : "macosx12.3",
+      "sdkVariant" : "macos",
+      "supportedArchitectures" : [
+        "x86_64h",
+        "x86_64"
+      ],
+      "targetArchitecture" : "x86_64"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "/Users/Aser/Documents/Chess/Build/Intermediates.noindex",
+      "buildProductsPath" : "/Users/Aser/Documents/Chess/Build/Products",
+      "derivedDataPath" : "/Users/Aser/Library/Developer/Xcode/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/Aser/Library/Developer/Xcode/DerivedData/Chess-flsfrkszgdvvhtdzymkyhzultlgb/Index/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/Aser/Library/Developer/Xcode/DerivedData/Chess-flsfrkszgdvvhtdzymkyhzultlgb/Index/PrecompiledHeaders",
+      "pchPath" : "/Users/Aser/Documents/Chess/Build/Intermediates.noindex/PrecompiledHeaders"
+    },
+    "configurationName" : "Debug",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ENABLE_PREVIEWS" : "NO"
+        }
+      }
+    }
+  },
+  "schemeCommand" : "launch",
+  "schemeCommand2" : "launch",
+  "shouldCollectMetrics" : false,
+  "showNonLoggedProgress" : true,
+  "useDryRun" : false,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}

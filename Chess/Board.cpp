@@ -1697,7 +1697,7 @@ void Board::save_AI(){
     //for white Q values
     file_index = 0;
     line_index = 0;
-    fout.open("Chess/WHITE_AI/Q/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+    fout.open("/Users/Aser/Documents/Chess/Chess/WHITE_AI/Q/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
     
     for (it = Q[true].begin(); it != Q[true].end(); it++){
         //save the position data
@@ -1715,7 +1715,7 @@ void Board::save_AI(){
             file_index ++;
             
             //start again with a new file
-            fout.open("Chess/WHITE_AI/Q/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+            fout.open("/Users/Aser/Documents/Chess/Chess/WHITE_AI/Q/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
             line_index = 0;
         }
     }
@@ -1724,7 +1724,7 @@ void Board::save_AI(){
     //for white count values
     file_index = 0;
     line_index = 0;
-    fout.open("Chess/WHITE_AI/COUNT/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+    fout.open("/Users/Aser/Documents/Chess/Chess/WHITE_AI/COUNT/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
     
     for (it = Q[true].begin(); it != Q[true].end(); it++){
         //save the position data
@@ -1741,7 +1741,7 @@ void Board::save_AI(){
             file_index ++;
             
             //start again with a new file
-            fout.open("Chess/WHITE_AI/COUNT/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+            fout.open("/Users/Aser/Documents/Chess/Chess/WHITE_AI/COUNT/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
             line_index = 0;
         }
     }
@@ -1751,7 +1751,7 @@ void Board::save_AI(){
     //for black Q values
     file_index = 0;
     line_index = 0;
-    fout.open("Chess/BLACK_AI/Q/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+    fout.open("/Users/Aser/Documents/Chess/Chess/BLACK_AI/Q/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
     
     for (it = Q[false].begin(); it != Q[false].end(); it++){
         //save the position data
@@ -1768,7 +1768,7 @@ void Board::save_AI(){
             file_index ++;
             
             //start again with a new file
-            fout.open("Chess/BLACK_AI/Q/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+            fout.open("/Users/Aser/Documents/Chess/Chess/BLACK_AI/Q/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
             line_index = 0;
         }
     }
@@ -1777,7 +1777,7 @@ void Board::save_AI(){
     //for black count values
     file_index = 0;
     line_index = 0;
-    fout.open("Chess/BLACK_AI/COUNT/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+    fout.open("/Users/Aser/Documents/Chess/Chess/BLACK_AI/COUNT/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
     
     for (it = Q[false].begin(); it != Q[false].end(); it++){
         //save the position data
@@ -1794,7 +1794,7 @@ void Board::save_AI(){
             file_index ++;
             
             //start again with a new file
-            fout.open("Chess/BLACK_AI/COUNT/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
+            fout.open("/Users/Aser/Documents/Chess/Chess/BLACK_AI/COUNT/" + std::to_string(file_index) +".txt", std::ofstream::out | std::ofstream::trunc);
             line_index = 0;
         }
     }
@@ -1809,11 +1809,11 @@ void Board::load_AI(){
     unsigned long long int position_code;
     
     //loading White_AI Q values
-    for (const auto& entry : std::filesystem::directory_iterator("Chess/WHITE_AI/Q")) {
+    for (const auto& entry : std::filesystem::directory_iterator("/Users/Aser/Documents/Chess/Chess/WHITE_AI/Q")) {
         const auto filenameStr = entry.path().filename().string();
         if (entry.is_regular_file() and filenameStr != ".DS_Store") {
             //execute a loop until EOF (End of File)
-            fin.open("Chess/WHITE_AI/Q/" + filenameStr);
+            fin.open("/Users/Aser/Documents/Chess/Chess/WHITE_AI/Q/" + filenameStr);
             while(fin){
                 // Read a Line from File
                 getline(fin, line);
@@ -1832,11 +1832,11 @@ void Board::load_AI(){
     }
     
     //loading White_AI count values
-    for (const auto& entry : std::filesystem::directory_iterator("Chess/WHITE_AI/COUNT")) {
+    for (const auto& entry : std::filesystem::directory_iterator("/Users/Aser/Documents/Chess/Chess/WHITE_AI/COUNT")) {
         const auto filenameStr = entry.path().filename().string();
         if (entry.is_regular_file() and filenameStr != ".DS_Store") {
             //execute a loop until EOF (End of File)
-            fin.open("Chess/WHITE_AI/COUNT/" + filenameStr);
+            fin.open("/Users/Aser/Documents/Chess/Chess/WHITE_AI/COUNT/" + filenameStr);
             while(fin){
                 // Read a Line from File
                 getline(fin, line);
@@ -1855,11 +1855,11 @@ void Board::load_AI(){
     }
     
     //loading Black_AI Q values
-    for (const auto& entry : std::filesystem::directory_iterator("Chess/BLACK_AI/Q")) {
+    for (const auto& entry : std::filesystem::directory_iterator("/Users/Aser/Documents/Chess/Chess/BLACK_AI/Q")) {
         const auto filenameStr = entry.path().filename().string();
         if (entry.is_regular_file() and filenameStr != ".DS_Store") {
             //execute a loop until EOF (End of File)
-            fin.open("Chess/BLACK_AI/Q/" + filenameStr);
+            fin.open("/Users/Aser/Documents/Chess/Chess/BLACK_AI/Q/" + filenameStr);
             while(fin){
                 // Read a Line from File
                 getline(fin, line);
@@ -1878,11 +1878,11 @@ void Board::load_AI(){
     }
     
     //loading Black_AI count values
-    for (const auto& entry : std::filesystem::directory_iterator("Chess/BLACK_AI/COUNT")) {
+    for (const auto& entry : std::filesystem::directory_iterator("/Users/Aser/Documents/Chess/Chess/BLACK_AI/COUNT")) {
         const auto filenameStr = entry.path().filename().string();
         if (entry.is_regular_file() and filenameStr != ".DS_Store") {
             //execute a loop until EOF (End of File)
-            fin.open("Chess/BLACK_AI/COUNT/" + filenameStr);
+            fin.open("/Users/Aser/Documents/Chess/Chess/BLACK_AI/COUNT/" + filenameStr);
             while(fin){
                 // Read a Line from File
                 getline(fin, line);
