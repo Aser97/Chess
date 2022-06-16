@@ -11,3 +11,6 @@ This project is delivered with an executable. It only runs on **macOs** for now.
 - **Play with Black**: You will be playing agains the AI with black pieces
 - **Play Stockfish White**: You will be playing against Stockfish with white pieces
 - **Play Stockfish Black**: You will be playing against Stockfish with black pieces
+
+##### Dealing with new positions
+The positions tables have been encoded using Zobrist hashing method. When the AI reaches an unknown position, it simulates a bunch of games against Stockfish in this position, and then makes a move with the acquired knowledge
