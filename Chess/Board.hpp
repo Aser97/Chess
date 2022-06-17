@@ -8,18 +8,7 @@
 #ifndef Board_hpp
 #define Board_hpp
 
-#include <iostream>
-#include <iomanip>
 #include "utilities.hpp"
-#include "zobra_hashing.hpp"
-#include <vector>
-#include <map>
-#include <cmath>
-#include "animation.hpp"
-#include <random>
-#include "text_rendering.hpp"
-#include <filesystem>
-#include <fstream>
 
 #define WHITE_WINS 1
 #define BLACK_WINS -1
@@ -92,7 +81,7 @@ class Board{
     
     void play_vs_machine(bool player, std::string machine, int Elo = 0);
     
-    void AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon, bool train = true);
+    void machin_vs_machin_MC(std::string machine1, bool color, std::string machine2, int Elo, int proba, float horizon, bool train = true);
     
     //proposes a move
     std::tuple<int, int, int, int, int> propose_move(int proba, bool color, bool train = true);

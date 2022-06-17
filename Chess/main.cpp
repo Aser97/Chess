@@ -47,21 +47,41 @@ int main(int argc, const char * argv[]) {
         //board.learn_from_directory("/Users/Aser/Documents/Chess/Chess/Blacks", watch);
         //board.learn_from_directory("/Users/Aser/Documents/Chess/Chess/Whites", watch);
         
-        /*
-        int horizon = 1000;
-        int proba_ = 60;
-        int numb_games = 10;
-        for (int i = 0; i<10; i++){
+        ///*
+        float horizon = 1000;
+        int proba_ = 50;
+        int numb_games = 1;
+        for (int i = 0; i<1; i++){
             std::cout << "game batch " << i << "\n";
             for (int j = 0; j<numb_games; j++){
-                board.AI_vs_Stockfish_MC(false, 1350, proba_, horizon, false);
+                board.machin_vs_machin_MC("AI", false, "Stockfish", 1350, proba_, horizon, false);
+                std::cout << j << " numb of moves: " << board.moves_record.size()<< "\n";
                 board.initData(true);
-                std::cout << j << "\n";
+                //init_board(board.position);
+                //SDL_RenderPresent( gRenderer );
+            }
+        }
+        for (int i = 0; i<1; i++){
+            std::cout << "game batch " << i << "\n";
+            for (int j = 0; j<numb_games; j++){
+                board.machin_vs_machin_MC("AI", true, "Stockfish", 1350, proba_, horizon, false);
+                std::cout << j << " numb of moves: " << board.moves_record.size()<< "\n";
+                board.initData(true);
                 //init_board(board.position);
                 //SDL_RenderPresent( gRenderer );
             }
         }
         
+        for (int i = 0; i<1; i++){
+            std::cout << "game batch " << i << "\n";
+            for (int j = 0; j<numb_games; j++){
+                board.machin_vs_machin_MC("AI", false, "AI", 1350, proba_, horizon, false);
+                std::cout << j << " numb of moves: " << board.moves_record.size()<< "\n";
+                board.initData(true);
+                //init_board(board.position);
+                //SDL_RenderPresent( gRenderer );
+            }
+        }
         
         //board.save_AI();
         //*/

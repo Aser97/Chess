@@ -7,7 +7,6 @@
 
 #include "utilities.hpp"
 
-#include <map>
 #include <fstream>
 #include <filesystem>
 #include <unistd.h>
@@ -481,4 +480,21 @@ int eval_Stockfish(int eval){
         return BLACK_WINS;
     }
     return DRAW;
+}
+
+void findByValue(std::vector<std::tuple<int, int, int, int, int>> & vec, std::map<std::tuple<int, int, int, int, int>, float> mapOfElemen, float value) {
+    vec.clear();
+    auto it = mapOfElemen.begin();
+    // Iterate through the map
+    while(it != mapOfElemen.end())
+    {
+        // Check if value of this entry matches with given value
+        if(it->second == value)
+        {
+            // Push the key in given map
+            vec.push_back(it->first);
+        }
+        // Go to next entry in map
+        it++;
+    }
 }

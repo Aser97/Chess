@@ -6,6 +6,17 @@
 //
 
 #include "Board.hpp"
+#include <ctime>
+#include <iostream>
+#include <iomanip>
+#include "zobra_hashing.hpp"
+#include <vector>
+#include <map>
+#include <cmath>
+#include "animation.hpp"
+#include "text_rendering.hpp"
+#include <filesystem>
+#include <fstream>
 
 /*correspondance table:
  For whites:
@@ -42,6 +53,7 @@ std::string nextMove;
 std::vector<std::tuple<int, int>> PossibleMoves[8][8];
 std::vector<std::tuple<int, int>> LegalMoves[8][8];
 long int random_int;
+int eval;
 
 //initializing a new game
 void Board::initData(bool new_game){
@@ -906,7 +918,6 @@ void Board::play_vs_machine(bool player, std::string machine, int Elo){
     bool know_first_square = false;
     int x, y;
     int promote_code = -1;
-    int eval;
     
     SDL_Event e;
     bool quit = false;
@@ -1024,13 +1035,12 @@ void Board::play_vs_machine(bool player, std::string machine, int Elo){
     }
 }
 
-void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon, bool train){
+void Board::machin_vs_machin_MC(std::string machine1, bool color, std::string machine2, int Elo, int proba, float horizon, bool train){
     std::tuple<int, int> start_square;
     std::tuple<int, int> final_square;
     std::tuple<int, int, int, int, int> proposal; //AI move
     std::pair<bool, int> pair;
     pair.first = false;
-    int eval;
     
     float nth_move = 0;
     SDL_Event e;
@@ -1061,9 +1071,16 @@ void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon, bool
                 }
             }
         }
-        //AI turn
+        //machine 1' turn
         if (not quit and whose_turn == color){
-            proposal = propose_move(proba, whose_turn, train);
+            if (machine1 == "AI"){
+                proposal = propose_move(proba, whose_turn, train);
+            }
+            else {
+                str1 = "position startpos moves " + moves_record;
+                eval = getNextMoveStockfish(str0, str1, str2, nextMove, whose_turn);
+                proposal = str_to_move(nextMove);
+            }
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
@@ -1087,12 +1104,17 @@ void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon, bool
         if (nth_move == horizon){
             quit = true;
         }
-        //Stockfish turn
+        //machine2' turn
         if (not quit and not (whose_turn == color)){
-            str1 = "position startpos moves " + moves_record;
-            eval = getNextMoveStockfish(str0, str1, str2, nextMove, not color);
+            if (machine2 == "AI"){
+                proposal = propose_move(proba, whose_turn, train);
+            }
+            else {
+                str1 = "position startpos moves " + moves_record;
+                eval = getNextMoveStockfish(str0, str1, str2, nextMove, whose_turn);
+                proposal = str_to_move(nextMove);
+            }
             
-            proposal = str_to_move(nextMove);
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
@@ -1130,36 +1152,6 @@ void Board::AI_vs_Stockfish_MC(bool color, int Elo, int proba, int horizon, bool
 
 std::tuple<int, int, int, int, int> Board::propose_move(int proba, bool color, bool train){
     unsigned long long int position_code = computeHash(position, whose_turn);
-    if ((Q[color].count(position_code) == 0) and not train){//if we have to explore a bit around the position in a not training game
-        memorizeBoard();
-        int horizon = 1;
-        int proba_ = 60;//to be distinguished from the argument proba
-        int numb_games = 15;
-        for (int j = 0; j<numb_games; j++){
-            AI_vs_Stockfish_MC(color, 1350, proba_, horizon);
-            initData(false);
-            //std::cout << j;
-            //SDL_RenderPresent( gRenderer );
-        }
-        //std::cout << "\nhoy ";
-    }
-    if (Q[color].count(position_code) > 0){
-        /*if (!train){
-            std::cout <<"hey\n";
-        }*/
-        random_int = random();
-        if ((random_int % 100) <= proba){//propose the best move so far}
-            auto pr = std::max_element(Q[color][position_code].begin(), Q[color][position_code].end(), [](std::pair<std::tuple<int, int, int, int, int>, float> const &x, std::pair<std::tuple<int, int, int, int, int>, float> const &y){return x.second < y.second;});
-           
-            if (!train or (Q[color][position_code][pr->first] > -0.3)){
-                std::cout << pr->second << " " << count[color][position_code][pr->first] << ": ";
-                display_move(pr->first);
-                return pr->first;
-            }
-        }
-    }
-    
-    //explore in other cases
     std::vector<std::tuple<int, int, int, int, int>> proposals; //AI moves
     int line, col, promote_code;
     //spanning all the legal moves
@@ -1179,9 +1171,62 @@ std::tuple<int, int, int, int, int> Board::propose_move(int proba, bool color, b
             }
         }
     }
-
-    //chosing the move
-    random_int = random();
+    
+    //now the move election process
+    if ((Q[color].count(position_code) == 0) and not train){//if the position is unknown and we should not play randomly (i.e not training game) we have to explore a bit around the position
+        std::tuple<int, int> start_square;
+        std::tuple<int, int> final_square;
+        std::pair<bool, int> pair;
+        
+        memorizeBoard();
+        float horizon = .5;
+        int proba_ = 50;//to be distinguished from the argument proba
+        for (int j = 0; j<proposals.size(); j++){
+            //playing a game from each possible move
+            start_square = {get<0>(proposals[j]), get<1>(proposals[j])};
+            final_square = {get<2>(proposals[j]), get<3>(proposals[j])};
+            execute_move(start_square, final_square, get<4>(proposals[j]));
+            pair = game_over(train);
+            
+            if (!pair.first){// if not checkmate
+                machin_vs_machin_MC("AI", color, "Stockfish", 1350, proba_, horizon);
+                initData(false);
+            }
+            else{//we have a winning move
+                break;
+            }
+            //std::cout << j;
+            //SDL_RenderPresent( gRenderer );
+        }
+        //std::cout << "\nhoy ";
+    }
+    if (Q[color].count(position_code) > 0){
+        /*if (!train){
+            std::cout <<"hey\n";
+        }*/
+        std::srand((unsigned) time(0));
+        random_int = std::rand();
+    
+        if ((random_int % 100) <= proba){//propose the best move so far}
+            auto pr = std::max_element(Q[color][position_code].begin(), Q[color][position_code].end(), [](std::pair<std::tuple<int, int, int, int, int>, float> const &x, std::pair<std::tuple<int, int, int, int, int>, float> const &y){return x.second < y.second;});
+           
+            if (!train or (Q[color][position_code][pr->first] > -0.3)){
+                //find all the argmax in the map
+                findByValue(proposals, Q[color][position_code], pr->second);
+                std::srand((unsigned) time(0));
+                random_int = std::rand();
+                
+                //chose randomly
+                std::cout << pr->second << " " << count[color][position_code][proposals[random_int % proposals.size()]] << ": ";
+                display_move(proposals[random_int % proposals.size()]);
+                return proposals[random_int % proposals.size()];
+            }
+        }
+    }
+    
+    //chose a random move in other cases
+    std::srand((unsigned) time(0));
+    random_int = std::rand();
     return proposals[random_int % proposals.size()];
 }
 

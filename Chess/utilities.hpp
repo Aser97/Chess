@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 
 #define MESS_SIZE 8192
 //this function tests whether two pieces are in same color
@@ -68,4 +69,7 @@ int readNextMoveFromFile(std::string& nextMove, bool turn);
 int eval_pos(std::vector <std::tuple<int, int>> locations[12]);
 
 int eval_Stockfish(int eval);
+
+void findByValue(std::vector<std::tuple<int, int, int, int, int>> & vec, std::map<std::tuple<int, int, int, int, int>, float> mapOfElemen, float value);
+
 #endif /* utilities_hpp */
