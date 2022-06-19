@@ -50,33 +50,35 @@ int main(int argc, const char * argv[]) {
         ///*
         float horizon = 1000;
         int proba_ = 50;
-        int numb_games = 1;
-        for (int i = 0; i<1; i++){
+        int numb_games = 10;
+        
+        for (int i = 0; i<6; i++){
             std::cout << "game batch " << i << "\n";
             for (int j = 0; j<numb_games; j++){
                 board.machin_vs_machin_MC("AI", false, "Stockfish", 1350, proba_, horizon, false);
-                std::cout << j << " numb of moves: " << board.moves_record.size()<< "\n";
+                std::cout << j << " numb of moves: " << board.record_moves.size()/2<< "\n";
                 board.initData(true);
                 //init_board(board.position);
                 //SDL_RenderPresent( gRenderer );
             }
         }
-        for (int i = 0; i<1; i++){
+        for (int i = 0; i<6; i++){
             std::cout << "game batch " << i << "\n";
             for (int j = 0; j<numb_games; j++){
                 board.machin_vs_machin_MC("AI", true, "Stockfish", 1350, proba_, horizon, false);
-                std::cout << j << " numb of moves: " << board.moves_record.size()<< "\n";
+                std::cout << j << " numb of moves: " << board.record_moves.size()/2<< "\n";
                 board.initData(true);
                 //init_board(board.position);
                 //SDL_RenderPresent( gRenderer );
             }
         }
         
-        for (int i = 0; i<1; i++){
+        horizon = 100;
+        for (int i = 0; i<6; i++){
             std::cout << "game batch " << i << "\n";
             for (int j = 0; j<numb_games; j++){
                 board.machin_vs_machin_MC("AI", false, "AI", 1350, proba_, horizon, false);
-                std::cout << j << " numb of moves: " << board.moves_record.size()<< "\n";
+                std::cout << j << " numb of moves: " << board.record_moves.size()/2<< "\n";
                 board.initData(true);
                 //init_board(board.position);
                 //SDL_RenderPresent( gRenderer );

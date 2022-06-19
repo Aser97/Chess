@@ -354,7 +354,7 @@ int find_end_game(std::string game, int start_index){
 }
 
 void display_move(std::tuple<int, int, int, int, int> move){
-    std::cout << get<0>(move) << ", " << get<1>(move) << " -> " << get<2>(move) << ", " << get<3>(move) << " = " << get<4>(move) <<"\n";
+    std::cout << "(" << get<0>(move) << ", " << get<1>(move) << ") -> (" << get<2>(move) << ", " << get<3>(move) << ") = " << get<4>(move) <<"\n";
 }
 
 //transforms a move to a 5 chars long string

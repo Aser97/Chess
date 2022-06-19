@@ -60,6 +60,11 @@ void Board::initData(bool new_game){
     for (int i=0; i<12; i++){
         _locations[i].clear();//locations of pieces
     }
+    //clear the records
+    record_moves.clear();
+    record_positions.clear();
+    record_appreciations.clear();
+    
     //We set a new board
     if (new_game){
         whose_turn = true;
@@ -91,11 +96,6 @@ void Board::initData(bool new_game){
         position[7][5] = create_piece(8);
         position[7][6] = create_piece(7);
         position[7][7] = create_piece(9);
-        //clear the records
-        record_moves.clear();
-        record_positions.clear();
-        record_appreciations.clear();
-        
     }
     else {//come back to a previous state
         whose_turn = boardCopy.whose_turnBuffer;
@@ -125,6 +125,9 @@ void Board::initData(bool new_game){
         locations[i] = _locations[i];
     }
     init_board(position);
+    messages[4] = " ";
+    load_text(messages[4], 4);
+    
 }
 
 void Board::memorizeBoard(){
@@ -135,6 +138,10 @@ void Board::memorizeBoard(){
             boardCopy.positionBuffer[i][j] = position[i][j];
         }
     }
+    boardCopy.record_movesBuffer.clear();
+    boardCopy.record_positionsBuffer.clear();
+    boardCopy.record_appreciationsBuffer.clear();
+    
     boardCopy.record_movesBuffer = record_moves;
     boardCopy.record_positionsBuffer = record_positions;
     boardCopy.record_appreciationsBuffer = record_appreciations;
@@ -1084,7 +1091,6 @@ void Board::machin_vs_machin_MC(std::string machine1, bool color, std::string ma
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
-            
             if (!train){
                 //update_board(position);
             }
@@ -1118,7 +1124,6 @@ void Board::machin_vs_machin_MC(std::string machine1, bool color, std::string ma
             start_square = {get<0>(proposal), get<1>(proposal)};
             final_square = {get<2>(proposal), get<3>(proposal)};
             execute_move(start_square, final_square, get<4>(proposal));
-            
             if (!train){
                 //update_board(position);
             }
@@ -1190,11 +1195,8 @@ std::tuple<int, int, int, int, int> Board::propose_move(int proba, bool color, b
             
             if (!pair.first){// if not checkmate
                 machin_vs_machin_MC("AI", color, "Stockfish", 1350, proba_, horizon);
-                initData(false);
             }
-            else{//we have a winning move
-                break;
-            }
+            initData(false);
             //std::cout << j;
             //SDL_RenderPresent( gRenderer );
         }
@@ -1217,8 +1219,10 @@ std::tuple<int, int, int, int, int> Board::propose_move(int proba, bool color, b
                 random_int = std::rand();
                 
                 //chose randomly
-                std::cout << pr->second << " " << count[color][position_code][proposals[random_int % proposals.size()]] << ": ";
-                display_move(proposals[random_int % proposals.size()]);
+                if (!train){
+                    std::cout << "color = " << color << " Q = " << pr->second << " count = " << count[color][position_code][proposals[random_int % proposals.size()]] << ": ";
+                    display_move(proposals[random_int % proposals.size()]);
+                }
                 return proposals[random_int % proposals.size()];
             }
         }
