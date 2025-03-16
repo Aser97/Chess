@@ -1,16 +1,15 @@
 Stockfish 100622 by the Stockfish developers (see AUTHORS file)
 info string NNUE evaluation using nn-3c0aa92af1da.nnue enabled
-info depth 1 seldepth 1 multipv 1 score cp -25 nodes 34 nps 17000 tbhits 0 time 2 pv e7f5
-info depth 2 seldepth 2 multipv 1 score cp -18 nodes 142 nps 71000 tbhits 0 time 2 pv d8b6
-info depth 3 seldepth 2 multipv 1 score cp -10 nodes 246 nps 123000 tbhits 0 time 2 pv b8d7
-info depth 4 seldepth 2 multipv 1 score cp -9 nodes 328 nps 164000 tbhits 0 time 2 pv d8b6
-info depth 5 seldepth 2 multipv 1 score cp 78 nodes 366 nps 183000 tbhits 0 time 2 pv d8b6
-info depth 6 seldepth 3 multipv 1 score cp 78 nodes 408 nps 136000 tbhits 0 time 3 pv d8b6 c2c3
-info depth 7 seldepth 5 multipv 1 score cp 25 nodes 1460 nps 365000 tbhits 0 time 4 pv g4f3 e2f3 c6c5 d4c5 b8c6
-info depth 8 seldepth 9 multipv 1 score cp 3 nodes 3933 nps 491625 tbhits 0 time 8 pv e7f5 c2c3 c6c5 c3c4
-info depth 9 seldepth 11 multipv 1 score cp 0 nodes 10649 nps 591611 tbhits 0 time 18 pv g4f3 e2f3 d8b6 d2c1 b8d7 c2c3 c6c5 d4c5 b6c5
-info depth 10 seldepth 12 multipv 1 score cp 26 nodes 19657 nps 655233 tbhits 0 time 30 pv e7f5 c2c3 c6c5 c3c4 c5d4 d2g5 f8e7 g5e7 f5e7
-info depth 11 seldepth 16 multipv 1 score cp -11 nodes 44600 nps 696875 tbhits 0 time 64 pv d8b6 d2c1 g4f3 e2f3 c6c5 d4c5 b6c5 b1a3 b8c6 c2c4 c6e5
-info depth 12 seldepth 16 multipv 1 score cp -7 nodes 62117 nps 697943 tbhits 0 time 89 pv e7f5 c2c3 f8e7 b1a3 e8g8 a3c2 c6c5 f1e1
-info depth 13 seldepth 16 multipv 1 score cp -7 nodes 70383 nps 690029 tbhits 0 time 102 pv e7f5 c2c3 f8e7 b1a3 e8g8 a3c2 c6c5 f1e1
-bestmove e7f5 ponder c2c3
+info depth 1 seldepth 1 multipv 1 score cp -120 nodes 51 nps 51000 tbhits 0 time 1 pv d7e8
+info depth 2 seldepth 2 multipv 1 score cp -120 nodes 86 nps 86000 tbhits 0 time 1 pv d7e8
+info depth 3 seldepth 2 multipv 1 score cp -120 nodes 122 nps 122000 tbhits 0 time 1 pv d7e8
+info depth 4 seldepth 2 multipv 1 score cp -120 nodes 153 nps 153000 tbhits 0 time 1 pv d7e8
+info depth 5 seldepth 2 multipv 1 score cp -111 nodes 186 nps 186000 tbhits 0 time 1 pv d7e8
+info depth 6 seldepth 3 multipv 1 score cp -206 nodes 614 nps 307000 tbhits 0 time 2 pv d7e8 b1c3 d5c4 f1c4
+info depth 7 seldepth 6 multipv 1 score cp -173 nodes 1698 nps 424500 tbhits 0 time 4 pv d7e8 b1c3 f8d6
+info depth 8 seldepth 5 multipv 1 score cp -155 nodes 3661 nps 523000 tbhits 0 time 7 pv d7e8 b1c3 b8c6 c4d5 f6d5
+info depth 9 seldepth 11 multipv 1 score cp -153 nodes 16662 nps 476057 tbhits 0 time 35 pv d7e8 b1c3 f8e7 f1d3 d5c4 d3c4 f6d5 e1g1 d5f4 e3f4
+info depth 10 seldepth 13 multipv 1 score cp -149 nodes 26320 nps 526400 tbhits 0 time 50 pv d7e8 b1c3 f8d6 f3e5 c7c6 f1d3 d6c7 c4d5 e6d5
+info depth 11 seldepth 12 multipv 1 score cp -153 nodes 33029 nps 559813 tbhits 0 time 59 pv d7e8 b1c3 f8e7 c3b5 b8a6 c4c5 c7c6 b5d6 e7d6 f4d6 f6e4
+info depth 12 seldepth 12 multipv 1 score cp -153 nodes 55191 nps 541088 tbhits 0 time 102 pv d7e8 b1c3 f8e7 c3b5 b8a6 c4c5 c7c6 b5d6 e7d6 f4d6 f6e4
+bestmove d7e8 ponder b1c3

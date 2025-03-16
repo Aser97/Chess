@@ -1,22 +1,51 @@
-# Applying SARSA and Monte Carlo Reinforcement Algorithms for Chess
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
-This project basically implements the two algorithms (SARSA and Monte Carlo) to approximate the best policy against an opponent in the game of Chess.
- 
-The AI has been training whith Stockfish at Elo 1350
+layout: page
+title: Reinforcement Learning for Chess
+subtitle: SARSA & Monte Carlo Algorithms
+#gallery: ot-gallery
+toc: true
+---
+
+
+This project implements SARSA and Monte Carlo reinforcement learning algorithms to approximate an optimal policy for playing chess against an opponent.
+
+## Theoretical Background
+For a deeper understanding of the algorithms used, refer to the following research papers:
+
+<div markdown="0">
+  <a href="https://arxiv.org/pdf/1902.02234">
+    <div class="preview-container">
+      <img src="{{ site.baseurl }}/assets/thumbnails/SARSA_thumbnail.PNG" alt="Preview of the document"/>
+      <div class="hover-effect">Click to view</div>
+    </div>
+  </a>
+</div>
+
+<div markdown="0">
+  <a href="https://arxiv.org/pdf/2206.12674">
+    <div class="preview-container">
+      <img src="{{ site.baseurl }}/assets/thumbnails/MC_thumbnail.PNG" alt="Preview of the document"/>
+      <div class="hover-effect">Click to view</div>
+    </div>
+  </a>
+</div>
+The AI model has been trained using Stockfish at an Elo rating of 1350.
 
 ## Executable
 
-This project is delivered with an executable. It has been developped on **macOs** but it should work under any **unix** system. In this executable, you will have 4 options:
-- **Play with White**: You will be playing agains the AI with white pieces
-- **Play with Black**: You will be playing agains the AI with black pieces
-- **Play Stockfish White**: You will be playing against Stockfish with white pieces
-- **Play Stockfish Black**: You will be playing against Stockfish with black pieces
+This project comes with a ready-to-run executable, primarily developed for **macOs** in C++, but it should be compatible with any **Unix**-based system.
+The full code is [here](https://github.com/Aser97/Chess.git)
 
-##### Dealing with new positions
-The positions tables have been encoded using Zobrist hashing method. When the AI reaches an unknown position, it simulates a bunch of games against Stockfish in this position, and then makes a move with the acquired knowledge. For this reason, it might take a few second to make some moves
+### Available Gameplay Modes
+Upon running the executable, you can choose from the following options:
 
+- **Play as White**: Face the AI while controlling the white pieces
+- **Play as Black**: Face the AI while controlling the black pieces
+- **Play Stockfish as White**: Play against Stockfish while controlling the white pieces
+- **Play Stockfish as Black**: Play against Stockfish while controlling the black pieces
 
-
-# Members of the team
-- Lompo Boammani Aser
-- Ware Mégane Consolatrice
+## Handling New Positions
+The AI utilizes Zobrist hashing to encode board positions efficiently. When encountering an unfamiliar position, it simulates multiple games against Stockfish to analyze the position and determine the best move. This process may cause a slight delay before making a move, particularly in novel board states
