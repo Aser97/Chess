@@ -15,23 +15,9 @@ This project implements SARSA and Monte Carlo reinforcement learning algorithms 
 ## Theoretical Background
 For a deeper understanding of the algorithms used, refer to the following research papers:
 
-<div markdown="0">
-  <a href="https://arxiv.org/pdf/1902.02234">
-    <div class="preview-container">
-      <img src="{{ site.baseurl }}/assets/thumbnails/SARSA_thumbnail.PNG" alt="Preview of the document"/>
-      <div class="hover-effect">Click to view</div>
-    </div>
-  </a>
-</div>
+  - [SARSA](https://arxiv.org/pdf/1902.02234)
+  - [Monte Carlo](https://arxiv.org/pdf/2206.12674)
 
-<div markdown="0">
-  <a href="https://arxiv.org/pdf/2206.12674">
-    <div class="preview-container">
-      <img src="{{ site.baseurl }}/assets/thumbnails/MC_thumbnail.PNG" alt="Preview of the document"/>
-      <div class="hover-effect">Click to view</div>
-    </div>
-  </a>
-</div>
 The AI model has been trained using Stockfish at an Elo rating of 1350.
 
 ## Executable
